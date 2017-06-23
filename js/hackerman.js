@@ -162,6 +162,27 @@ window.onload = function(){
 		var oConsole = "<div id='console' class='console noselect'></div>";
 		$("#wrapper").html(oConsole);
 	}
+	function sayHi() {
+		fAnimationActive = true;
+		var s = "START TO PRINT...";
+		var i=0, iMax = s.length;
+		
+		var timer = setInterval(function(){
+			if(i<iMax) {
+				typeSymbol(s, i, true);
+			} else{
+				if(i<iMax+4){
+				} else {
+					$("#console").empty();
+					fCursor = true;
+					fAnimationActive = false;
+					clearInterval(timer);					
+				}
+			}
+			i++;
+		},
+		60);
+	}
 	function scrollDown() {
 		//$('#console').animate({scrollTop: $('#console').height()*2}, 'fast')
 		$('#console').scrollTop($('#console')[0].scrollHeight);
@@ -257,6 +278,7 @@ window.onload = function(){
 		currentCode = prepareSrc(code[randd(0, code.length-1)]);
 		createConsole();
 		caret();
+		sayHi();
 	}
 	function printLine(){
 		if(nSimbol >= currentCode.length)
