@@ -214,16 +214,16 @@ p {
   scrollbar-track-color: #ddd;
 }
 .caret {
-  border-left: 3px solid #00ff00;
+  border-left: 3px solid #00ee00;
   margin-left: .2em;
 }
 .caretHor {
-  border-bottom: 3px solid #00ff00;
+  border-bottom: 3px solid #00ee00;
   width: .6em;
   margin-left: .2em;
 }
 .simbol {
-  color: #00ff00;
+  color: #00ee00;
 }
 .glowOut {
   animation-name: simbolGlowOut;
@@ -241,31 +241,31 @@ p {
 }
 @keyframes simbolTwinkle {
   0% {
-    color: #00ff00;
+    color: #00ee00;
   }
   10% {
-    color: #00ff00;
+    color: #00ee00;
   }
   11% {
-    color: #00ee00;
+    color: #00dd00;
   }
   19% {
-    color: #00ee00;
+    color: #00dd00;
   }
   20% {
-    color: #00ff00;
+    color: #00ee00;
   }
   25% {
-    color: #00ff00;
+    color: #00ee00;
   }
   26% {
-    color: #00ee00;
+    color: #00dd00;
   }
   30% {
-    color: #00ee00;
+    color: #00dd00;
   }
   100% {
-    color: #00ff00;
+    color: #00ee00;
   }
 }
 @keyframes simbolGlow {
@@ -273,7 +273,7 @@ p {
     text-shadow: none;
   }
   50% {
-    text-shadow: 0px 0px 6px #00ff00, 0px 0px 6px #00ff00;
+    text-shadow: 0px 0px 6px #00ee00, 0px 0px 6px #00ee00;
   }
   100% {
     text-shadow: none;
@@ -281,12 +281,12 @@ p {
 }
 @keyframes simbolGlowOut {
   0% {
-    text-shadow: 0px 0px 6px #00ff00, 0px 0px 6px #00ff00, 0px 0px 6px #00ff00;
+    text-shadow: 0px 0px 6px #00ee00, 0px 0px 6px #00ee00, 0px 0px 6px #00ee00;
     color: #33ff33;
   }
   100% {
     text-shadow: none;
-    color: #00ff00;
+    color: #00ee00;
   }
 }
 

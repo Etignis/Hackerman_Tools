@@ -73,7 +73,8 @@ window.onload = function(){
 			"  .--.      .--.      .--.<br>:::::.\::::::::.\::::::::.\:::<br>-'      `--'      `--'   	 -",
 			" .--.      .--.      .--.<br>::::.\::::::::.\::::::::.\::::<br>'      `--'      `--'   	--",
 			".--.      .--.      .--.<br>:::.\::::::::.\::::::::.\:::::<br>      `--'      `--'   	  --' ",
-			"--.      .--.      .--.		 .<br>::.\::::::::.\::::::::.\::::::<br>     `--'      `--'   	 --'<br><br> "
+			"--.      .--.      .--.		 .<br>::.\::::::::.\::::::::.\::::::<br>     `--'      `--'   	 --'<br><br> ",
+			" <br>   SUCCESS<br> <br><br> "
 		],
 		[
 			"<br><br>   \\|/ ____ \\|/<br>    @~/ ,. \\~@<br>   /_( \\__/ )_\\<br>      \\__U_/ <br><br>",
@@ -86,8 +87,25 @@ window.onload = function(){
 			"<br>\\|/ ____ \\|/<br> @~/ ,. \\~@<br>/_( \\__/ )_\\<br>   \\__U_/<br><br><br>",
 			"\\|/ ____ \\|/<br> @~/ ,. \\~@<br>/_( \\__/ )_\\<br>   \\__U_/<br><br><br><br>",
 			"<br><br>        \\|/ ____ \\|/<br>         @~/ ,. \\~@<br>        /_( \\__/ )_\\<br>           \\__U_/<br><br>",
-			"<br><br><br>   [ SUCCESS ]<br><br><br> "
-			
+			"<br><br><br>   [ SUCCESS ]<br><br><br> "			
+		],
+		[
+			"<br>   (ヽº_º)ヽ┬──┬",
+			"<br>   (ヽº_º)ヽ┬──┬",
+			"<br>   (ノಠ益ಠ)ノ彡┻━━┻",
+			"<br>   (ノಠ益ಠ)ノ彡┻━━┻",
+			"<br>   (╯°^°）╯   ︵ ┻━━┻",
+			"<br>   (╯°^°）╯   ︵ ┻━━┻",
+			"<br>   (╯°^°）╯     ︵ ┻━━┻",
+			"<br>   (╯°^°）╯     ︵ ┻━━┻",
+			"<br>   (╯°^°）╯       ︵ ┻━━┻",
+			"<br>   (╯°^°）╯       ︵ ┻━━┻",
+			"<br>   (╯°^°）╯        ︵ ┻━━┻",
+			"<br>   (╯°^°）╯        ︵ ┻━━┻",
+			"<br>   (╯°^°)╯          ┻━━┻",
+			"<br>  ┐(￣∀￣)┌         ┻━━┻",
+			"<br>  ┐(￣∀￣)┌         ┻━━┻",
+			"<br>  	(￣ω￣) <br><br> "
 		]
 	];
 	
@@ -113,13 +131,13 @@ window.onload = function(){
 		$("#wrapper").html(oConsole);
 	}
 	function scrollDown() {
-		$('#console').animate({scrollTop: $('#console').height()*1.5}, 'fast')
+		$('#console').animate({scrollTop: $('#console').height()*2}, 'fast')
 	}
 	function printHackerText(){
 		var sText = hackerText[randd(0, hackerText.length-1)].replace(/<br>/ig, "\n");
 
 		for(var i=0; i<sText.length; i++) {
-			typeSymbol(sText, i, false);
+			typeSymbol(sText, i, true);
 		}
 	}
 	function typeSymbol(sSrc, nNumber, extraClass){
@@ -180,6 +198,7 @@ window.onload = function(){
 				} else {					
 					fCursor = true;
 					fAnimationActive = false;
+					scrollDown();
 					clearInterval(timer);
 				}
 			},
@@ -227,8 +246,10 @@ window.onload = function(){
 				}
 				// show loader
 				showAnimation();
-			} else {				
-				printLine();
+			} else {		
+				do { 
+					printLine();
+				} while (sLastSimbol == " ") 
 				
 				tCursor = setTimeout(function(){
 					fCursor = true;
