@@ -1,0 +1,63 @@
+.console{
+	background-color: @d-gray - #111;
+	font-family: monospace;
+	padding: 1em 1em 2em;
+	
+	.scrollbars(5px, @m-gray, @l-gray);
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	
+	overflow-y: scroll;
+}
+.caret{
+	border-left: 3px solid @consoleColor;
+	margin-left: .2em;
+}
+.caretHor{
+	border-bottom: 3px solid @consoleColor;
+	width: .6em;
+	margin-left: .2em;
+}
+.simbol{
+	color: @consoleColor;		
+    //border: 1px solid rgba(0,0,0,0);
+}
+.glowOut{
+	animation-name: simbolGlowOut;
+    animation-duration: .7s;
+}
+.twinkle{
+	animation-name: simbolTwinkle;
+    animation-duration: 3s;
+    animation-iteration-count: 3;
+}
+.glow{
+	animation-name: simbolGlow;
+    animation-duration: 4s;
+    animation-iteration-count: 3;
+}
+
+@keyframes simbolTwinkle {
+	@mC: #111;
+    0%   {color: @consoleColor}
+    10%   {color: @consoleColor}
+    11% {color: @consoleColor - @mC}
+    19% {color: @consoleColor - @mC}
+    20% {color: @consoleColor}
+    25% {color: @consoleColor}
+    26% {color: @consoleColor - @mC}
+    30% {color: @consoleColor - @mC}
+    100% {color: @consoleColor}
+}
+@keyframes simbolGlow {
+    0%   {text-shadow: none}
+    50% {text-shadow: 0px 0px 6px @consoleColor, 0px 0px 6px @consoleColor}
+    100% {text-shadow: none}
+}
+@keyframes simbolGlowOut {
+    0% {text-shadow: 0px 0px 6px @consoleColor, 0px 0px 6px @consoleColor, 0px 0px 6px @consoleColor; color: @consoleColor + #333;}
+    100% {text-shadow: none; color: @consoleColor;}
+}
