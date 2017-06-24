@@ -3,7 +3,7 @@
 	font-family: monospace;
 	padding: 1em 1em 2em;
 	
-	.scrollbars(5px, @m-gray, @l-gray);
+	.scrollbars(5px, @d-gray + #111, @d-gray);
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -12,14 +12,21 @@
 	
 	overflow-y: scroll;
 }
-.caret{
-	border-left: 3px solid @consoleColor;
+#caret{
+	color:  @consoleColor;
+	animation: blink 1.1s infinite;
 	margin-left: .2em;
+	font-weight: bold;
+}
+.caret{
+	&:before{
+		content: "|"
+	}
 }
 .caretHor{
-	border-bottom: 3px solid @consoleColor;
-	width: .6em;
-	margin-left: .2em;
+	&:before{
+		content: "_"
+	}
 }
 .simbol{
 	color: @consoleColor;		
@@ -60,4 +67,13 @@
 @keyframes simbolGlowOut {
     0% {text-shadow: 0px 0px 6px @consoleColor, 0px 0px 6px @consoleColor, 0px 0px 6px @consoleColor; color: @consoleColor + #333;}
     100% {text-shadow: none; color: @consoleColor;}
+}
+@keyframes blink {
+    0% {color: @consoleColor}
+    20% {color: @consoleColor}
+    30% {color: rgba(0,255,0,0)}
+    50% {color: rgba(0,255,0,0)} 
+    70% {color: rgba(0,255,0,0)} 
+    80% {color: @consoleColor}    
+    100% {color: @consoleColor}
 }

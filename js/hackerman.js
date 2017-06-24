@@ -136,14 +136,30 @@ window.onload = function(){
 			"<br>  ┐(￣∀￣)┌          ┻━━┻",
 			"<br>  ┐(￣∀￣)┌          ┻━━┻",
 			"<br>  	(￣ω￣) <br><br> "
+		],
+		[
+			" <br>        __<br>       ( -><br>       /  )<br>      <__//<br>      _/ \\",
+			" <br>         __<br>        ( -><br>        / )\\<br>       <_/_/<br>      ___| ",
+			" <br>          __<br>         ( -><br>         /) \\<br>        </__/<br>      ___/ \\",
+			" <br>           __<br>          ( -><br>          / )\\<br>         <_/_/<br>      _____| ",
+			" <br>            __<br>           ( -><br>           /  )<br>          <__//<br>      _____/ \\",
+			" <br>             __<br>            ( -><br>            / )\\<br>           <_/_/<br>      _______| ",
+			" <br>              __<br>             ( -><br>             /) \\<br>            </__/<br>      _______/ \\",
+			" <br>               __<br>              ( -><br>              / )\\<br>             <_/_/<br>      _________| ",
+			" <br>                __<br>               ( -><br>               /  )<br>              <__//<br>      _________/ \\",
+			" <br>                 __<br>                ( -><br>                / )\\<br>               <_/_/<br>      ___________| ",
+			" <br>                  __<br>                 ( -><br>                 /) \\<br>                </__/<br>      ___________/ \\",
+			" <br>                   __<br>                  ( -><br>                  / )\\<br>                 <_/_/<br>      _____________| ",
+			" <br>                   _ <br>                  (v)<br>                 //-\\\\<br>                 (\\_/)<br>   _______________^ ^ ",
+			" <br>    [SUCCESS] .    _ <br>               '. (v)<br>                 //-\\\\<br>                 (\\_/)<br>   _______________^ ^<br><br> "
 		]
 	];
 	
 	var hackerText = [
 		"   HACKING PENTAGON:<br>",
 		"   ORDERING SOME PIZZA:<br>",
-		"   TERMORECTAL CRIPTOANALYSIS:<br>",
-		"   CRIPTOANALYSIS:<br>",
+		"   TERMORECTAL CRYPTANALYSIS:<br>",
+		"   CRYPTANALYSIS:<br>",
 		"   TRYING TO GET ACCESS:<br>",
 		"   ENCRIPTING PASSWORDS:<br>",
 		"   GENERATE PASSWORD:<br>",
@@ -160,7 +176,8 @@ window.onload = function(){
 		"	ALARM!",
 		"   ACHTUNG!",
 		"	UNREGISTERED DATA TRANSFER!",
-		"   LEAKAGE DATA!"
+		"   LEAKAGE DATA!",
+		"	The Matrix has you..."
 	]
 	
 	var currentCode, fCursor = true, tCursor, fAnimationActive = false, sLastSimbol="";
@@ -196,7 +213,7 @@ window.onload = function(){
 	}
 	function scrollDown() {
 		//$('#console').animate({scrollTop: $('#console').height()*2}, 'fast')
-		$('#console').scrollTop($('#console')[0].scrollHeight);
+		$('#console').scrollTop($('#console')[0].scrollHeight * 1.2);
 	}
 	function printHackerText(){
 		var sText = hackerText[randd(0, hackerText.length-1)].replace(/<br>/ig, "\n");
@@ -232,18 +249,26 @@ window.onload = function(){
 		$(".console").eq(0).append(sSimbolLine);
 		return sSimbol;
 	}
+	
+	function printLine(){
+		if(nSimbol >= currentCode.length)
+			nSimbol = 0;
+		sLastSimbol = typeSymbol(currentCode, nSimbol++, true);	
+	}
+	
 	function showError() {
 		var sText = alarmText[randd(0, alarmText.length-1)];
 		fAnimationActive = true;
 		//var s = "START TO PRINT...";
 		var i=0, iMax = sText.length;
-		typeSymbol("\n", 0, true);	
+		typeSymbol("\n", 0);	
 		
 		var timer = setInterval(function(){
 			if(i<iMax) {
 				typeSymbol(sText, i, true);
 			} else{		
-				typeSymbol("\n", 0, true);			
+				typeSymbol("\n", 0);
+				typeSymbol("\n", 0);			
 				fCursor = true;
 				fAnimationActive = false;
 				clearInterval(timer);
@@ -260,7 +285,7 @@ window.onload = function(){
 		typeSymbol("\n", 0);
 		printHackerText();
 		typeSymbol("\n", 0);
-		var loader = animation[randd(0, animation.length-1)];
+		var loader = animation[randd(0, animation.length-1)]; //animation[animation.length-1];//animation[randd(0, animation.length-1)];
 		var bCurFrame = 0, nMaxFrame = loader.length-1;
 		var nCurConsolePos = $("#console span").length-1;
 		if(nCurConsolePos < 0)
@@ -279,6 +304,7 @@ window.onload = function(){
 							typeSymbol(sCurFrame, i, false);
 						}
 						bCurFrame++;
+						scrollDown();
 					}
 				} else {					
 					fCursor = true;
@@ -291,16 +317,26 @@ window.onload = function(){
 		);
 	}
 	function caret() {
+		/*/
+		if(fCursor) {
+			if(!($("#console #caret").length > 0)){
+				$("#console").append("<span id='caret' class='caret'></span>");
+			}
+		}
+		/**/
+		/**/
 		setInterval(function() {
-			if($("#console .caret").length > 0) {
-				$("#console .caret").remove();
-			} else {
-				if(fCursor) {
-					$("#console").append("<span class='caret'></span>");
+			if(fCursor) {
+				if($("#console #caret").length > 0) {
+					//$("#console #caret").remove();
+				} else {
+					$("#console").append("<span id='caret' class='caretHor'></span>");
 				}
+			} else {
+				$("#console #caret").remove();
 			}
 		}, 500);
-		
+		/**/
 	}
 	function prepareSrc(sSrc){
 		return sSrc.replace(/<br>/ig, "\n");
@@ -309,12 +345,7 @@ window.onload = function(){
 		currentCode = prepareSrc(code[randd(0, code.length-1)]);
 		createConsole();
 		caret();
-		sayHi();
-	}
-	function printLine(){
-		if(nSimbol >= currentCode.length)
-			nSimbol = 0;
-		sLastSimbol = typeSymbol(currentCode, nSimbol++, true);	
+		//sayHi();
 	}
 	init();
 	
@@ -339,13 +370,14 @@ window.onload = function(){
 				}
 				// show error
 				showError();
-			}else {		
+			} else {		
 				do { 
 					printLine();
 				} while (sLastSimbol == " ") 
 				
 				tCursor = setTimeout(function(){
 					fCursor = true;
+					//caret();
 				}, 500);
 			}
 				
