@@ -313,7 +313,7 @@ window.onload = function(){
 		
 		
 		if(sSimbol == '\n') {
-			sSimbolLine = "<span><br></span>";
+			sSimbolLine = "<span class='br'><br></span>";
 			//scrollDown();
 		} else if(sSimbol == ' ') {
 			sSimbolLine = "<span>&nbsp;</span>";
