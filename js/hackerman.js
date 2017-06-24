@@ -254,7 +254,7 @@ window.onload = function(){
 		"	The Matrix has you..."
 	]
 	
-	var currentCode, fCursor = true, tCursor, fAnimationActive = false, sLastSimbol="", oMatrix;
+	var currentCode, fCursor = true, tCursor, fAnimationActive = false, sLastSimbol="", oMatrix, fMatrix = false;
 	
 	function randd(min, max) {
 	  return Math.floor(arguments.length > 1 ? (max - min + 1) * Math.random() + min : (min + 1) * Math.random());
@@ -460,7 +460,14 @@ window.onload = function(){
 					printLine();
 				}
 				// show matrix
-				oMatrix.show();
+				if(fMatrix) {
+					fMatrix = false;
+					oMatrix.hide();
+					fCursor = true;
+				} else {
+					fMatrix = true;
+					oMatrix.show();
+				}
 			} else {		
 				do { 
 					printLine();
