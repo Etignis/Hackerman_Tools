@@ -152,6 +152,31 @@ window.onload = function(){
 			" <br>                   __<br>                  ( -><br>                  / )\\<br>                 <_/_/<br>      _____________| ",
 			" <br>                   _ <br>                  (v)<br>                 //-\\\\<br>                 (\\_/)<br>   _______________^ ^ ",
 			" <br>    [SUCCESS] .    _ <br>               '. (v)<br>                 //-\\\\<br>                 (\\_/)<br>   _______________^ ^<br><br> "
+		],
+		[
+			" <br>             <br>             <br>            <br>             <br>             <br>             <br>             <br>             <br>            <br>             ",
+			" <br>             <br>             <br>    ■        <br>             <br>             <br>             <br>             <br>             <br>            <br>             ",
+			" <br>             <br>             <br>    ■        <br>             <br>            ■<br>             <br>             <br>             <br>            <br>             ",
+			" <br>            ■<br>             <br>    ■        <br>             <br>            ■<br>             <br>             <br>             <br>   ■         <br>             ",
+			" <br>   ■        ■<br>             <br>    ■        <br>             <br>            ■<br>          ■  <br>             <br>             <br>   ■         <br>             ",
+			" <br>   ■        ■<br>   ■       ■ <br>    ■        <br>         ■   <br>            ■<br>          ■  <br>   ■         <br>             <br>   ■         <br>             ",
+			" <br>   ■        ■<br>   ■       ■■<br>    ■       ■<br>         ■  ■<br>            ■<br>   ■      ■  <br>   ■         <br>      ■      <br>   ■         <br>    ■        ",
+			" <br>   ■        ■<br>   ■■      ■■<br>    ■       ■<br>   ■     ■  ■<br>           ■■<br>   ■      ■ ■<br>   ■         <br>      ■      <br>   ■      ■  <br>    ■        ",
+			" <br>   ■■       ■<br>   ■■      ■■<br>    ■  ■    ■<br>   ■     ■  ■<br>   ■       ■■<br>   ■■     ■ ■<br>   ■        ■<br>   ■  ■      <br>   ■      ■ ■<br>    ■       ■",
+			" <br>   ■■  ■    ■<br>   ■■      ■■<br>    ■■ ■    ■<br>   ■     ■■ ■<br>   ■ ■     ■■<br>   ■■     ■ ■<br>   ■        ■<br>   ■■ ■      <br>   ■ ■    ■ ■<br>   ■■       ■",
+			" <br>   ■■  ■    ■<br>   ■■ ■    ■■<br>    ■■ ■   ■■<br>   ■     ■■ ■<br>   ■ ■     ■■<br>   ■■■    ■ ■<br>   ■        ■<br>   ■■ ■     ■<br>   ■■■    ■ ■<br>   ■■      ■■",
+			" <br>   ■■  ■■   ■<br>   ■■ ■    ■■<br>    ■■ ■ ■ ■■<br>   ■     ■■ ■<br>   ■ ■■    ■■<br>   ■■■   ■■ ■<br>   ■■       ■<br>   ■■ ■    ■■<br>   ■■■   ■■ ■<br>   ■■    ■ ■■",
+			" <br>   ■■  ■■   ■<br>   ■■ ■   ■■■<br>    ■■ ■ ■■■■<br>   ■     ■■■■<br>   ■ ■■ ■■ ■■<br>   ■■■   ■■ ■<br>   ■■     ■ ■<br>   ■■ ■ ■  ■■<br>   ■■■  ■■■ ■<br>   ■■■   ■ ■■",
+			" <br>   ■■■ ■■   ■<br>   ■■ ■   ■■■<br>    ■■ ■ ■■■■<br>   ■ ■   ■■■■<br>   ■ ■■ ■■ ■■<br>   ■■■  ■■■ ■<br>   ■■■    ■ ■<br>   ■■ ■ ■  ■■<br>   ■■■■ ■■■ ■<br>   ■■■   ■ ■■",
+			" <br>   ■■■ ■■■  ■<br>   ■■ ■   ■■■<br>    ■■■■ ■■■■<br>   ■ ■■  ■■■■<br>   ■ ■■ ■■ ■■<br>   ■■■  ■■■ ■<br>   ■■■    ■■■<br>   ■■ ■ ■  ■■<br>   ■■■■ ■■■ ■<br>   ■■■  ■■ ■■",
+			" <br>   ■■■ ■■■■ ■<br>   ■■ ■■  ■■■<br>    ■■■■ ■■■■<br>   ■ ■■■ ■■■■<br>   ■ ■■ ■■ ■■<br>   ■■■  ■■■ ■<br>   ■■■  ■ ■■■<br>   ■■ ■■■  ■■<br>   ■■■■ ■■■■■<br>   ■■■■ ■■ ■■",
+			" <br>   ■■■ ■■■■■■<br>   ■■ ■■ ■■■■<br>    ■■■■ ■■■■<br>   ■ ■■■ ■■■■<br>   ■ ■■■■■ ■■<br>   ■■■  ■■■ ■<br>   ■■■ ■■ ■■■<br>   ■■ ■■■■ ■■<br>   ■■■■ ■■■■■<br>   ■■■■ ■■ ■■",
+			" <br>   ■■■ ■■■■■■<br>   ■■ ■■ ■■■■<br>   ■■■■■ ■■■■<br>   ■■■■■ ■■■■<br>   ■ ■■■■■ ■■<br>   ■■■■ ■■■ ■<br>   ■■■ ■■■■■■<br>   ■■■■■■■ ■■<br>   ■■■■ ■■■■■<br>   ■■■■ ■■■■■",
+			" <br>   ■■■ ■■■■■■<br>   ■■■■■ ■■■■<br>   ■■■■■■■■■■<br>   ■■■■■ ■■■■<br>   ■ ■■■■■■■■<br>   ■■■■■■■■ ■<br>   ■■■ ■■■■■■<br>   ■■■■■■■ ■■<br>   ■■■■ ■■■■■<br>   ■■■■■■■■■■",
+			" <br>   ■■■■■■■■■■<br>   ■■■■■ ■■■■<br>   ■■■■■■■■■■<br>   ■■■■■■■■■■<br>   ■ ■■■■■■■■<br>   ■■■■■■■■ ■<br>   ■■■■■■■■■■<br>   ■■■■■■■ ■■<br>   ■■■■■■■■■■<br>   ■■■■■■■■■■",
+			" <br>   ■■■■■■■■■■<br>   ■■■■■■■■■■<br>   ■■■■■■■■■■<br>   ■■■■■■■■■■<br>   ■■■■■■■■■■<br>   ■■■■■■■■■■<br>   ■■■■■■■■■■<br>   ■■■■■■■■■■<br>   ■■■■■■■■■■<br>   ■■■■■■■■■■",
+			" <br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████ ",
+			" <br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>   ██████████<br>    SUCCESS<br><br> "
 		]
 	];
 	
@@ -239,7 +264,7 @@ window.onload = function(){
 		
 		if(sSimbol == '\n') {
 			sSimbolLine = "<span><br></span>";
-			scrollDown();
+			//scrollDown();
 		} else if(sSimbol == ' ') {
 			sSimbolLine = "<span>&nbsp;</span>";
 		} else {
@@ -247,6 +272,7 @@ window.onload = function(){
 		}
 		
 		$(".console").eq(0).append(sSimbolLine);
+		scrollDown();
 		return sSimbol;
 	}
 	
@@ -285,7 +311,7 @@ window.onload = function(){
 		typeSymbol("\n", 0);
 		printHackerText();
 		typeSymbol("\n", 0);
-		var loader = animation[randd(0, animation.length-1)]; //animation[animation.length-1];//animation[randd(0, animation.length-1)];
+		var loader = animation[randd(0, animation.length-1)];//animation[randd(0, animation.length-1)]; //animation[animation.length-1] //
 		var bCurFrame = 0, nMaxFrame = loader.length-1;
 		var nCurConsolePos = $("#console span").length-1;
 		if(nCurConsolePos < 0)
@@ -304,12 +330,12 @@ window.onload = function(){
 							typeSymbol(sCurFrame, i, false);
 						}
 						bCurFrame++;
-						scrollDown();
+						//scrollDown();
 					}
 				} else {					
 					fCursor = true;
 					fAnimationActive = false;
-					scrollDown();
+					//scrollDown();
 					clearInterval(timer);
 				}
 			},
@@ -345,7 +371,7 @@ window.onload = function(){
 		currentCode = prepareSrc(code[randd(0, code.length-1)]);
 		createConsole();
 		caret();
-		//sayHi();
+		sayHi();
 	}
 	init();
 	
