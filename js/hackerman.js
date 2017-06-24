@@ -454,7 +454,7 @@ window.onload = function(){
 				}
 				// show error
 				showError();
-			} else if (code == 8){
+			} else if (code == 17){ // ctrl
 				// end line
 				while (sLastSimbol != "\n") {
 					printLine();

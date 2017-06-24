@@ -21,8 +21,7 @@ class matrixRain {
 		this.ctx.fillStyle = "#0F0"; //green text
 		this.ctx.font = this.font_size + "px arial";
 		//looping over drops
-		for(var i = 0; i < this.drops.length; i++)
-		{
+		for(var i = 0; i < this.drops.length; i++) {
 			//a random chinese character to print
 			var rand = this._randd(0, this.simbols.length-1);
 			var text = this.simbols[rand];
