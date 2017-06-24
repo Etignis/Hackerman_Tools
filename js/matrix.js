@@ -26,12 +26,14 @@ class matrixRain {
 			var rand = this._randd(0, this.simbols.length-1);
 			var text = this.simbols[rand];
 			//x = i*font_size, y = value of drops[i]*font_size
-			if(this.fShow)
-				this.ctx.fillText(text, i*this.font_size, this.drops[i]*this.font_size);
+			var x = i*this.font_size,
+				y = this.drops[i]*this.font_size;
+			if(this.fShow || 1)
+				this.ctx.fillText(text, x, y);
 			
 			//sending the drop back to the top randomly after it has crossed the screen
 			//adding a randomness to the reset to make the drops scattered on the Y axis
-			if(this.drops[i]*this.font_size > this.c.height && Math.random() > 0.975)
+			if(this.fShow && (this.drops[i]*this.font_size > this.c.height && Math.random() > 0.975))
 				this.drops[i] = 0;
 			
 			//incrementing Y coordinate

@@ -193,19 +193,20 @@ window.onload = function(){
 			" <br>   ✚",
 			" <br>   ✙✚",
 			" <br>   ✛✙✚",
-			" <br>    ✛✙✚",
-			" <br>     ✛✙✚",
-			" <br>      ✛✙✚",
-			" <br>       ✛✙✚",
-			" <br>        ✛✙✚",
-			" <br>         ✛✙✚",
-			" <br>          ✛✙✚",
-			" <br>           ✛✙✚",
-			" <br>            ✛✙✚",
-			" <br>             ✛✙✚",
-			" <br>              ✛✙",
-			" <br>               ✛",
-			" <br>      DONE<br><br> "
+			" <br>   -✛✙✚",
+			" <br>   --✛✙✚",
+			" <br>   ---✛✙✚",
+			" <br>   ----✛✙✚",
+			" <br>   -----✛✙✚",
+			" <br>   ------✛✙✚",
+			" <br>   -------✛✙✚",
+			" <br>   --------✛✙✚",
+			" <br>   ---------✛✙✚",
+			" <br>   ----------✛✙✚",
+			" <br>   -----------✛✙",
+			" <br>   ------------✛",
+			" <br>   -------------",
+			" <br>   DONE<br><br> "
 		],
 		[
 			" <br>    (o_O)",
@@ -454,7 +455,7 @@ window.onload = function(){
 				}
 				// show error
 				showError();
-			} else if (code == 17){ // ctrl
+			} else if (code == 20){ // caps 
 				// end line
 				while (sLastSimbol != "\n") {
 					printLine();
