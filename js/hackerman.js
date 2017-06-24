@@ -254,7 +254,7 @@ window.onload = function(){
 		"	The Matrix has you..."
 	]
 	
-	var currentCode, fCursor = true, tCursor, fAnimationActive = false, sLastSimbol="";
+	var currentCode, fCursor = true, tCursor, fAnimationActive = false, sLastSimbol="", oMatrix;
 	
 	function randd(min, max) {
 	  return Math.floor(arguments.length > 1 ? (max - min + 1) * Math.random() + min : (min + 1) * Math.random());
@@ -391,6 +391,14 @@ window.onload = function(){
 			50
 		);
 	}
+	
+	function showMatrix() {
+	//	oMatrix.show();
+	}
+	function hideMatrix() {
+	//	oMatrix.hide();
+	}
+	
 	function caret() {
 		/*/
 		if(fCursor) {
@@ -421,6 +429,7 @@ window.onload = function(){
 		createConsole();
 		caret();
 		sayHi();
+		oMatrix = new matrixRain(1);
 	}
 	init();
 	
@@ -445,6 +454,13 @@ window.onload = function(){
 				}
 				// show error
 				showError();
+			} else if (code == 8){
+				// end line
+				while (sLastSimbol != "\n") {
+					printLine();
+				}
+				// show matrix
+				oMatrix.show();
 			} else {		
 				do { 
 					printLine();
