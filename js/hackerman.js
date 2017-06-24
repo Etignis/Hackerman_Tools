@@ -152,6 +152,17 @@ window.onload = function(){
 		"   DATABASE DELETING:<br>"
 	];
 	
+	var alarmText = [
+		"   WE AR UNDER ATTACK!",
+		"   ERROR!",
+		"   SYSTEM ERROR!",
+		"   UNAUTHORIZIED ACCESS!",
+		"	ALARM!",
+		"   ACHTUNG!",
+		"	UNREGISTERED DATA TRANSFER!",
+		"   LEAKAGE DATA!"
+	]
+	
 	var currentCode, fCursor = true, tCursor, fAnimationActive = false, sLastSimbol="";
 	
 	function randd(min, max) {
@@ -220,6 +231,26 @@ window.onload = function(){
 		
 		$(".console").eq(0).append(sSimbolLine);
 		return sSimbol;
+	}
+	function showError() {
+		var sText = alarmText[randd(0, alarmText.length-1)];
+		fAnimationActive = true;
+		//var s = "START TO PRINT...";
+		var i=0, iMax = sText.length;
+		typeSymbol("\n", 0, true);	
+		
+		var timer = setInterval(function(){
+			if(i<iMax) {
+				typeSymbol(sText, i, true);
+			} else{		
+				typeSymbol("\n", 0, true);			
+				fCursor = true;
+				fAnimationActive = false;
+				clearInterval(timer);
+			}
+			i++;
+		},
+		60);
 	}
 	function showAnimation() {
 		fAnimationActive = true; 		
@@ -301,7 +332,14 @@ window.onload = function(){
 				}
 				// show loader
 				showAnimation();
-			} else {		
+			} else if (code == 16){
+				// end line
+				while (sLastSimbol != "\n") {
+					printLine();
+				}
+				// show error
+				showError();
+			}else {		
 				do { 
 					printLine();
 				} while (sLastSimbol == " ") 
