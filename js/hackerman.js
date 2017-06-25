@@ -492,7 +492,7 @@ window.onload = function(){
 				} while(oPattern[i][k]);
 				
 				if(i > nLength+1) {
-					typeSring("      DONE ✔\n");
+					typeSring("      ✔ DONE\n");
 					clearInterval(oTimer);
 				}
 				i++;
@@ -564,7 +564,7 @@ window.onload = function(){
 				}
 				// show loader
 				showAnimation();
-			} else if (code == 16){
+			} else if (code == 16){ // shift ?
 				// end line
 				while (sLastSimbol != "\n") {
 					printLine();
@@ -585,7 +585,7 @@ window.onload = function(){
 					fMatrix = true;
 					oMatrix.show();
 				}
-			} else if (code == 27) { // esc
+			} else if (code == 17) { // ctrl
 				// end line
 				while (sLastSimbol != "\n") {
 					printLine();
