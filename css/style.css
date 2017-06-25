@@ -214,13 +214,13 @@ p {
   height: 4px;
 }
 .console::-webkit-scrollbar-thumb {
-  background: #141814;
+  background: #161a16;
 }
 .console::-webkit-scrollbar-track {
   background: #0b0f0b;
 }
 .console body {
-  scrollbar-face-color: #141814;
+  scrollbar-face-color: #161a16;
   scrollbar-track-color: #0b0f0b;
 }
 .consoleBorder {

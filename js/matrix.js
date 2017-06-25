@@ -62,11 +62,11 @@ class matrixRain {
 			"ऄअआइईउऊऋऌऍऎऑकखगघङचछजझटडदपफबलळऴश",
 			"ԱԲԳԴԵԶԷԸԹԺԻԽԾԿՀՁՂՃՅՇՋՖ₪թ",
 			"ᇅᇃᇉᇊᇋᇌᇍᇎᇏᇐᇕᇘᇤ",
-			"กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดปฟร",
-			"▖▗▘▙▚▛▜▝▞▟■"
+			"▖▗▘▙▚▛▜▝▞▟■",
+			"กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดปฟร"
 		];
 		//converting the string into an array of single characters
-		this.simbols =  sChars[this._randd(0, sChars.length-1)].split("");
+		this.simbols = sChars[this._randd(0, sChars.length-1)].split(""); //sChars[sChars.length-1].split(""); //sChars[this._randd(0, sChars.length-1)].split("");
 
 		this.font_size = this._randd(10, 16);//10;
 		var columns = this.c.width/this.font_size; //number of columns for the rain
