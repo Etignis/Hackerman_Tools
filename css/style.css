@@ -139,7 +139,7 @@ body {
   min-height: 100%;
   height: auto;
   font-size: 12px;
-  background-color: #0b0b0b;
+  background-color: #0b0f0b;
   background-attachment: fixed;
   background-size: cover;
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -173,7 +173,7 @@ p {
   clear: both;
 }
 #wrapper {
-  background: #0b0b0b;
+  background: #0b0f0b;
 }
 .p_cont {
   width: 100%;
@@ -192,7 +192,7 @@ p {
   color: #fff;
 }
 .console {
-  background-color: #0b0b0b;
+  background-color: #0b0f0b;
   font-family: monospace;
   padding: 1em 1em 3em;
   line-height: 1.2;
@@ -208,14 +208,14 @@ p {
   height: 4px;
 }
 .console::-webkit-scrollbar-thumb {
-  background: #141414;
+  background: #141814;
 }
 .console::-webkit-scrollbar-track {
-  background: #0b0b0b;
+  background: #0b0f0b;
 }
 .console body {
-  scrollbar-face-color: #141414;
-  scrollbar-track-color: #0b0b0b;
+  scrollbar-face-color: #141814;
+  scrollbar-track-color: #0b0f0b;
 }
 .consoleBorder {
   border: 2px solid #555;
@@ -223,7 +223,7 @@ p {
   cursor: none;
 }
 .consoleBorder:before {
-  content: "HACKER TOOL v0.2";
+  content: "# HACKER TOOL v0.2";
   padding: .1em;
   position: fixed;
   display: block;
