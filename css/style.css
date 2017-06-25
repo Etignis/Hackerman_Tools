@@ -173,7 +173,11 @@ p {
   clear: both;
 }
 #wrapper {
-  background: #0b0f0b;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 .p_cont {
   width: 100%;
@@ -192,7 +196,6 @@ p {
   color: #fff;
 }
 .console {
-  background-color: #0b0f0b;
   font-family: monospace;
   padding: 1em 1em 3em;
   line-height: 1.2;
