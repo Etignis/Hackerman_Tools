@@ -63,6 +63,8 @@ class matrixRain {
 			"ԱԲԳԴԵԶԷԸԹԺԻԽԾԿՀՁՂՃՅՇՋՖ₪թ",
 			"ᇅᇃᇉᇊᇋᇌᇍᇎᇏᇐᇕᇘᇤ",
 			"▖▗▘▙▚▛▜▝▞▟■",
+			"▖▗▘▙▚▛▜▝▞▟■",
+			"▖▗▘▙▚▛▜▝▞▟■",
 			"กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดปฟร"
 		];
 		//converting the string into an array of single characters
