@@ -226,7 +226,7 @@ p {
 .consoleBorder {
   border: 2px solid #777;
   padding-top: 1.5em;
-  cursor: none;
+  cursor: crosshair;
 }
 .consoleBorder:before {
   content: "# HACKER TOOL v0.2";
