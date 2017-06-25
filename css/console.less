@@ -1,10 +1,10 @@
 .console{
-	background-color: @d-gray - #111;
+	background-color: @consoleBG;
 	font-family: monospace;
 	padding: 1em 1em 3em;
 	line-height: 1.2;
 	
-	.scrollbars(5px, @d-gray + #111, @d-gray);
+	.scrollbars(4px, @consoleBG + #090909, @consoleBG);
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -12,6 +12,37 @@
 	right: 0;
 	
 	overflow-y: scroll;
+}
+.consoleBorder{
+	@color: #555;
+	border: 2px solid @color;
+	padding-top: 1.5em;
+	cursor: none;
+	
+	&:before{
+		content: "HACKER TOOL v0.2";
+		padding: .1em;
+		position: fixed;
+		display: block;
+	    top: 0;
+		left: 0;
+		right: 0;
+	    color: #000;
+	    background: @color;
+	    font-weight: bold;
+	    
+	}
+}
+
+.consoleInput{
+	position: absolute;
+	bottom: 0;
+	width: 0;
+	height: 0;
+	opacity: 0;
+	&:focus{
+		outlone: none;
+	}
 }
 .stray{
 	background: linear-gradient(

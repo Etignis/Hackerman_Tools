@@ -8,7 +8,8 @@ window.onload = function(){
 	'@Echo off<br>:: Check WMIC is available<br>WMIC.EXE Alias /? >NUL 2>&1 || GOTO s_error<br> <br>:: Use WMIC to retrieve date and time for Windows XP Professional or Vista/Windows 7<br>FOR /F "skip=1 tokens=1-6" %%G IN (\'WMIC Path Win32_LocalTime Get Day^,Hour^,Minute^,Month^,Second^,Year /Format:table\') DO (<br>   IF "%%~L"=="" goto s_done<br>      Set _yyyy=%%L<br>      Set _mm=00%%J<br>      Set _dd=00%%G<br>      Set _hour=00%%H<br>      SET _minute=00%%I<br>)<br>:s_done<br> <br>:: Pad digits with leading zeros<br>      Set _mm=%_mm:~-2%<br>      Set _dd=%_dd:~-2%<br>      Set _hour=%_hour:~-2%<br>      Set _minute=%_minute:~-2%<br> <br>::Store current date in a variable called _curdate:<br>Set _curdate=%_dd%/%_mm%/%_yyyy%<br>::Change date:<br>DATE 19/04/2015<br>::Start Launcher:<br>CD /d "%~dp0"<br>start /wait Launcher.exe<br>pause<br>::Change date to current date again:<br>DATE %_curdate%<br>EXIT',
 	'<br>@echo off<br>goto menu<br>:menu<br>echo.<br>echo What would you like to do?<br>echo.<br>echo Choice<br>echo.<br>echo 1 Power Off<br>echo 2 Restart<br>echo 3 Log Off<br>echo 4 Switch User<br>echo 5 Hibernate<br>echo 6 Quit<br>echo.<br>:choice<br>set /P C=[1,2,3,4,5,6]?<br>if "%C%"=="6" goto quit<br>if "%C%"=="5" goto hibernate<br>if "%C%"=="4" goto switch<br>if "%C%"=="3" goto logoff<br>if "%C%"=="2" goto restart<br>if "%C%"=="1" goto power<br>goto choice<br>:power<br>shutdown -s<br>goto quit<br>:restart<br>shutdown -r<br>goto quit<br>:logoff<br>shutdown -l<br>goto quit<br>:switch<br>tsdiscon<br>goto quit<br>:hibernate<br>%windir%\system32\rundll32.exe powrprof.dll,SetSuspendState Hibernate<br>goto quit<br>:quit<br>exit<br>:end',
 	'define(\'SF_ROOT_DIR\',    realpath(dirname(__FILE__).\'/..\'));<br>define(\'SF_APP\',         \'frontend\');<br>define(\'SF_ENVIRONMENT\', \'dev\');<br>define(\'SF_DEBUG\',       true);<br> <br>require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.\'apps\'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.\'config\'.DIRECTORY_SEPARATOR.\'config.php\');<br> <br>sfContext::getInstance();<br> <br>// initialize database manager<br>$databaseManager = new sfDatabaseManager();<br>$databaseManager->initialize();<br> <br>echo \'Loading States - \';<br> <br>$page = file_get_contents(\'http://www.citytowninfo.com/places\');<br> <br>preg_match_all(\'@<tr><td><a href="http://www.citytowninfo.com/places/[^"]*"><strong>([a-z-A-Z ]*)</strong></a></td><td>[^<]*</td><td><a href="http://www.citytowninfo.com/places/[^/]*/[^"]*">[^<]*</a></td></tr>@i\', $page, $states, PREG_SET_ORDER);<br> <br>echo count($states). "\n";<br> <br>for ($i = 0; $i < count($states); $i++)<br>{<br>    $state = new State();<br>    $state->setName($states[$i][1]);<br>    $state->save();<br> <br>    $page  = file_get_contents(\'http://www.citytowninfo.com/places/\' . str_replace(\' \', \'-\', strtolower($state->getName())) . \'/alphabetically/a-d\');<br>    $page .= file_get_contents(\'http://www.citytowninfo.com/places/\' . str_replace(\' \', \'-\', strtolower($state->getName())) . \'/alphabetically/e-h\');<br>    $page .= file_get_contents(\'http://www.citytowninfo.com/places/\' . str_replace(\' \', \'-\', strtolower($state->getName())) . \'/alphabetically/i-l\');<br>    $page .= file_get_contents(\'http://www.citytowninfo.com/places/\' . str_replace(\' \', \'-\', strtolower($state->getName())) . \'/alphabetically/m-p\');<br>    $page .= file_get_contents(\'http://www.citytowninfo.com/places/\' . str_replace(\' \', \'-\', strtolower($state->getName())) . \'/alphabetically/q-u\');<br>    $page .= file_get_contents(\'http://www.citytowninfo.com/places/\' . str_replace(\' \', \'-\', strtolower($state->getName())) . \'/alphabetically/v-z\');<br> <br>    preg_match_all(\'@<tr><td><a href="/places/[^/]*/[^/]*"><strong>([a-z-A-Z ]*)</strong></a></td><td>[^<]*</td><td>[^<]*</td></tr>@i\', $page, $cities, PREG_SET_ORDER);<br>?><br>Getting cities for <?php echo $state->getName(); ?> - <?php echo count($cities); ?><br> <br><?php<br>    for ($j = 0; $j < count($cities); $j++)<br>    {<br>        $city = new City();<br>        $city->setName($cities[$j][1]);<br>        $city->setStateId($state->getId());<br>        $city->save();<br>    }<br>}<br> ',
-	'<?php<br>define(\'SF_ROOT_DIR\',    realpath(dirname(__file__).\'/..\'));<br> <br>$argv = array();<br>for ($i = 1; $i < $_SERVER["argc"]; $i++) {<br>    if ($_SERVER["argv"][$i]{0} === \'-\') {<br>        // argument<br>        $value =  (<br>            isset($_SERVER["argv"][$i+1]) <br>            && <br>            $_SERVER["argv"][$i+1]{0} !== \'-\'<br>            ?<br>            $_SERVER["argv"][$i+1]<br>            :<br>            true<br>        );<br> <br>        if ($_SERVER["argv"][$i]{1} === \'-\') {<br>            // long argument<br>            $argv[substr($_SERVER["argv"][$i], 2)] = $value;<br>        }<br>        else {<br>            foreach (str_split($_SERVER["argv"][$i]) as $arg) {<br>                if (ereg(\'[a-zA-Z0-9]\', $arg)) {<br>                    $last_arg   = $arg;<br>                    $argv[$arg] = true;<br>                }<br>            }<br>            $argv[$last_arg] = $value;<br>        }<br>    }<br>}<br> <br>define(\'SF_APP\',         (isset($argv[\'app\'])?$argv[\'app\']:\'www\'));<br>define(\'SF_ENVIRONMENT\', (isset($argv[\'env\'])?$argv[\'env\']:\'prod\'));<br>define(\'SF_DEBUG\',       (isset($argv[\'debug\'])?1:0));<br> <br>require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.\'apps\'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.\'config\'.DIRECTORY_SEPARATOR.\'config.php\');<br> '
+	'<?php<br>define(\'SF_ROOT_DIR\',    realpath(dirname(__file__).\'/..\'));<br> <br>$argv = array();<br>for ($i = 1; $i < $_SERVER["argc"]; $i++) {<br>    if ($_SERVER["argv"][$i]{0} === \'-\') {<br>        // argument<br>        $value =  (<br>            isset($_SERVER["argv"][$i+1]) <br>            && <br>            $_SERVER["argv"][$i+1]{0} !== \'-\'<br>            ?<br>            $_SERVER["argv"][$i+1]<br>            :<br>            true<br>        );<br> <br>        if ($_SERVER["argv"][$i]{1} === \'-\') {<br>            // long argument<br>            $argv[substr($_SERVER["argv"][$i], 2)] = $value;<br>        }<br>        else {<br>            foreach (str_split($_SERVER["argv"][$i]) as $arg) {<br>                if (ereg(\'[a-zA-Z0-9]\', $arg)) {<br>                    $last_arg   = $arg;<br>                    $argv[$arg] = true;<br>                }<br>            }<br>            $argv[$last_arg] = $value;<br>        }<br>    }<br>}<br> <br>define(\'SF_APP\',         (isset($argv[\'app\'])?$argv[\'app\']:\'www\'));<br>define(\'SF_ENVIRONMENT\', (isset($argv[\'env\'])?$argv[\'env\']:\'prod\'));<br>define(\'SF_DEBUG\',       (isset($argv[\'debug\'])?1:0));<br> <br>require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.\'apps\'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.\'config\'.DIRECTORY_SEPARATOR.\'config.php\');<br> ',
+	'twostep_authcommand.bui<br><br>Username: ag54348<br>Password: ********************<br><br><br>ACCESS TO SYSTEM<br><br>Version 3.2.6<br>Initializing...<br><br>struedit.bui -r -s -unauth<br>syslog = false;<br><br>struct group_info init_groups =  .usage = ATOMIC_INIT(2) ;<br><br>@echo off<br>   title SecurityGuard v1.03<br>   color C<br>   SecurityGuard v1.03 enabled!<br>   This program has been...<br>   ping -n 2 127.0.0.1>nul<br><br>ping -n 2 127.0.0.1>nul<br>   echo Enter password to activate the program...<br>   set/p "pass=>"<br>   if NOT %pass%== fakehack goto :incorrect_pass<br>   if %pass%== fakehack goto :correct_pass</p><p>:correct_pass</p><p>cls<br>   echo Password hidden...<br>   ping -n 2 127.0.0.1>nul<br>   ping -n 2 127.0.0.1>nul<br>   echo PASSWORD CORRECT<br>   ping -n 2 127.0.0.1>nul<br>   ping -n 2 127.0.0.1>nul<br>   color 97<br>   cls<br>   title svr_hack_var_aggressive.exe<br>   echo Initializing svr_hack_var_aggressive.exe<br><br>:choice<br>   set /P c=Are you sure you want to continue[Y/N]?<br>   if /I "%c%" EQU "Y" goto :somewhere<br>   if /I "%c%" EQU "N" goto :somewhere_else<br>   goto :choice</p><p>:somewhere</p><p>cls<br>   echo Proxy Servers enabling...<br>   set /P c=Are you sure you want to root all of the selected files?[Y/N]?<br>   if /I "%c%" EQU "Y" goto :somewhere3<br>   if /I "%c%" EQU "N" goto :somewhere_else3<br>   goto :choice</p><p>:somewhere_else2</p><p>echo svr_hack_var_aggressive.exe had been closed, exiting out of cmd...<br>   ping -n 2 127.0.0.1>nul<br>   ping -n 2 127.0.0.1>nul'
 	];
 	
 	var animation = [
@@ -138,20 +139,20 @@ window.onload = function(){
 			"<br>  	(￣ω￣) <br><br> "
 		],
 		[
-			" <br>        __<br>       ( -><br>       /  )<br>      <__//<br>      _/ \\",
-			" <br>         __<br>        ( -><br>        / )\\<br>       <_/_/<br>      ___| ",
-			" <br>          __<br>         ( -><br>         /) \\<br>        </__/<br>      ___/ \\",
-			" <br>           __<br>          ( -><br>          / )\\<br>         <_/_/<br>      _____| ",
-			" <br>            __<br>           ( -><br>           /  )<br>          <__//<br>      _____/ \\",
-			" <br>             __<br>            ( -><br>            / )\\<br>           <_/_/<br>      _______| ",
-			" <br>              __<br>             ( -><br>             /) \\<br>            </__/<br>      _______/ \\",
-			" <br>               __<br>              ( -><br>              / )\\<br>             <_/_/<br>      _________| ",
-			" <br>                __<br>               ( -><br>               /  )<br>              <__//<br>      _________/ \\",
-			" <br>                 __<br>                ( -><br>                / )\\<br>               <_/_/<br>      ___________| ",
-			" <br>                  __<br>                 ( -><br>                 /) \\<br>                </__/<br>      ___________/ \\",
-			" <br>                   __<br>                  ( -><br>                  / )\\<br>                 <_/_/<br>      _____________| ",
-			" <br>                   _ <br>                  (v)<br>                 //-\\\\<br>                 (\\_/)<br>   _______________^ ^ ",
-			" <br>    [SUCCESS] .    _ <br>               '. (v)<br>                 //-\\\\<br>                 (\\_/)<br>   _______________^ ^<br><br> "
+			" <br>        __<br>       ( -><br>       /  )<br>      <__//<br>    ___/ \\",
+			" <br>         __<br>        ( -><br>        / )\\<br>       <_/_/<br>    _____| ",
+			" <br>          __<br>         ( -><br>         /) \\<br>        </__/<br>    _____/ \\",
+			" <br>           __<br>          ( -><br>          / )\\<br>         <_/_/<br>    _______| ",
+			" <br>            __<br>           ( -><br>           /  )<br>          <__//<br>    _______/ \\",
+			" <br>             __<br>            ( -><br>            / )\\<br>           <_/_/<br>    _________| ",
+			" <br>              __<br>             ( -><br>             /) \\<br>            </__/<br>    _________/ \\",
+			" <br>               __<br>              ( -><br>              / )\\<br>             <_/_/<br>    ___________| ",
+			" <br>                __<br>               ( -><br>               /  )<br>              <__//<br>    ___________/ \\",
+			" <br>                 __<br>                ( -><br>                / )\\<br>               <_/_/<br>    _____________| ",
+			" <br>                  __<br>                 ( -><br>                 /) \\<br>                </__/<br>    _____________/ \\",
+			" <br>                   __<br>                  ( -><br>                  / )\\<br>                 <_/_/<br>    _______________| ",
+			" <br>                   _ <br>                  (v)<br>                 //-\\\\<br>                 (\\_/)<br>    ______________^ ^ ",
+			" <br>    [SUCCESS] .    _ <br>               '. (v)<br>                 //-\\\\<br>                 (\\_/)<br>    ______________^ ^<br><br> "
 		],
 		[
 			" <br>             <br>             <br>            <br>             <br>             <br>             <br>             <br>             <br>            <br>             ",
@@ -272,7 +273,7 @@ window.onload = function(){
 	};
 	
 	function createConsole(oParams) {
-		var oConsole = "<div id='console' class='console noselect stray'></div>";
+		var oConsole = "<div id='console' class='console noselect stray consoleBorder'></div><input type='text' class='consoleInput'>";
 		$("#wrapper").html(oConsole);
 	}
 	function sayHi() {
@@ -429,7 +430,7 @@ window.onload = function(){
 			} else {
 				$("#console #caret").remove();
 			}
-		}, 500);
+		}, 100);
 		/**/
 	}
 	function prepareSrc(sSrc){
@@ -491,7 +492,16 @@ window.onload = function(){
 			}
 				
 		}			
-		return false;
+		//return false;
+	});
+	
+	$("body").on('click', function(e){
+		$(".consoleInput").focus();
+	});
+	
+	$(".consoleInput").on('keydown', function(e){
+		$(".consoleInput").val("");
+		//return false;
 	});
 	
 }; 
