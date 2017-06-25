@@ -13,6 +13,18 @@
 	
 	overflow-y: scroll;
 }
+.stray{
+	background: linear-gradient(
+		to bottom, rgba(0, 238, 0, 0) 47%, 
+		rgba(0, 100, 0, .06) 49%, 
+		rgba(0, 200, 0, .11) 52%, 
+		rgba(0, 238, 0, 0) 53%);
+    background-position-y: 10%;
+    background-repeat-y: no-repeat;
+    background-size: 20%;
+	animation: flowDown 5s infinite;	
+	animation-timing-function: ease-in-out;
+}
 #caret{
 	color:  @consoleColor;
 	animation: blink 1.1s infinite;
@@ -77,4 +89,9 @@
     70% {color: rgba(0,255,0,0)} 
     80% {color: @consoleColor}    
     100% {color: @consoleColor}
+}
+@keyframes flowDown {
+	0%{background-position:50% -60%; background-size: 20%}
+	45%{background-size: 40%}
+    100%{background-position:50% 160%; background-size: 20%}
 }
