@@ -3,7 +3,7 @@
 	font-family: monospace;
 	padding: 1em 1em 3em;
 	line-height: 1.2;
-	
+	//white-space: pre;
 	.scrollbars(4px, @consoleBG + #0b0b0b, @consoleBG);
 	position: absolute;
 	top: 0;
@@ -39,6 +39,9 @@
 	width: 0;
 	height: 0;
 	opacity: 0;
+	background: @consoleBG;
+	color: @consoleBG;
+	border: 0px solid @consoleBG;
 	&:focus{
 		outlone: none;
 	}
@@ -76,7 +79,8 @@
 	}
 }
 .simbol{
-	color: @consoleColor;		
+	color: @consoleColor;	
+	display: inline-block;
     //border: 1px solid rgba(0,0,0,0);
 }
 .glowOut{

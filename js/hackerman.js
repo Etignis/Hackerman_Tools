@@ -541,17 +541,8 @@ window.onload = function(){
 	function prepareSrc(sSrc){
 		return sSrc.replace(/<br>/ig, "\n");
 	}
-	function init() {
-		currentCode = prepareSrc(code[randd(0, code.length-1)]);
-		createConsole();
-		caret();
-		sayHi();
-		oMatrix = new matrixRain(1);
-	}
-	init();
 	
-	// type
-	$("body").on('keyup', function(e){
+	function type(e){
 		clearTimeout(tCursor);
 		fCursor = false;
 				
@@ -604,6 +595,20 @@ window.onload = function(){
 				
 		}			
 		//return false;
+	}
+	function init() {
+		currentCode = prepareSrc(code[randd(0, code.length-1)]);
+		createConsole();
+		caret();
+		sayHi();
+		oMatrix = new matrixRain(1);
+		$(".consoleInput").focus();
+	}
+	init();
+	
+	// type
+	$("body").on('keyup', function(e){
+		//type(e);
 	});
 	
 	$("body").on('click', function(e){
@@ -612,6 +617,7 @@ window.onload = function(){
 	
 	$(".consoleInput").on('keydown', function(e){
 		$(".consoleInput").val("");
+		type(e);
 		//return false;
 	});
 	

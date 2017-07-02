@@ -246,6 +246,9 @@ p {
   width: 0;
   height: 0;
   opacity: 0;
+  background: #0b0f0b;
+  color: #0b0f0b;
+  border: 0px solid #0b0f0b;
 }
 .consoleInput:focus {
   outlone: none;
@@ -275,6 +278,7 @@ p {
 }
 .simbol {
   color: #00ee00;
+  display: inline-block;
 }
 .glowOut {
   animation-name: simbolGlowOut;
