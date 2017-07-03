@@ -1,9 +1,12 @@
 class matrixRain {
-	constructor(n){
+	constructor(parentEl){
+		if(parentEl == undefined) {
+			parentEl = "body";
+		}
 		var oMatrix = "<canvas id='cMatrix'></canvas>"
-		if(!($("body #cMatrix").length >0)) {
-			$("body").append(oMatrix);
-			$("body #cMatrix").hide();
+		if(!($(parentEl + " #cMatrix").length >0)) {
+			$(parentEl).append(oMatrix);
+			$(parentEl + " #cMatrix").hide();
 		}
 		this.oTimer;
 		this.ctx = null;
@@ -63,8 +66,6 @@ class matrixRain {
 			"ԱԲԳԴԵԶԷԸԹԺԻԽԾԿՀՁՂՃՅՇՋՖ₪թ",
 			"ᇅᇃᇉᇊᇋᇌᇍᇎᇏᇐᇕᇘᇤ",
 			"▖▗▘▙▚▛▜▝▞▟■",
-			"▖▗▘▙▚▛▜▝▞▟■",
-			"▖▗▘▙▚▛▜▝▞▟■",
 			"กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดปฟร"
 		];
 		//converting the string into an array of single characters
@@ -80,7 +81,7 @@ class matrixRain {
 			this.drops[x] = 1; 	
 		
 		$("body #cMatrix").show();
-		this.oTimer = setInterval(that.draw.bind(that), this._randd(33, 66));
+		this.oTimer = setInterval(that.draw.bind(that), this._randd(35, 55));
 	}
 	hide() {
 		var that = this;

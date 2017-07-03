@@ -614,12 +614,11 @@ window.onload = function(){
 					printLine();
 				}
 				showLoader();
-			} else if (code == 38 || code == 122) { // up
+			} else if (code == 38 || code == 122) { // up f11
 				e.preventDefault();
 				if(isFullscreen()){
 					exitFullScreen();
 				} else {
-					//$("#console").addClass("consoleBorder");
 					var o = document.getElementById('wrapper');
 					try{ 
 						fullScreen(o);
@@ -647,7 +646,7 @@ window.onload = function(){
 		createConsole();
 		caret();
 		sayHi();
-		oMatrix = new matrixRain(1);
+		oMatrix = new matrixRain("#wrapper");
 		$(".consoleInput").focus();
 	}
 	init();
