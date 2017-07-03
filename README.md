@@ -3,7 +3,7 @@ Feel like the real Hacker
 
 Live version: https://tentaculus.ru/havkerman
 
-Just type anithing and you hack Pentagon!
+Just type anithing and you hack the Pentagon!
 
 ## Keys:
 
@@ -13,4 +13,4 @@ Just type anithing and you hack Pentagon!
 
 [CTRL]: some loading
 
-[Caps]: Matrix...
+[CAPS]: Matrix...
