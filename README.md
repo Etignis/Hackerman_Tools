@@ -5,9 +5,12 @@ Live version: https://tentaculus.ru/havkerman
 
 Just type anithing and you hack Pentagon!
 
-Keys:
+## Keys:
 
 [ENTER]: some processing with SUCCESS result
+
 [SHIFT]: some warning message
-[CTRL]: sole loading
+
+[CTRL]: some loading
+
 [Caps]: Matrix...
