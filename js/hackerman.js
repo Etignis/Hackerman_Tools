@@ -210,24 +210,24 @@ window.onload = function(){
 			" <br>   DONE<br><br> "
 		],
 		[
-			" <br>    (o_O)",
-			" <br>    (O_o)",
-			" <br>    (O_o)",
-			" <br>    (o_O)",
-			" <br>    (o_O)",
-			" <br>    (O_o)",
-			" <br>    (O_o)",
-			" <br>    (o_O)",
-			" <br>    (o_O)",
-			" <br>    (O_o)",
-			" <br>    (O_o)",
-			" <br>    (O_o)",
-			" <br>    (O_o)",
-			" <br>    (o_O)",
-			" <br>    (o_O)",
-			" <br>    (⊙_⊙)",
-			" <br>    (⊙_⊙)",
-			" <br>   ╰(◕‿◕)╯<br><br> "
+			"<br>     (o_O)",
+			"<br>     (O_o)",
+			"<br>     (O_o)",
+			"<br>     (o_O)",
+			"<br>     (o_O)",
+			"<br>     (O_o)",
+			"<br>     (O_o)",
+			"<br>     (o_O)",
+			"<br>     (o_O)",
+			"<br>     (O_o)",
+			"<br>     (O_o)",
+			"<br>     (O_o)",
+			"<br>     (O_o)",
+			"<br>     (o_O)",
+			"<br>     (o_O)",
+			"<br>    (⊙_⊙)",
+			"<br>    (⊙_⊙)",
+			"  [ SUCCESS ]<br>   ╰(◕‿◕)╯<br><br> "
 		],
 		[
 			" <br>     ______________<br>   |\\ ___________ /|<br>   | |  _ _ _ _  | |<br>   | | | | | | | | |<br>   | | |-+-+-+-| | |<br>   | | |-+-+-+-| | |<br>   | | |_|_|_|_| | |<br>   | |    ___    | |<br>   | |   [___] ()| |<br>   | |         ||| |<br>   | |         ()| |<br>   | |           | |<br>   | |           | |<br>   | |           | |<br>   |_|___________|_| <br><br>        [LOCK]<br>        ■■■■■■",
@@ -268,7 +268,7 @@ window.onload = function(){
 			"    )\\_/(<br>    'o.o'<br>   =(___)=<br>      U",
 			"    _ _/(<br>   \\'o.o'<br>   =(___)=<br>      U",
 			"    _ _/(<br>   \\'o.o'<br>   =(___)=<br>      U",
-			"    (\\_/)   .[DONE]<br>   =(^ᵕ^)= `<br>    (___)<br>      U<br><br> ",
+			"    (\\_/)   .[DONE]<br>   =(^ᵕ^)= `<br>    (___)<br>      U<br><br> "
 		]
 	];
 	
@@ -413,7 +413,7 @@ window.onload = function(){
 		typeSymbol("\n", 0);
 		printHackerText();
 		typeSymbol("\n", 0);
-		var loader = animation[randd(0, animation.length-1)];//animation[randd(0, animation.length-1)]; //animation[animation.length-1] //
+		var loader = animation[10]; //animation[randd(0, animation.length-1)];//animation[randd(0, animation.length-1)]; //animation[animation.length-1] //
 		var bCurFrame = 0, nMaxFrame = loader.length-1;
 		var nCurConsolePos = $("#console span").length-1;
 		if(nCurConsolePos < 0)
