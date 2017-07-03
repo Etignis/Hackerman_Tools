@@ -412,8 +412,8 @@ window.onload = function(){
 		typeSymbol("\n", 0);
 		typeSymbol("\n", 0);
 		printHackerText();
-		typeSymbol("\n", 0);
-		var loader = animation[10]; //animation[randd(0, animation.length-1)];//animation[randd(0, animation.length-1)]; //animation[animation.length-1] //
+		//typeSymbol("\n", 0);
+		var loader = animation[randd(0, animation.length-1)];//animation[randd(0, animation.length-1)]; //animation[animation.length-1] //
 		var bCurFrame = 0, nMaxFrame = loader.length-1;
 		var nCurConsolePos = $("#console span").length-1;
 		if(nCurConsolePos < 0)
