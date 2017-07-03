@@ -1,7 +1,7 @@
 # Hackerman_Tools
 Feel like the real Hacker
 
-Live version: https://tentaculus.ru/havkerman
+Live version: https://tentaculus.ru/hackerman
 
 Just type anithing and you hack the Pentagon!
 
