@@ -181,6 +181,7 @@ p {
   bottom: 0;
   left: 0;
   right: 0;
+  overflow: hidden;
 }
 .p_cont {
   width: 100%;
