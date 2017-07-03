@@ -198,6 +198,23 @@ p {
   display: inline-block;
   color: #fff;
 }
+.consoleBorder {
+  border: 2px solid #777;
+  padding-top: 1.5em;
+  cursor: crosshair;
+}
+.consoleBorder:before {
+  content: "# HACKER TOOL v0.2";
+  padding: .1em;
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: #000;
+  background: #777;
+  font-weight: bold;
+}
 .console {
   font-family: monospace;
   padding: 1em 1em 3em;
@@ -223,12 +240,46 @@ p {
   scrollbar-face-color: #161a16;
   scrollbar-track-color: #0b0f0b;
 }
-.consoleBorder {
+#console:full-screen {
   border: 2px solid #777;
-  padding-top: 1.5em;
+  padding-top: 2em;
   cursor: crosshair;
 }
-.consoleBorder:before {
+#console:full-screen:before {
+  content: "# HACKER TOOL v0.2";
+  padding: .1em;
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: #000;
+  background: #777;
+  font-weight: bold;
+}
+#console:-moz-full-screen {
+  border: 2px solid #777;
+  padding-top: 2em;
+  cursor: crosshair;
+}
+#console:-moz-full-screen:before {
+  content: "# HACKER TOOL v0.2";
+  padding: .1em;
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: #000;
+  background: #777;
+  font-weight: bold;
+}
+:-webkit-full-screen #console {
+  border: 2px solid #777;
+  padding-top: 2em;
+  cursor: crosshair;
+}
+:-webkit-full-screen #console:before {
   content: "# HACKER TOOL v0.2";
   padding: .1em;
   position: fixed;

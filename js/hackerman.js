@@ -308,11 +308,12 @@ window.onload = function(){
 	};
 	
 	function createConsole(oParams) {
-		var oConsole = "<div id='console' class='console noselect consoleBorder'></div><input type='text' class='consoleInput'>";
+		var oConsole = "<div id='console' class='console noselect'></div><input type='text' class='consoleInput'>";
 		$("#wrapper").html(oConsole);
 	}
 	function sayHi() {
 		fAnimationActive = true;
+		fCursor = false;
 		var s = "START TO PRINT...";
 		var i=0, iMax = s.length;
 		
@@ -542,6 +543,37 @@ window.onload = function(){
 		return sSrc.replace(/<br>/ig, "\n");
 	}
 	
+	function fullScreen(el) {
+		if (el.requestFullscreen) {
+			el.requestFullscreen();
+		} else if (el.msRequestFullscreen) {
+			el.msRequestFullscreen();
+		} else if (el.mozRequestFullScreen) {
+			el.mozRequestFullScreen();
+		} else if (el.webkitRequestFullscreen) {
+			el.webkitRequestFullscreen();
+		}
+	}
+	function exitFullScreen() {
+		if (document.exitFullscreen) {
+			document.exitFullscreen();
+		} else if (document.webkitExitFullscreen) {
+			document.webkitExitFullscreen();
+		} else if (document.mozCancelFullScreen) {
+			document.mozCancelFullScreen();
+		} else if (document.msExitFullscreen) {
+			document.msExitFullscreen();
+		}
+	}
+	function isFullscreen() {
+	 if (document.fullscreenElement
+	  || document.webkitFullscreenElement
+	  || document.mozFullScreenElement
+	  || document.msFullscreenElement) {
+		return true;
+		}
+    }
+	
 	function type(e){
 		clearTimeout(tCursor);
 		fCursor = false;
@@ -582,6 +614,18 @@ window.onload = function(){
 					printLine();
 				}
 				showLoader();
+			} else if (code == 38 || code == 122) { // up
+				e.preventDefault();
+				if(isFullscreen()){
+					exitFullScreen();
+				} else {
+					//$("#console").addClass("consoleBorder");
+					var o = document.getElementById('wrapper');
+					try{ 
+						fullScreen(o);
+					} catch (err) {}
+				}
+				fCursor = true;
 			} else {		
 				do { 
 					printLine();
@@ -596,6 +640,8 @@ window.onload = function(){
 		}			
 		//return false;
 	}
+
+	
 	function init() {
 		currentCode = prepareSrc(code[randd(0, code.length-1)]);
 		createConsole();

@@ -90,7 +90,7 @@ class matrixRain {
 				clearInterval(that.oTimer);
 				$("body #cMatrix").fadeOut();
 			},
-			2000
+			2500
 		)		
 	}
 }
