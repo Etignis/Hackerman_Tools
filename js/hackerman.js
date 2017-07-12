@@ -301,7 +301,7 @@ window.onload = function(){
 		"	The Matrix has you..."
 	]
 	
-	var currentCode, fCursor = true, tCursor, fAnimationActive = false, sLastSimbol="", oMatrix, fMatrix = false;
+	var currentCode, fCursor = true, tCursor, fAnimationActive = false, sLastSimbol="", oMatrix, fMatrix = false, oCanvasConsole;
 	
 	function randd(min, max) {
 	  return Math.floor(arguments.length > 1 ? (max - min + 1) * Math.random() + min : (min + 1) * Math.random());
@@ -596,9 +596,11 @@ window.onload = function(){
 				showError();
 			} else if (code == 20){ // caps 
 				// end line
+				/*/
 				while (sLastSimbol != "\n") {
 					printLine();
 				}
+				/**/
 				// show matrix
 				if(fMatrix) {
 					fMatrix = false;
@@ -625,15 +627,19 @@ window.onload = function(){
 					} catch (err) {}
 				}
 				fCursor = true;
-			} else {		
+			} else {	
+				/*/			
 				do { 
 					printLine();
 				} while (sLastSimbol == " ") 
-				
+				/**/	
+				oCanvasConsole.type();
+				/*/
 				tCursor = setTimeout(function(){
 					fCursor = true;
 					//caret();
 				}, 500);
+				/**/
 			}
 				
 		}			
@@ -643,10 +649,12 @@ window.onload = function(){
 	
 	function init() {
 		currentCode = prepareSrc(code[randd(0, code.length-1)]);
-		createConsole();
-		caret();
-		sayHi();
+		//createConsole();
+		//createCanvasConsole();
+		//caret();
+		//sayHi();
 		oMatrix = new matrixRain("#wrapper");
+		oCanvasConsole = new canvasConsole("#wrapper");
 		$(".consoleInput").focus();
 	}
 	init();
