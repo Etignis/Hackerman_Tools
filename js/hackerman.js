@@ -654,8 +654,9 @@ window.onload = function(){
 		//caret();
 		//sayHi();
 		oMatrix = new matrixRain("#wrapper");
-		oCanvasConsole = new canvasConsole("#wrapper");
+		oCanvasConsole = new canvasConsole("#wrapper", {aSource: code});
 		$(".consoleInput").focus();
+		fakeCRT();
 	}
 	init();
 	

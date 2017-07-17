@@ -1,5 +1,5 @@
 class canvasConsole {
-	constructor(parentEl){
+	constructor(parentEl, oParams){
 		if(parentEl == undefined) {
 			parentEl = "body";
 		}
@@ -20,11 +20,17 @@ class canvasConsole {
 		this.c = document.getElementById(this.sId);
 		this.ctx = this.c.getContext("2d");
 		this.sText = "Some text. ";
-		this.fontSize = "16";
+		if(oParams && oParams.aSource) {
+			this.sText = this._prepareSrc(oParams.aSource[this._randd(0, oParams.aSource.length-1)]);
+		}
+		this.fontSize = 16;
+		this.fontRatio = 0.6;
+		this.lineHeight = ~~(this.fontSize * 1.2);
 		this.ctx.font = this.fontSize + "px monospace";
 		
 		this.ctx.fillStyle = "#00FF00";
 		//this.ctx.fillRect(0,0,150,75);
+		this.nMaxStrings = 10;
 		this._calculateConsoleParameters();
 	}
 	_randd(min, max) {
@@ -32,37 +38,49 @@ class canvasConsole {
 	}
 	
 	_calculateConsoleParameters() {
-		this.nColumns = this.c.width/(this.fontSize * 0.6); //number of columns 
-		this.nStrings = this.c.height/this.fontSize; //number of columns 
+		this.nColumns = ~~(this.c.width/(this.fontSize * this.fontRatio)); //number of columns 
+		this.nStrings = ~~(this.c.height/this.lineHeight); //number of columns 
 		this.oSymbol = {
 			x: 0,
 			y: 1
 		};
 	}
+
+	_prepareSrc(sSrc){
+		return sSrc.replace(/<br>/ig, "\n");
+	}
 	
-	_printSymbol(sSrc, sNumber) {		
-		var nX = this.oSymbol.x * (this.fontSize * 0.6);
-		var nY = this.oSymbol.y * this.fontSize;
+	_printSymbol(sSrc, sNumber) {	
+		var sSimbol = sSrc[sNumber];
+	
+		var nX = this.oSymbol.x * (this.fontSize * this.fontRatio);
+		var nY = this.oSymbol.y * (this.lineHeight);
+
 		this.oSymbol.x++;
+		if(sSimbol == "\n"){
+			this.oSymbol.x = 0;
+			this.oSymbol.y++;
+		}
 		if(this.oSymbol.x > this.nColumns) {
 			this.oSymbol.x = 0;
 			this.oSymbol.y++;
-			if(this.oSymbol.y > this.nStrings)
-				this.oSymbol.y = 1;
 		}
+		if(this.oSymbol.y > this.nStrings)
+			this.oSymbol.y = 1;
 		
-		
-		this.ctx.fillText(sSrc[sNumber], nX, nY);
+		this.ctx.fillText(sSimbol, nX, nY);
 	}
-	type() {	
-		if(this.nSimbolNumber == undefined) 
-			this.nSimbolNumber = 0;
-		this._printSymbol(this.sText, this.nSimbolNumber);
-		
-		this.nSimbolNumber++;
-		
-		if(this.nSimbolNumber >= this.sText.length)
-			this.nSimbolNumber = 0;
+	type() {
+		do{	
+			if(this.nSimbolNumber == undefined) 
+				this.nSimbolNumber = 0;
+				this._printSymbol(this.sText, this.nSimbolNumber);
+			
+			this.nSimbolNumber++;
+			
+			if(this.nSimbolNumber >= this.sText.length)
+				this.nSimbolNumber = 0;
+		} while (this.sText[this.nSimbolNumber] == " ")
 	}
 	//drawing the characters	
 	draw() {
