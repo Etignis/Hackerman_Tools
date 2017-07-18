@@ -1,8 +1,6 @@
 class canvasConsole {
 	constructor(parentEl, oParams){
-		if(parentEl == undefined) {
-			parentEl = "body";
-		}
+		this.parentEl = (parentEl == undefined)? "body" : parentEl
 		this.sId = "canvasConsole";
 		var nWidth = window.innerWidth
 			|| document.documentElement.clientWidth
@@ -12,8 +10,8 @@ class canvasConsole {
 			|| document.body.clientHeight;
 
 		var oConsole = "<canvas id='" + this.sId + "' width='" + nWidth + "' height='" + nHeight + "'></canvas><input type='text' class='consoleInput'>";
-		if(!($(parentEl + " #" + this.sId).length >0)) {
-			$(parentEl).append(oConsole);
+		if(!($(this.parentEl + " #" + this.sId).length >0)) {
+			$(this.parentEl).append(oConsole);
 			//$(parentEl + " #" + this.sId).hide();
 		}
 		this.nCanvasWidth = nWidth;
@@ -195,6 +193,6 @@ class canvasConsole {
 	}
 	hide() {
 		this._isOn = false;
-		$("body #" + this.sId).fadeOut();
+		$(this.parentEl + " #" + this.sId).fadeOut();
 	}
 }
