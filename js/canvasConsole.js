@@ -120,12 +120,23 @@ class canvasConsole {
 		} while (this.sText[this.nSimbolNumber] == " ")
 		/**/
 	}
+	_drawLines(nAlpha) {
+		this.ctx.fillStyle = "rgba(0,255,0," + nAlpha + ")";
 
+		//draw grid
+		for (var i = 0; i<this.nCanvasHeight; i+=4) {
+			this.ctx.fillRect(0, i, this.nCanvasWidth, 2);
+		}
+	}
 	_drawConsole() {
+		// clear canvas
 		this.ctx.fillStyle = "#000000";
 		this.ctx.fillRect(0, 0, this.nCanvasWidth, this.nCanvasHeight);
+
+		// set main color to green
 		this.ctx.fillStyle = this.mainColor;
 
+		// print typed code
 		this.oSymbol.x = 1;
 		this.oSymbol.y = 1;
 
@@ -136,6 +147,9 @@ class canvasConsole {
 			this.oSymbol.y++;
 			this.oSymbol.x = 0;
 		}
+
+		// draw lines
+		this._drawLines(this._randd(14, 16)/100);
 	}
 	//drawing the characters
 	draw() {
