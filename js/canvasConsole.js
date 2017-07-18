@@ -82,6 +82,9 @@ class canvasConsole {
 
 		this.ctx.fillText(sSimbol, nX, nY);
 	}
+	/**
+	 * When key clicked
+	 */
 	type() {
 		do {
 			if(this.nSimbolNumber == undefined)
@@ -107,18 +110,6 @@ class canvasConsole {
 				this.nSimbolNumber = 0;
 		} while (this.sText[this.nSimbolNumber] == " ")
 
-		/*/
-		do{
-			if(this.nSimbolNumber == undefined)
-				this.nSimbolNumber = 0;
-			this._printSymbol(this.sText, this.nSimbolNumber);
-
-			this.nSimbolNumber++;
-
-			if(this.nSimbolNumber >= this.sText.length)
-				this.nSimbolNumber = 0;
-		} while (this.sText[this.nSimbolNumber] == " ")
-		/**/
 	}
 	_drawLines(nAlpha) {
 		this.ctx.fillStyle = "rgba(0,255,0," + nAlpha + ")";
@@ -128,6 +119,10 @@ class canvasConsole {
 			this.ctx.fillRect(0, i, this.nCanvasWidth, 2);
 		}
 	}
+
+	/**
+	 * Main function for drawin all in the screen
+	 */
 	_drawConsole() {
 		// clear canvas
 		this.ctx.fillStyle = "#000000";
@@ -151,35 +146,7 @@ class canvasConsole {
 		// draw lines
 		this._drawLines(this._randd(14, 16)/100);
 	}
-	//drawing the characters
-	draw() {
-		//Black BG for the canvas
-		//translucent BG to show trail
-		this.ctx.fillStyle = "rgba(0, 0, 0, " + this._randd(1, 8)*0.01 + ")";
-		this.ctx.fillRect(0, 0, this.c.width, this.c.height);
 
-		this.ctx.fillStyle = "#0F0"; //green text
-		this.ctx.font = this.font_size + "px arial";
-		//looping over drops
-		for(var i = 0; i < this.drops.length; i++) {
-			//a random chinese character to print
-			var rand = this._randd(0, this.simbols.length-1);
-			var text = this.simbols[rand];
-			//x = i*font_size, y = value of drops[i]*font_size
-			var x = i*this.font_size,
-				y = this.drops[i]*this.font_size;
-			if(this.fShow || 1)
-				this.ctx.fillText(text, x, y);
-
-			//sending the drop back to the top randomly after it has crossed the screen
-			//adding a randomness to the reset to make the drops scattered on the Y axis
-			if(this.fShow && (this.drops[i]*this.font_size > this.c.height && Math.random() > 0.975))
-				this.drops[i] = 0;
-
-			//incrementing Y coordinate
-			this.drops[i]++;
-		}
-	}
 
 	_calculateFps(now) {
 		var fps = 1000 / (now - this._lastAnimationFrameTime);
@@ -221,86 +188,13 @@ class canvasConsole {
 		this._drawConsole();
 	}
 
-	animate(that) {
-
-    // request another frame
-
-    requestAnimationFrame(that.animate(that));
-
-    // calc elapsed time since last loop
-
-    that.now = Date.now();
-    that.elapsed = that.now - that.then;
-
-    // if enough time has elapsed, draw the next frame
-
-    if (that.elapsed > that.fpsInterval) {
-
-        // Get ready for next frame by setting then=now, but also adjust for your
-        // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
-        that.then = that.now - (that.elapsed % that.fpsInterval);
-
-        // Put your drawing code here
-
-    }
-	}
-
 	show() {
-			this._isOn = true;
-			this._animate();
-
-		/*/
-		var that = this;
-		this.c = document.getElementById(this.sId);
-		this.ctx = this.c.getContext("2d");
-
-		this.fShow = true;
-
-		//making the canvas full screen
-		this.c.height = window.innerHeight;
-		this.c.width = window.innerWidth;
-
-		//chinese characters - taken from the unicode charset
-		var chinese = "田由甲申甴电甶男甸甹町画甼甽甾甿畀畁畂畃畄畅畆畇畈畉畊畋界畍畎畏畐畑";
-		var sChars= [
-			"田由甲申甴电甶男甸甹町画甼甽甾甿畀畁畂畃畄畅畆畇畈畉畊畋界畍畎畏畐畑",
-			"ホンコンカオシュン/タカオシャンハイナンキンタイペイはたらもんめ",
-			"010101",
-			"ಳಱಭಭಫನಧಥಣಡಠಟಞಗಖಔၷ೯",
-			"ऄअआइईउऊऋऌऍऎऑकखगघङचछजझटडदपफबलळऴश",
-			"ԱԲԳԴԵԶԷԸԹԺԻԽԾԿՀՁՂՃՅՇՋՖ₪թ",
-			"ᇅᇃᇉᇊᇋᇌᇍᇎᇏᇐᇕᇘᇤ",
-			"▖▗▘▙▚▛▜▝▞▟■",
-			"กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดปฟร"
-		];
-		//converting the string into an array of single characters
-		this.simbols = sChars[this._randd(0, sChars.length-1)].split(""); //sChars[sChars.length-1].split(""); //sChars[this._randd(0, sChars.length-1)].split("");
-
-		this.font_size = this._randd(10, 16);//10;
-		var columns = this.c.width/this.font_size; //number of columns for the rain
-		//an array of drops - one per column
-		this.drops = [];
-		//x below is the x coordinate
-		//1 = y co-ordinate of the drop(same for every drop initially)
-		for(var x = 0; x < columns; x++)
-			this.drops[x] = 1;
-
-		$("body #" + this.sId).show();
-		this.oTimer = setInterval(that.draw.bind(that), this._randd(35, 55));
-		/**/
+		$("body #" + this.sId).fadeIn();
+		this._isOn = true;
+		this._animate();
 	}
 	hide() {
 		this._isOn = false;
-		/*/
-		var that = this;
-		this.fShow = false;
-		setTimeout(
-			function() {
-				clearInterval(that.oTimer);
-				$("body #" + this.sId).fadeOut();
-			},
-			2500
-		)
-		/**/
+		$("body #" + this.sId).fadeOut();
 	}
 }
