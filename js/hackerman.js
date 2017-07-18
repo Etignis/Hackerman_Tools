@@ -588,12 +588,14 @@ window.onload = function(){
 				// show loader
 				showAnimation();
 			} else if (code == 16){ // shift ?
-				// end line
-				while (sLastSimbol != "\n") {
-					printLine();
-				}
-				// show error
-				showError();
+        // end line
+        while (sLastSimbol != "\n") {
+          printLine();
+        }
+        // show error
+        showError();
+      } else if (code == 27){ // Esc
+				oCanvasConsole.hide();
 			} else if (code == 20){ // caps
 				// end line
 				/*/

@@ -2,6 +2,7 @@ class canvasConsole {
 	constructor(parentEl, oParams){
 		this.parentEl = (parentEl == undefined)? "body" : parentEl
 		this.sId = "canvasConsole";
+		this.sId_m = "canvasConsole_m";
 		var nWidth = window.innerWidth
 			|| document.documentElement.clientWidth
 			|| document.body.clientWidth;
@@ -12,13 +13,20 @@ class canvasConsole {
 		var oConsole = "<canvas id='" + this.sId + "' width='" + nWidth + "' height='" + nHeight + "'></canvas><input type='text' class='consoleInput'>";
 		if(!($(this.parentEl + " #" + this.sId).length >0)) {
 			$(this.parentEl).append(oConsole);
+		}
+
+		var oMonitorConsole = "<canvas id='" + this.sId_m + "' width='" + nWidth + "' height='" + nHeight + "' style='position: absolute; top: 0; left: 0;'></canvas>";
+		if(!($(this.parentEl + " #" + this.sId_m + "").length >0)) {
+			$(this.parentEl).append(oMonitorConsole);
 			//$(parentEl + " #" + this.sId).hide();
 		}
 		this.nCanvasWidth = nWidth;
 		this.nCanvasHeight = nHeight;
 		this.oTimer;
 		this.c = document.getElementById(this.sId);
+		this.c_m = document.getElementById(this.sId_m);
 		this.ctx = this.c.getContext("2d");
+		this.ctx_m = this.c_m.getContext("2d");
 		this.sText = "Some text. ";
 		if(oParams && oParams.aSource) {
 			this.sText = this._prepareSrc(oParams.aSource[this._randd(0, oParams.aSource.length-1)]);
@@ -28,15 +36,15 @@ class canvasConsole {
 		this.lineHeight = ~~(this.fontSize * 1.2);
 		this.ctx.font = this.fontSize + "px monospace";
 
-		this.mainColor = "#00FF00";
-		this.ctx.fillStyle = "#00FF00";
+		this.mainColor = "rgba(0,255,0,.9)"; //"#00FF00";
+		this.ctx.fillStyle = this.mainColor;
 		this.aCode = [""];
 		this.nMaxStrings = 10;
 		this._calculateConsoleParameters();
 		this._lastAnimationFrameTime = 0;
 		this._lastFpsUpdateTime = 0;
 		this._last_time = 0;
-		this._isOn = true;
+		this.isOn = true;
 
 		this.elapsed = 0;
 		this.now =0;
@@ -117,7 +125,20 @@ class canvasConsole {
 			this.ctx.fillRect(0, i, this.nCanvasWidth, 2);
 		}
 	}
+	_emulateCRT() {
+		var oCanvasSource = this.ctx.getImageData(0, 0, this.nCanvasWidth, this.nCanvasHeight);
+		var oSourcePixels = oCanvasSource.data;
+		var oCanvasResult = this.ctx_m.getImageData(0, 0, this.nCanvasWidth, this.nCanvasHeight);
+		var oResultPixels = oCanvasResult.data;
 
+		for (var i = 0, n = oSourcePixels.length; i < n; i += 4){
+		    oResultPixels[i  ] = oSourcePixels[i  ]; // red
+		    oResultPixels[i+1] = oSourcePixels[i+1]; // green
+		    oResultPixels[i+2] = oSourcePixels[i+2]; // blue
+		    oResultPixels[i+3] = oSourcePixels[i+3];       // alpha
+		}
+		this.ctx_m.putImageData(oCanvasResult, 0, 0);
+	}
 	/**
 	 * Main function for drawin all in the screen
 	 */
@@ -143,6 +164,9 @@ class canvasConsole {
 
 		// draw lines
 		this._drawLines(this._randd(14, 16)/100);
+
+		// emulate CRT monitor
+		this._emulateCRT();
 	}
 
 
@@ -176,7 +200,7 @@ class canvasConsole {
 	_animate() {
 		//var that = this;
 		//this.requestId =
-		if(this._isOn) {
+		if(this.isOn) {
 			requestAnimationFrame(
 				this._animate.bind(this)
 				);
@@ -188,11 +212,11 @@ class canvasConsole {
 
 	show() {
 		$("body #" + this.sId).fadeIn();
-		this._isOn = true;
+		this.isOn = true;
 		this._animate();
 	}
 	hide() {
-		this._isOn = false;
+		this.isOn = false;
 		$(this.parentEl + " #" + this.sId).fadeOut();
 	}
 }
