@@ -3,44 +3,42 @@ class canvasConsole {
 		this.parentEl = (parentEl == undefined)? "body" : parentEl
 		this.sId = "canvasConsole";
 		this.sId_m = "canvasConsole_m";
-		var nWidth = window.innerWidth
-			|| document.documentElement.clientWidth
-			|| document.body.clientWidth;
-		var nHeight = window.innerHeight
-			|| document.documentElement.clientHeight
-			|| document.body.clientHeight;
 
-		var oConsole = "<canvas id='" + this.sId + "' width='" + nWidth + "' height='" + nHeight + "'></canvas><input type='text' class='consoleInput'>";
+		this.fontSize = 16;
+		this.fontRatio = 0.6;
+		this.lineHeight = ~~(this.fontSize * 1.2);
+
+		this._calculateConsoleParameters();
+
+		var oConsole = "<canvas id='" + this.sId + "' width='" + this.nCanvasWidth + "' height='" + this.nCanvasHeight + "'></canvas><input type='text' class='consoleInput'>";
 		if(!($(this.parentEl + " #" + this.sId).length >0)) {
 			$(this.parentEl).append(oConsole);
 		}
 
-		var oMonitorConsole = "<canvas id='" + this.sId_m + "' width='" + nWidth + "' height='" + nHeight + "' style='position: absolute; top: 0; left: 0;'></canvas>";
+		var oMonitorConsole = "<canvas id='" + this.sId_m + "' width='" + this.nCanvasWidth + "' height='" + this.nCanvasHeight + "' style='position: absolute; top: 0; left: 0;'></canvas>";
 		if(!($(this.parentEl + " #" + this.sId_m + "").length >0)) {
 			$(this.parentEl).append(oMonitorConsole);
 			//$(parentEl + " #" + this.sId).hide();
 		}
-		this.nCanvasWidth = nWidth;
-		this.nCanvasHeight = nHeight;
+
+
 		this.oTimer;
 		this.c = document.getElementById(this.sId);
 		this.c_m = document.getElementById(this.sId_m);
 		this.ctx = this.c.getContext("2d");
 		this.ctx_m = this.c_m.getContext("2d");
+
+		this.ctx.font = this.fontSize + "px monospace";
 		this.sText = "Some text. ";
 		if(oParams && oParams.aSource) {
 			this.sText = this._prepareSrc(oParams.aSource[this._randd(0, oParams.aSource.length-1)]);
 		}
-		this.fontSize = 16;
-		this.fontRatio = 0.6;
-		this.lineHeight = ~~(this.fontSize * 1.2);
-		this.ctx.font = this.fontSize + "px monospace";
+
 
 		this.mainColor = "rgba(0,255,0,.9)"; //"#00FF00";
 		this.ctx.fillStyle = this.mainColor;
 		this.aCode = [""];
 		this.nMaxStrings = 10;
-		this._calculateConsoleParameters();
 		this._lastAnimationFrameTime = 0;
 		this._lastFpsUpdateTime = 0;
 		this._last_time = 0;
@@ -50,18 +48,30 @@ class canvasConsole {
 		this.now =0;
 		this.then = 0;
 		this.fpsInterval = 0;
+
+		this.oSymbol = {
+			x: 0,
+			y: 1
+		};
 	}
 	_randd(min, max) {
 		return Math.floor(Math.random() * (max - min )) + min;
 	}
 
 	_calculateConsoleParameters() {
-		this.nColumns = ~~(this.c.width/(this.fontSize * this.fontRatio)); //number of columns
-		this.nStrings = ~~(this.c.height/this.lineHeight); //number of columns
-		this.oSymbol = {
-			x: 0,
-			y: 1
-		};
+		this.nCanvasWidth = window.innerWidth
+			|| document.documentElement.clientWidth
+			|| document.body.clientWidth;
+		this.nCanvasHeight = window.innerHeight
+			|| document.documentElement.clientHeight
+			|| document.body.clientHeight;
+
+		this.nColumns = ~~(this.nCanvasWidth/(this.fontSize * this.fontRatio)); //number of columns
+		this.nStrings = ~~(this.nCanvasHeight/this.lineHeight); //number of columns
+	}
+
+	resizeWindow() {
+		this._calculateConsoleParameters();
 	}
 
 	_prepareSrc(sSrc){
@@ -88,6 +98,42 @@ class canvasConsole {
 
 		this.ctx.fillText(sSimbol, nX, nY);
 	}
+
+	showAnimation(){
+		this.fAnimationActive = true;		this.fCursor = false;
+
+
+		var loader = animation[randd(0, animation.length-1)];//animation[randd(0, animation.length-1)]; //animation[animation.length-1] //
+		var bCurFrame = 0, nMaxFrame = loader.length-1;
+		var nCurConsolePos = $("#console span").length-1;
+		if(nCurConsolePos < 0)
+			nCurConsolePos = 0;
+		var timer = setInterval(
+			function() {
+				fCursor = false;
+				if (bCurFrame <= nMaxFrame) {
+					if(randd(0, 5) == 1){
+						for ( var i=0; $("#console span").eq(nCurConsolePos).length>0 && i<10000; i++) {
+							$("#console span").eq(nCurConsolePos).remove();
+						}
+
+						var sCurFrame = loader[bCurFrame].replace(/<br>/ig, "\n")
+						for(var i=0; i<sCurFrame.length; i++) {
+							typeSymbol(sCurFrame, i, false);
+						}
+						bCurFrame++;
+						//scrollDown();
+					}
+				} else {
+					fCursor = true;
+					fAnimationActive = false;
+					//scrollDown();
+					clearInterval(timer);
+				}
+			},
+			50
+		);
+	}
 	/**
 	 * When key clicked
 	 */
@@ -100,7 +146,7 @@ class canvasConsole {
 			var sSimbol = this.sText[this.nSimbolNumber];
 			if(sSimbol == "\n") {
 				this.aCode.push([]);
-				if (
+				while (
 						this.aCode.length >= this.nStrings ||
 						this.aCode.length >= this.nMaxStrings
 					) {
