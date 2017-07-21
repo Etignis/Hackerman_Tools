@@ -4,32 +4,42 @@ class canvasConsole {
 		this.sId = "canvasConsole";
 		this.sId_m = "canvasConsole_m";
 
-		this.fontSize = 16;
-		this.fontRatio = 0.6;
-		this.lineHeight = ~~(this.fontSize * 1.2);
+		this.fontBase = 1000,                   // selected default width for canvas
+    this.defaultFontSize = 14;                     // default size for font
 
-		this._calculateConsoleParameters();
 
-		var oConsole = "<canvas id='" + this.sId + "' width='" + this.nCanvasWidth + "' height='" + this.nCanvasHeight + "'></canvas><input type='text' class='consoleInput'>";
+		//this.fontSize = 16;
+		this.fontRatio = 0.553; //0.6;
+
+
+		//this._calculateConsoleParameters();
+
+		//var oConsole = "<canvas id='" + this.sId + "' width='" + this.nCanvasWidth + "' height='" + this.nCanvasHeight + "'></canvas><input type='text' class='consoleInput'>";
+		var oConsole = "<canvas id='" + this.sId + "'  style='position: absolute; top: 0; left: 0; right: 0; bottom: 0'></canvas><input type='text' class='consoleInput'>";
 		if(!($(this.parentEl + " #" + this.sId).length >0)) {
 			$(this.parentEl).append(oConsole);
 		}
 
-		var oMonitorConsole = "<canvas id='" + this.sId_m + "' width='" + this.nCanvasWidth + "' height='" + this.nCanvasHeight + "' style='position: absolute; top: 0; left: 0;'></canvas>";
+		//var oMonitorConsole = "<canvas id='" + this.sId_m + "' width='" + this.nCanvasWidth + "' height='" + this.nCanvasHeight + "' style='position: absolute; top: 0; left: 0;'></canvas>";
+		var oMonitorConsole = "<canvas id='" + this.sId_m + "' style='position: absolute; top: 0; left: 0; right: 0; bottom: 0'></canvas>";
 		if(!($(this.parentEl + " #" + this.sId_m + "").length >0)) {
 			$(this.parentEl).append(oMonitorConsole);
 			//$(parentEl + " #" + this.sId).hide();
 		}
 
-
-		this.oTimer;
 		this.c = document.getElementById(this.sId);
 		this.c_m = document.getElementById(this.sId_m);
 		this.ctx = this.c.getContext("2d");
 		this.ctx_m = this.c_m.getContext("2d");
 
-		this.ctx.font = this.fontSize + "px monospace";
-		this.sText = "Some text. ";
+		this.resizeWindow();
+
+		this.oTimer;
+
+		//this.ctx.font = this.fontSize + "px monospace";
+		//this.ctx.font = this.fontSize + 'px monospace'; // set font
+	  //this.ctx_m.font = this.fontSize + 'px monospace'; // set font
+
 		if(oParams && oParams.aSource) {
 			this.sText = this._prepareSrc(oParams.aSource[this._randd(0, oParams.aSource.length-1)]);
 		}
@@ -131,13 +141,28 @@ class canvasConsole {
 					["    )\\_/(", "    'o.o'", "   =(___)=", "      U"],
 					["    _ _/(", "   \\'o.o'", "   =(___)=", "      U"],
 					["    _ _/(", "   \\'o.o'", "   =(___)=", "      U"],
-					["    (\\_/)   .[DONE]", "   =(^ᵕ^)= `", "    (___)", "      U "]
+					["    (\\_/)   .[DONE]", "   =(^ᴥ^)= `", "    (___)", "      U "]
 				]
 		];
+	}
+	_getFont() {
+	    var ratio = this.defaultFontSize / this.fontBase;   // calc ratio
+	    this.fontSize = ~~(this.nCanvasWidth * ratio);   // get font size based on current width
+	    this.lineHeight = ~~(this.fontSize * 1.2);
+	    this.ctx.font = (this.fontSize|0) + 'px monospace'; // set font
+	    this.ctx_m.font = (this.fontSize|0) + 'px monospace'; // set font
 	}
 
 	resizeWindow() {
 		this._calculateConsoleParameters();
+
+		this.c.height = this.nCanvasHeight;
+		this.c.width = this.nCanvasWidth;
+
+		this.c_m.height = this.nCanvasHeight;
+		this.c_m.width = this.nCanvasWidth;
+
+		this._getFont();
 	}
 
 	_prepareSrc(sSrc){
@@ -163,6 +188,16 @@ class canvasConsole {
 			this.oSymbol.y = 1;
 
 		this.ctx.fillText(sSimbol, nX, nY);
+	}
+	_printLine(sLine) {
+
+		for(var i=0; i<Math.ceil(sLine.length/this.nColumns); i+=this.nColumns) {
+			var sString = sLine.substr(i, i+this.nColumns);
+			var nX = 0;
+			var nY = ~~(this.oSymbol.y * (this.lineHeight));
+			this.ctx.fillText(sString, nX, nY);
+			this.oSymbol.x = sString.length-1;
+		}
 	}
 	endLine() {
 		while (this.sText[this.nSimbolNumber] != "\n"){
@@ -232,6 +267,11 @@ class canvasConsole {
 		this.fCursor = false;
 		clearTimeout(this.tCursor);
 	}
+	_drawCursor() {
+		var nX = ~~((this.oSymbol.x +1) * (this.fontSize * this.fontRatio));
+		var nY = ~~(this.oSymbol.y * (this.lineHeight));
+		this.ctx.fillText(this.cursor, nX, nY);
+	}
 	/**
 	 * When key clicked
 	 */
@@ -260,11 +300,6 @@ class canvasConsole {
 				this.nSimbolNumber = 0;
 		} while (this.sText[this.nSimbolNumber] == " ")
 
-	}
-	_drawCursor() {
-		var nX = ~~((this.oSymbol.x) * (this.fontSize * this.fontRatio));
-		var nY = ~~(this.oSymbol.y * (this.lineHeight));
-		this.ctx.fillText(this.cursor, nX, nY);
 	}
 	_drawLines(nAlpha) {
 		this.ctx.fillStyle = "rgba(0,255,0," + nAlpha + ")";
@@ -306,10 +341,12 @@ class canvasConsole {
 		for (var i = 0; i < this.aCode.length; i++) {
 			this.oSymbol.y++;
 			this.oSymbol.x = 0;
-			for (var j = 0; j < this.aCode[i].length; j++) {
-				this._printSymbol(this.aCode[i], j);
+			this._printLine(this.aCode[i]);
 
-			}
+			// for (var j = 0; j < this.aCode[i].length; j++) {
+			// 	this._printSymbol(this.aCode[i], j);
+
+			// }
 		}
 		//draw cursor
 		this._drawCursor();

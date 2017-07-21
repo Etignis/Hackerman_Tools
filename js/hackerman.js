@@ -626,8 +626,12 @@ window.onload = function(){
 						fullScreen(o);
 					} catch (err) {}
 				}
-        oCanvasConsole.resizeWindow();
-				fCursor = true;
+        var oTimer = setTimeout(function(){
+          oCanvasConsole.resizeWindow();
+          oCanvasConsole.showCursor();
+          clearInterval(oTimer);
+        }.bind(this), 100);
+
 			} else {
 				/*/
 				do {
