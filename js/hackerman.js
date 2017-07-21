@@ -575,18 +575,16 @@ window.onload = function(){
     }
 
 	function type(e){
-		clearTimeout(tCursor);
-		fCursor = false;
+
+		oCanvasConsole.hideCursor();
 
 		if (!fAnimationActive) {
 			var code = e.keyCode || e.which;
 			if(code == 13) { //Enter keycode
-				// end line
-				while (sLastSimbol != "\n") {
-					printLine();
-				}
+        // enв line
+        oCanvasConsole.endLine();
 				// show loader
-				showAnimation();
+				oCanvasConsole.showAnimation();
 			} else if (code == 16){ // shift ?
         // end line
         while (sLastSimbol != "\n") {
@@ -637,6 +635,7 @@ window.onload = function(){
 				} while (sLastSimbol == " ")
 				/**/
 				oCanvasConsole.type();
+        oCanvasConsole.showCursor();
 				/*/
 				tCursor = setTimeout(function(){
 					fCursor = true;

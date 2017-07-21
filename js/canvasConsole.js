@@ -53,6 +53,9 @@ class canvasConsole {
 			x: 0,
 			y: 1
 		};
+
+		this._setAnimations();
+		this._startCursor();
 	}
 	_randd(min, max) {
 		return Math.floor(Math.random() * (max - min )) + min;
@@ -68,6 +71,69 @@ class canvasConsole {
 
 		this.nColumns = ~~(this.nCanvasWidth/(this.fontSize * this.fontRatio)); //number of columns
 		this.nStrings = ~~(this.nCanvasHeight/this.lineHeight); //number of columns
+	}
+	_setAnimations() {
+		this.animations = [
+			 	[
+					["   ╔════════════════════╗", "   ║                    ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║█                   ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║██                  ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║███                 ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║████                ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║█████               ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║██████              ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║███████             ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║████████            ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║█████████           ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║██████████          ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║███████████         ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║████████████        ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║█████████████       ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║██████████████      ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║███████████████     ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║████████████████    ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║█████████████████   ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║██████████████████  ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║███████████████████ ║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║████████████████████║", "   ╚════════════════════╝"],
+					["   ╔════════════════════╗", "   ║       SUCCESS      ║", "   ╚════════════════════╝"]
+				],
+				[
+					[" ", "     (o_O)"],
+					[" ", "     (O_o)"],
+					[" ", "     (O_o)"],
+					[" ", "     (o_O)"],
+					[" ", "     (o_O)"],
+					[" ", "     (O_o)"],
+					[" ", "     (O_o)"],
+					[" ", "     (o_O)"],
+					[" ", "     (o_O)"],
+					[" ", "     (O_o)"],
+					[" ", "     (O_o)"],
+					[" ", "     (O_o)"],
+					[" ", "     (O_o)"],
+					[" ", "     (o_O)"],
+					[" ", "     (o_O)"],
+					[" ", "     (0_0)"],
+					[" ", "     (0_0)"],
+					["  [ SUCCESS ]", "    ╰(◕ᴥ◕)╯"]
+				],
+				[
+					["    )\\_/(", "    'o.o'", "   =(___)=", "      U"],
+					["    )\\_/(", "    'o.o'", "   =(___)=", "      U"],
+					["    _ _/(", "   \\'o.o'", "   =(___)=", "      U"],
+					["    _ _/(", "   \\'o.o'", "   =(___)=", "      U"],
+					["    )\\_/(", "    'o.o'", "   =(___)=", "      U"],
+					["    )\\_/(", "    'o.o'", "   =(___)=", "      U"],
+					["    _ _/(", "   \\'o.o'", "   =(___)=", "      U"],
+					["    _ _/(", "   \\'o.o'", "   =(___)=", "      U"],
+					["    )\\_/(", "    'o.o'", "   =(___)=", "      U"],
+					["    )\\_/(", "    'o.o'", "   =(___)=", "      U"],
+					["    _ _/(", "   \\'o.o'", "   =(___)=", "      U"],
+					["    _ _/(", "   \\'o.o'", "   =(___)=", "      U"],
+					["    (\\_/)   .[DONE]", "   =(^ᵕ^)= `", "    (___)", "      U "]
+				]
+		];
 	}
 
 	resizeWindow() {
@@ -98,41 +164,73 @@ class canvasConsole {
 
 		this.ctx.fillText(sSimbol, nX, nY);
 	}
-
+	endLine() {
+		while (this.sText[this.nSimbolNumber] != "\n"){
+			this.type();
+		}
+	}
 	showAnimation(){
-		this.fAnimationActive = true;		this.fCursor = false;
+		if(!this.fAnimationActive) {
+			this.fAnimationActive = true;
+			this.fCursor = false;
 
 
-		var loader = animation[randd(0, animation.length-1)];//animation[randd(0, animation.length-1)]; //animation[animation.length-1] //
-		var bCurFrame = 0, nMaxFrame = loader.length-1;
-		var nCurConsolePos = $("#console span").length-1;
-		if(nCurConsolePos < 0)
-			nCurConsolePos = 0;
-		var timer = setInterval(
-			function() {
-				fCursor = false;
-				if (bCurFrame <= nMaxFrame) {
-					if(randd(0, 5) == 1){
-						for ( var i=0; $("#console span").eq(nCurConsolePos).length>0 && i<10000; i++) {
-							$("#console span").eq(nCurConsolePos).remove();
-						}
+			var loader = this.animations[this._randd(0, this.animations.length)];
+			var nCurFrame = 0, nMaxFrame = loader.length-1;
 
-						var sCurFrame = loader[bCurFrame].replace(/<br>/ig, "\n")
-						for(var i=0; i<sCurFrame.length; i++) {
-							typeSymbol(sCurFrame, i, false);
-						}
-						bCurFrame++;
-						//scrollDown();
+			var nAnimatonLines = loader[0].length;
+
+			while (
+							(
+								this.aCode.length + nAnimatonLines >= this.nStrings ||
+								this.aCode.length + nAnimatonLines >= this.nMaxStrings
+							) &&
+							nAnimatonLines-- > 0
+						) {
+						this.aCode.shift();
 					}
-				} else {
-					fCursor = true;
-					fAnimationActive = false;
-					//scrollDown();
-					clearInterval(timer);
-				}
-			},
-			50
-		);
+			var nCurConsolePos = this.aCode.length;
+
+			var timer = setInterval(
+				function() {
+					if (nCurFrame <= nMaxFrame) {
+						if(this._randd(0, 5) == 1){
+							for (var i=0; i<loader[nCurFrame].length; i++) {
+								this.aCode[nCurConsolePos+i] = loader[nCurFrame][i]
+							}
+							nCurFrame++;
+						}
+					} else {
+						this.aCode.push([]);
+						this.fCursor = true;
+						this.fAnimationActive = false;
+						clearInterval(timer);
+					}
+				}.bind(this),
+				50
+			);
+		}
+	}
+
+	_startCursor() {
+		this.cursor = " ";
+		this.cursorTimer = setInterval(function(){
+			if(this.cursor == "_" || this.fCursor == false) {
+				this.cursor = " ";
+			} else {
+				this.cursor = "_";
+			}
+		}.bind(this), 500);
+	}
+	showCursor() {
+		this.tCursor = setTimeout(function(){
+					this.fCursor = true;
+					//caret();
+				}.bind(this), 300);
+	}
+	hideCursor() {
+		this.fCursor = false;
+		clearTimeout(this.tCursor);
 	}
 	/**
 	 * When key clicked
@@ -162,6 +260,11 @@ class canvasConsole {
 				this.nSimbolNumber = 0;
 		} while (this.sText[this.nSimbolNumber] == " ")
 
+	}
+	_drawCursor() {
+		var nX = ~~((this.oSymbol.x) * (this.fontSize * this.fontRatio));
+		var nY = ~~(this.oSymbol.y * (this.lineHeight));
+		this.ctx.fillText(this.cursor, nX, nY);
 	}
 	_drawLines(nAlpha) {
 		this.ctx.fillStyle = "rgba(0,255,0," + nAlpha + ")";
@@ -197,16 +300,20 @@ class canvasConsole {
 		this.ctx.fillStyle = this.mainColor;
 
 		// print typed code
-		this.oSymbol.x = 1;
-		this.oSymbol.y = 1;
+		this.oSymbol.x = 0;
+		this.oSymbol.y = 0;
 
 		for (var i = 0; i < this.aCode.length; i++) {
-			for (var j = 0; j < this.aCode[i].length; j++) {
-				this._printSymbol(this.aCode[i], j);
-			}
 			this.oSymbol.y++;
 			this.oSymbol.x = 0;
+			for (var j = 0; j < this.aCode[i].length; j++) {
+				this._printSymbol(this.aCode[i], j);
+
+			}
 		}
+		//draw cursor
+		this._drawCursor();
+
 
 		// draw lines
 		this._drawLines(this._randd(14, 16)/100);
