@@ -581,26 +581,19 @@ window.onload = function(){
 		if (!fAnimationActive) {
 			var code = e.keyCode || e.which;
 			if(code == 13) { //Enter keycode
-        // enв line
-        oCanvasConsole.endLine();
+				// end line
+				oCanvasConsole.endLine();
 				// show loader
 				oCanvasConsole.showAnimation();
 			} else if (code == 16){ // shift ?
-        // end line
-        while (sLastSimbol != "\n") {
-          printLine();
-        }
-        // show error
-        showError();
-      } else if (code == 27){ // Esc
+				// end line
+				
+				// show error
+				showError();
+			} else if (code == 27){ // Esc
 				oCanvasConsole.hide();
 			} else if (code == 20){ // caps
-				// end line
-				/*/
-				while (sLastSimbol != "\n") {
-					printLine();
-				}
-				/**/
+				
 				// show matrix
 				if(fMatrix) {
 					fMatrix = false;
@@ -626,26 +619,14 @@ window.onload = function(){
 						fullScreen(o);
 					} catch (err) {}
 				}
-        var oTimer = setTimeout(function(){
-          oCanvasConsole.resizeWindow();
-          oCanvasConsole.showCursor();
-          clearInterval(oTimer);
-        }.bind(this), 100);
-
-			} else {
-				/*/
-				do {
-					printLine();
-				} while (sLastSimbol == " ")
-				/**/
+				var oTimer = setTimeout(function(){
+				  oCanvasConsole.resizeWindow();
+				  oCanvasConsole.showCursor();
+				  clearInterval(oTimer);
+				}.bind(this), 100);
+			} else {				
 				oCanvasConsole.type();
-        oCanvasConsole.showCursor();
-				/*/
-				tCursor = setTimeout(function(){
-					fCursor = true;
-					//caret();
-				}, 500);
-				/**/
+				oCanvasConsole.showCursor();
 			}
 
 		}
@@ -654,16 +635,11 @@ window.onload = function(){
 
 
 	function init() {
-		currentCode = prepareSrc(code[randd(0, code.length-1)]);
-		//createConsole();
-		//createCanvasConsole();
-		//caret();
-		//sayHi();
+		currentCode = prepareSrc(code[randd(0, code.length-1)]);		
 		oMatrix = new matrixRain("#wrapper");
 		oCanvasConsole = new canvasConsole("#wrapper", {aSource: code});
-    oCanvasConsole.show();
+		oCanvasConsole.show();
 		$(".consoleInput").focus();
-		// fakeCRT();
 	}
 	init();
 

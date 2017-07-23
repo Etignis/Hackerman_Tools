@@ -5,22 +5,14 @@ class canvasConsole {
 		this.sId_m = "canvasConsole_m";
 
 		this.fontBase = 1000,                   // selected default width for canvas
-    this.defaultFontSize = 14;                     // default size for font
+		this.defaultFontSize = 14;              // default size for font
 
-
-		//this.fontSize = 16;
 		this.fontRatio = 0.553; //0.6;
 
-
-		//this._calculateConsoleParameters();
-
-		//var oConsole = "<canvas id='" + this.sId + "' width='" + this.nCanvasWidth + "' height='" + this.nCanvasHeight + "'></canvas><input type='text' class='consoleInput'>";
 		var oConsole = "<canvas id='" + this.sId + "'  style='position: absolute; top: 0; left: 0; right: 0; bottom: 0'></canvas><input type='text' class='consoleInput'>";
 		if(!($(this.parentEl + " #" + this.sId).length >0)) {
 			$(this.parentEl).append(oConsole);
 		}
-
-		//var oMonitorConsole = "<canvas id='" + this.sId_m + "' width='" + this.nCanvasWidth + "' height='" + this.nCanvasHeight + "' style='position: absolute; top: 0; left: 0;'></canvas>";
 		var oMonitorConsole = "<canvas id='" + this.sId_m + "' style='position: absolute; top: 0; left: 0; right: 0; bottom: 0'></canvas>";
 		if(!($(this.parentEl + " #" + this.sId_m + "").length >0)) {
 			$(this.parentEl).append(oMonitorConsole);
@@ -36,19 +28,20 @@ class canvasConsole {
 
 		this.oTimer;
 
-		//this.ctx.font = this.fontSize + "px monospace";
-		//this.ctx.font = this.fontSize + 'px monospace'; // set font
-	  //this.ctx_m.font = this.fontSize + 'px monospace'; // set font
-
 		if(oParams && oParams.aSource) {
 			this.sText = this._prepareSrc(oParams.aSource[this._randd(0, oParams.aSource.length-1)]);
 		}
 
-
 		this.mainColor = "rgba(0,255,0,.9)"; //"#00FF00";
 		this.ctx.fillStyle = this.mainColor;
-		this.aCode = [""];
-		this.nMaxStrings = 10;
+
+		this.oCode = {
+			aLines: [""],
+			aMonitorLines : [""]
+		}; 
+		this.nMaxStrings = 20;
+		this.nMaxStringLength = 60;
+		this.nMaxLineLength  = this.nMaxStringLength;
 		this._lastAnimationFrameTime = 0;
 		this._lastFpsUpdateTime = 0;
 		this._last_time = 0;
@@ -63,6 +56,8 @@ class canvasConsole {
 			x: 0,
 			y: 1
 		};
+		
+		this.cursor = "_";
 
 		this._setAnimations();
 		this._startCursor();
@@ -77,11 +72,21 @@ class canvasConsole {
 			|| document.body.clientWidth;
 		this.nCanvasHeight = window.innerHeight
 			|| document.documentElement.clientHeight
-			|| document.body.clientHeight;
-
+			|| document.body.clientHeight;		
+	}
+	_calculateLinesColumns() {
 		this.nColumns = ~~(this.nCanvasWidth/(this.fontSize * this.fontRatio)); //number of columns
 		this.nStrings = ~~(this.nCanvasHeight/this.lineHeight); //number of columns
+		this.nMaxLineLength  = Math.min(this.nColumns, this.nMaxStringLength);
 	}
+	_getFont() {
+	    var ratio = this.defaultFontSize / this.fontBase;   // calc ratio
+	    this.fontSize = ~~(this.nCanvasWidth * ratio);   // get font size based on current width
+	    this.lineHeight = ~~(this.fontSize * 1.2);
+	    this.ctx.font = (this.fontSize|0) + 'px monospace'; // set font
+	    this.ctx_m.font = (this.fontSize|0) + 'px monospace'; // set font
+	}
+	
 	_setAnimations() {
 		this.animations = [
 			 	[
@@ -126,7 +131,7 @@ class canvasConsole {
 					[" ", "     (o_O)"],
 					[" ", "     (0_0)"],
 					[" ", "     (0_0)"],
-					["  [ SUCCESS ]", "    ╰(◕ᴥ◕)╯"]
+					["   [ SUCCESS ]", "    ╰(◕ᴥ◕)╯"]
 				],
 				[
 					["    )\\_/(", "    'o.o'", "   =(___)=", "      U"],
@@ -145,13 +150,7 @@ class canvasConsole {
 				]
 		];
 	}
-	_getFont() {
-	    var ratio = this.defaultFontSize / this.fontBase;   // calc ratio
-	    this.fontSize = ~~(this.nCanvasWidth * ratio);   // get font size based on current width
-	    this.lineHeight = ~~(this.fontSize * 1.2);
-	    this.ctx.font = (this.fontSize|0) + 'px monospace'; // set font
-	    this.ctx_m.font = (this.fontSize|0) + 'px monospace'; // set font
-	}
+	
 
 	resizeWindow() {
 		this._calculateConsoleParameters();
@@ -163,12 +162,47 @@ class canvasConsole {
 		this.c_m.width = this.nCanvasWidth;
 
 		this._getFont();
+		this._calculateLinesColumns();
 	}
 
 	_prepareSrc(sSrc){
 		return sSrc.replace(/<br>/ig, "\n");
 	}
 
+	
+	_startCursor() {
+		/**/		
+		this.cursorTimer = setInterval(function(){
+			if(this.cursor == "_" || this.fCursor == false) {
+				this.cursor = " ";
+			} else {
+				this.cursor = "_";
+			}
+		}.bind(this), 500);
+		/**/
+	}
+	showCursor() {
+		/**/
+		this.tCursor = setTimeout(function(){
+					this.fCursor = true;
+					//caret();
+				}.bind(this), 300);
+				/**/
+	}
+	hideCursor() {
+		/**/
+		this.fCursor = false;
+		clearTimeout(this.tCursor);
+		/**/
+	}
+	_drawCursor() {
+		/**/
+		var nX = ~~((this.oSymbol.x +1) * (this.fontSize * this.fontRatio));
+		var nY = ~~(this.oSymbol.y * (this.lineHeight));
+		this.ctx.fillText(this.cursor, nX, nY);
+		/**/
+	}
+		
 	_printSymbol(sSrc, sNumber) {
 		var sSimbol = sSrc[sNumber];
 
@@ -190,14 +224,22 @@ class canvasConsole {
 		this.ctx.fillText(sSimbol, nX, nY);
 	}
 	_printLine(sLine) {
-
-		for(var i=0; i<Math.ceil(sLine.length/this.nColumns); i+=this.nColumns) {
-			var sString = sLine.substr(i, i+this.nColumns);
+		
+		/*/		
+		for(var i=0; i<Math.ceil(sLine.length/this.nMaxLineLength); i++) {
+			var sString = sLine.substr(i*this.nMaxLineLength, this.nMaxLineLength);
 			var nX = 0;
-			var nY = ~~(this.oSymbol.y * (this.lineHeight));
+			this.oSymbol.y += (i);
+			var nY = ~~(this.oSymbol.y * this.lineHeight);
 			this.ctx.fillText(sString, nX, nY);
 			this.oSymbol.x = sString.length-1;
 		}
+		/**/
+		
+		var nX = 0;
+		var nY = ~~(this.oSymbol.y * this.lineHeight);
+		this.ctx.fillText(sLine, nX, nY);
+		this.oSymbol.x = sLine.length-1;
 	}
 	endLine() {
 		while (this.sText[this.nSimbolNumber] != "\n"){
@@ -217,26 +259,26 @@ class canvasConsole {
 
 			while (
 							(
-								this.aCode.length + nAnimatonLines >= this.nStrings ||
-								this.aCode.length + nAnimatonLines >= this.nMaxStrings
+								this.oCode.aLines.length + nAnimatonLines >= this.nStrings || 
+								this.oCode.aLines.length + nAnimatonLines >= this.nMaxStrings
 							) &&
 							nAnimatonLines-- > 0
 						) {
-						this.aCode.shift();
+						this.oCode.aLines.shift();
 					}
-			var nCurConsolePos = this.aCode.length;
+			var nCurConsolePos = this.oCode.aLines.length;
 
 			var timer = setInterval(
 				function() {
 					if (nCurFrame <= nMaxFrame) {
 						if(this._randd(0, 5) == 1){
 							for (var i=0; i<loader[nCurFrame].length; i++) {
-								this.aCode[nCurConsolePos+i] = loader[nCurFrame][i]
+								this.oCode.aLines[nCurConsolePos+i] = loader[nCurFrame][i]
 							}
 							nCurFrame++;
 						}
 					} else {
-						this.aCode.push([]);
+						this.oCode.aLines.push([]);
 						this.fCursor = true;
 						this.fAnimationActive = false;
 						clearInterval(timer);
@@ -245,32 +287,6 @@ class canvasConsole {
 				50
 			);
 		}
-	}
-
-	_startCursor() {
-		this.cursor = " ";
-		this.cursorTimer = setInterval(function(){
-			if(this.cursor == "_" || this.fCursor == false) {
-				this.cursor = " ";
-			} else {
-				this.cursor = "_";
-			}
-		}.bind(this), 500);
-	}
-	showCursor() {
-		this.tCursor = setTimeout(function(){
-					this.fCursor = true;
-					//caret();
-				}.bind(this), 300);
-	}
-	hideCursor() {
-		this.fCursor = false;
-		clearTimeout(this.tCursor);
-	}
-	_drawCursor() {
-		var nX = ~~((this.oSymbol.x +1) * (this.fontSize * this.fontRatio));
-		var nY = ~~(this.oSymbol.y * (this.lineHeight));
-		this.ctx.fillText(this.cursor, nX, nY);
 	}
 	/**
 	 * When key clicked
@@ -283,15 +299,15 @@ class canvasConsole {
 			// add to console text
 			var sSimbol = this.sText[this.nSimbolNumber];
 			if(sSimbol == "\n") {
-				this.aCode.push([]);
+				this.oCode.aLines.push([]);
 				while (
-						this.aCode.length >= this.nStrings ||
-						this.aCode.length >= this.nMaxStrings
+						this.oCode.aLines.length >= this.nStrings ||
+						this.oCode.aLines.length >= this.nMaxStrings
 					) {
-					this.aCode.shift();
+					this.oCode.aLines.shift();
 				}
 			} else {
-				this.aCode[this.aCode.length - 1] += sSimbol;
+				this.oCode.aLines[this.oCode.aLines.length - 1] += sSimbol;
 			}
 
 			this.nSimbolNumber++;
@@ -299,7 +315,19 @@ class canvasConsole {
 			if(this.nSimbolNumber >= this.sText.length)
 				this.nSimbolNumber = 0;
 		} while (this.sText[this.nSimbolNumber] == " ")
-
+		
+		// prepare lines for canvas
+		this.oCode.aMonitorLines = []
+		this.oCode.aLines.forEach(function(sLine){
+			for(var i=0; i<Math.ceil(sLine.length/this.nMaxLineLength); i++) {
+				var sString = sLine.substr(i*this.nMaxLineLength, this.nMaxLineLength);	
+				this.oCode.aMonitorLines.push(sString);		
+			}
+		}.bind(this));
+		while(this.oCode.aMonitorLines.length > this.nMaxStrings) {
+			this.oCode.aMonitorLines.shift();
+		}
+		
 	}
 	_drawLines(nAlpha) {
 		this.ctx.fillStyle = "rgba(0,255,0," + nAlpha + ")";
@@ -333,30 +361,31 @@ class canvasConsole {
 
 		// set main color to green
 		this.ctx.fillStyle = this.mainColor;
-
+/**/
 		// print typed code
 		this.oSymbol.x = 0;
 		this.oSymbol.y = 0;
-
-		for (var i = 0; i < this.aCode.length; i++) {
+		// this.oCode.aMonitorLines
+		for (var i = 0; i < this.oCode.aMonitorLines.length; i++) {
 			this.oSymbol.y++;
 			this.oSymbol.x = 0;
-			this._printLine(this.aCode[i]);
+			this._printLine(this.oCode.aMonitorLines[i]);
 
 			// for (var j = 0; j < this.aCode[i].length; j++) {
 			// 	this._printSymbol(this.aCode[i], j);
 
 			// }
 		}
+/**/
 		//draw cursor
 		this._drawCursor();
 
-
 		// draw lines
-		this._drawLines(this._randd(14, 16)/100);
+		this._drawLines(this._randd(10,12)/100);
 
 		// emulate CRT monitor
 		this._emulateCRT();
+
 	}
 
 
@@ -387,16 +416,13 @@ class canvasConsole {
 			fps = fps.toFixed(0);
 		return fps;
 	}
-	_animate() {
-		//var that = this;
-		//this.requestId =
+	_animate() {	
 		if(this.isOn) {
 			requestAnimationFrame(
 				this._animate.bind(this)
 				);
 		}
-		//var now = new Date();
-		//this._calculateFps(now);
+		
 		this._drawConsole();
 	}
 
