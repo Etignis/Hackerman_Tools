@@ -239,6 +239,8 @@ class canvasConsole {
 		var nX = 0;
 		var nY = ~~(this.oSymbol.y * this.lineHeight);
 		this.ctx.fillText(sLine, nX, nY);
+		//this.ctx.strokeStyle = 'rgba(100,255,100,.2)';
+		//this.ctx.strokeText(sLine, nX, nY);
 		this.oSymbol.x = sLine.length-1;
 	}
 	endLine() {
@@ -258,14 +260,14 @@ class canvasConsole {
 			var nAnimatonLines = loader[0].length;
 
 			while (
-							(
-								this.oCode.aLines.length + nAnimatonLines >= this.nStrings || 
-								this.oCode.aLines.length + nAnimatonLines >= this.nMaxStrings
-							) &&
-							nAnimatonLines-- > 0
-						) {
-						this.oCode.aLines.shift();
-					}
+					(
+						this.oCode.aLines.length + nAnimatonLines >= this.nStrings || 
+						this.oCode.aLines.length + nAnimatonLines >= this.nMaxStrings
+					) &&
+					nAnimatonLines-- > 0
+				) {
+					this.oCode.aLines.shift();
+				}
 			var nCurConsolePos = this.oCode.aLines.length;
 
 			var timer = setInterval(
@@ -273,20 +275,43 @@ class canvasConsole {
 					if (nCurFrame <= nMaxFrame) {
 						if(this._randd(0, 5) == 1){
 							for (var i=0; i<loader[nCurFrame].length; i++) {
-								this.oCode.aLines[nCurConsolePos+i] = loader[nCurFrame][i]
+								this.oCode.aLines[nCurConsolePos+i] = loader[nCurFrame][i];								
+								this._recalculateMonitorLines();
 							}
 							nCurFrame++;
 						}
 					} else {
-						this.oCode.aLines.push([]);
+						this.oCode.aLines.push("");
 						this.fCursor = true;
 						this.fAnimationActive = false;
+						this.oSymbol.y++;
+						this.oSymbol.x = 0;
+						this._recalculateMonitorLines();
+						//this.oCode.aLines.push([""]);
 						clearInterval(timer);
 					}
 				}.bind(this),
 				50
 			);
 		}
+	}
+	_recalculateMonitorLines() {
+		this.oCode.aMonitorLines = []
+		this.oCode.aLines.forEach(function(sLine){
+			for(var i=0; i<Math.ceil(sLine.length/this.nMaxLineLength); i++) {
+				var sString = sLine.substr(i*this.nMaxLineLength, this.nMaxLineLength);	
+				this.oCode.aMonitorLines.push(sString);		
+			}
+		}.bind(this));
+		
+		// delete extra lines
+		while(this.oCode.aMonitorLines.length > this.nMaxStrings) {
+			this.oCode.aMonitorLines.shift();
+		}
+		
+		// for cursor
+		this.oSymbol.y = this.oCode.aMonitorLines.length;
+		this.oSymbol.x = 0;
 	}
 	/**
 	 * When key clicked
@@ -317,17 +342,7 @@ class canvasConsole {
 		} while (this.sText[this.nSimbolNumber] == " ")
 		
 		// prepare lines for canvas
-		this.oCode.aMonitorLines = []
-		this.oCode.aLines.forEach(function(sLine){
-			for(var i=0; i<Math.ceil(sLine.length/this.nMaxLineLength); i++) {
-				var sString = sLine.substr(i*this.nMaxLineLength, this.nMaxLineLength);	
-				this.oCode.aMonitorLines.push(sString);		
-			}
-		}.bind(this));
-		while(this.oCode.aMonitorLines.length > this.nMaxStrings) {
-			this.oCode.aMonitorLines.shift();
-		}
-		
+		this._recalculateMonitorLines();		
 	}
 	_drawLines(nAlpha) {
 		this.ctx.fillStyle = "rgba(0,255,0," + nAlpha + ")";
