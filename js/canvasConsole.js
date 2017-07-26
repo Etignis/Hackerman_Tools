@@ -32,13 +32,13 @@ class canvasConsole {
 			this.sText = this._prepareSrc(oParams.aSource[this._randd(0, oParams.aSource.length-1)]);
 		}
 
-		this.mainColor = "rgba(0,255,0,.9)"; //"#00FF00";
+		this.mainColor = "rgba(0,255,0,.7)"; //"#00FF00";
 		this.ctx.fillStyle = this.mainColor;
 
 		this.oCode = {
 			aLines: [""],
 			aMonitorLines : [""]
-		}; 
+		};
 		this.nMaxStrings = 20;
 		this.nMaxStringLength = 60;
 		this.nMaxLineLength  = this.nMaxStringLength;
@@ -56,11 +56,15 @@ class canvasConsole {
 			x: 0,
 			y: 1
 		};
-		
+
 		this.cursor = "_";
 
 		this._setAnimations();
 		this._startCursor();
+
+		// column diagram
+		this.oColumnDiagram = new columnDiagram(this.ctx, {width: 300, height: 230, x: 700, y: 10});
+		this.oColumnDiagram.start();
 	}
 	_randd(min, max) {
 		return Math.floor(Math.random() * (max - min )) + min;
@@ -72,7 +76,7 @@ class canvasConsole {
 			|| document.body.clientWidth;
 		this.nCanvasHeight = window.innerHeight
 			|| document.documentElement.clientHeight
-			|| document.body.clientHeight;		
+			|| document.body.clientHeight;
 	}
 	_calculateLinesColumns() {
 		this.nColumns = ~~(this.nCanvasWidth/(this.fontSize * this.fontRatio)); //number of columns
@@ -86,7 +90,7 @@ class canvasConsole {
 	    this.ctx.font = (this.fontSize|0) + 'px monospace'; // set font
 	    this.ctx_m.font = (this.fontSize|0) + 'px monospace'; // set font
 	}
-	
+
 	_setAnimations() {
 		this.animations = [
 			 	[
@@ -150,7 +154,7 @@ class canvasConsole {
 				]
 		];
 	}
-	
+
 
 	resizeWindow() {
 		this._calculateConsoleParameters();
@@ -169,9 +173,9 @@ class canvasConsole {
 		return sSrc.replace(/<br>/ig, "\n");
 	}
 
-	
+
 	_startCursor() {
-		/**/		
+		/**/
 		this.cursorTimer = setInterval(function(){
 			if(this.cursor == "_" || this.fCursor == false) {
 				this.cursor = " ";
@@ -202,7 +206,7 @@ class canvasConsole {
 		this.ctx.fillText(this.cursor, nX, nY);
 		/**/
 	}
-		
+
 	_printSymbol(sSrc, sNumber) {
 		var sSimbol = sSrc[sNumber];
 
@@ -224,8 +228,8 @@ class canvasConsole {
 		this.ctx.fillText(sSimbol, nX, nY);
 	}
 	_printLine(sLine) {
-		
-		/*/		
+
+		/*/
 		for(var i=0; i<Math.ceil(sLine.length/this.nMaxLineLength); i++) {
 			var sString = sLine.substr(i*this.nMaxLineLength, this.nMaxLineLength);
 			var nX = 0;
@@ -235,7 +239,7 @@ class canvasConsole {
 			this.oSymbol.x = sString.length-1;
 		}
 		/**/
-		
+
 		var nX = 0;
 		var nY = ~~(this.oSymbol.y * this.lineHeight);
 		this.ctx.fillText(sLine, nX, nY);
@@ -261,8 +265,7 @@ class canvasConsole {
 
 			while (
 					(
-						this.oCode.aLines.length + nAnimatonLines >= this.nStrings || 
-						this.oCode.aLines.length + nAnimatonLines >= this.nMaxStrings
+						this.oCode.aLines.length + nAnimatonLines >= this.nMaxLineLength
 					) &&
 					nAnimatonLines-- > 0
 				) {
@@ -275,7 +278,7 @@ class canvasConsole {
 					if (nCurFrame <= nMaxFrame) {
 						if(this._randd(0, 5) == 1){
 							for (var i=0; i<loader[nCurFrame].length; i++) {
-								this.oCode.aLines[nCurConsolePos+i] = loader[nCurFrame][i];								
+								this.oCode.aLines[nCurConsolePos+i] = loader[nCurFrame][i];
 								this._recalculateMonitorLines();
 							}
 							nCurFrame++;
@@ -284,7 +287,7 @@ class canvasConsole {
 						this.oCode.aLines.push("");
 						this.fCursor = true;
 						this.fAnimationActive = false;
-						this.oSymbol.y++;
+						//this.oSymbol.y++;
 						this.oSymbol.x = 0;
 						this._recalculateMonitorLines();
 						//this.oCode.aLines.push([""]);
@@ -298,17 +301,17 @@ class canvasConsole {
 	_recalculateMonitorLines() {
 		this.oCode.aMonitorLines = []
 		this.oCode.aLines.forEach(function(sLine){
-			for(var i=0; i<Math.ceil(sLine.length/this.nMaxLineLength); i++) {
-				var sString = sLine.substr(i*this.nMaxLineLength, this.nMaxLineLength);	
-				this.oCode.aMonitorLines.push(sString);		
+			for(var i=0; i<=Math.floor(sLine.length/this.nMaxLineLength); i++) {
+				var sString = sLine.substr(i*this.nMaxLineLength, this.nMaxLineLength);
+				this.oCode.aMonitorLines.push(sString);
 			}
 		}.bind(this));
-		
+
 		// delete extra lines
 		while(this.oCode.aMonitorLines.length > this.nMaxStrings) {
 			this.oCode.aMonitorLines.shift();
 		}
-		
+
 		// for cursor
 		this.oSymbol.y = this.oCode.aMonitorLines.length;
 		this.oSymbol.x = 0;
@@ -340,9 +343,9 @@ class canvasConsole {
 			if(this.nSimbolNumber >= this.sText.length)
 				this.nSimbolNumber = 0;
 		} while (this.sText[this.nSimbolNumber] == " ")
-		
+
 		// prepare lines for canvas
-		this._recalculateMonitorLines();		
+		this._recalculateMonitorLines();
 	}
 	_drawLines(nAlpha) {
 		this.ctx.fillStyle = "rgba(0,255,0," + nAlpha + ")";
@@ -376,7 +379,7 @@ class canvasConsole {
 
 		// set main color to green
 		this.ctx.fillStyle = this.mainColor;
-/**/
+
 		// print typed code
 		this.oSymbol.x = 0;
 		this.oSymbol.y = 0;
@@ -391,12 +394,15 @@ class canvasConsole {
 
 			// }
 		}
-/**/
+
 		//draw cursor
 		this._drawCursor();
 
+		// column diagram
+		this.oColumnDiagram.drawDiagram();
+
 		// draw lines
-		this._drawLines(this._randd(10,12)/100);
+		this._drawLines(this._randd(14,16)/100);
 
 		// emulate CRT monitor
 		this._emulateCRT();
@@ -431,13 +437,13 @@ class canvasConsole {
 			fps = fps.toFixed(0);
 		return fps;
 	}
-	_animate() {	
+	_animate() {
 		if(this.isOn) {
 			requestAnimationFrame(
 				this._animate.bind(this)
 				);
 		}
-		
+
 		this._drawConsole();
 	}
 
@@ -449,5 +455,330 @@ class canvasConsole {
 	hide() {
 		this.isOn = false;
 		$(this.parentEl + " #" + this.sId).fadeOut();
+	}
+}
+
+class consoleWindow {
+	constructor (oEl, oParams) {
+		if(!oEl) {
+			console.log("[ERROR]: I can't get canvas element! ")
+			return false;
+		}
+		this.ctx = oEl;
+		this.title = "sr_293";
+		this.width = 300;
+		this.height = 230;
+		this.pos = {
+			x: 0,
+			y: 0
+		}
+
+		this.timer = {
+			main: null
+		}
+
+		if (oParams) {
+			if(oParams.title) {
+				this.title = oParams.title;
+			}
+			if(oParams.width) {
+				this.width = oParams.width;
+			}
+			if(oParams.height) {
+				this.height = oParams.height;
+			}
+			if(oParams.x) {
+				this.pos.x = oParams.x;
+			}
+			if(oParams.y) {
+				this.pos.y = oParams.y;
+			}
+		}
+	}
+
+	drawWindow () {
+		//clear
+		this.ctx.fillStyle = "#001000";
+    this.ctx.strokeStyle="rgba(0,255,0, 0.5)";
+		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, this.heught);
+
+		//this._drawHeader();
+		//this._drawBody();
+
+		// draw rect
+    this.ctx.lineWidth = 2;
+		this.ctx.rect(this.pos.x, this.pos.y, this.width, this.height);
+		this.ctx.stroke();
+
+		this.ctx.beginPath();
+		this.ctx.moveTo(this.pos.x, this.pos.y + 30);
+		this.ctx.lineTo(this.pos.x + this.width, this.pos.y + 30);
+		this.ctx.stroke();
+		this.ctx.fillStyle = "rgba(0,255,0,0.1)";
+		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, 30);
+
+		// fraw title
+		this.ctx.fillStyle = "rgba(0,255,0,0.8)";
+		this.ctx.fillText(this.title, this.pos.x+5, this.pos.y+20);
+	}
+	_drawHeader() {
+		// draw rect
+		this.ctx.rect(this.pos.x, this.pos.y, this.width, 30);
+		this.ctx.stroke();
+		this.ctx.fill();
+	}
+	_drawBody() {
+		// draw rect
+		this.ctx.rect(this.pos.x, this.pos.y, this.width, this.height - 30);
+		this.ctx.stroke();
+
+	}
+}
+
+class roundRadar {
+	constructor(oEl) {
+		this.ctx = oEl;
+		this.radius = 30;
+		this.pos = {
+			x: 300,
+			y: 50
+		}
+	}
+	printRadar() {
+		// clear
+
+		//
+		this._drawScanLine();
+		this._drawGrid();
+	}
+	_drawScanLine() {
+
+	}
+	_drawGrid() {
+      var context = this.ctx;
+      var centerX = this.pos.x;
+      var centerY = this.pos.y;
+      var radius = this.radius;
+
+      context.beginPath();
+      context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+      context.lineWidth = 2;
+      context.strokeStyle = '#003300';
+      context.stroke();
+	}
+	start() {
+
+	}
+	stop() {
+
+	}
+	show() {
+
+	}
+	hide() {
+
+	}
+}
+
+class sinDiagram {
+	constructor(oEl) {
+		this.ctx = oEl;
+		this.pos = {
+			x: 0,
+			y: 0
+		}
+		this.width = 200;
+		this.heught = 150;
+		this.timer = {
+			main: null
+		}
+
+		this.linePoints = {};
+		this.lineCounter = 0;
+	}
+
+	drawDiagram() {
+		this.drowLines();
+		this.drawAxis();
+	}
+	drowLines() {
+
+	}
+	_f(x) {
+    return 50 * Math.sin(0.1 * x) + 50;
+	}
+	drowLine() {
+		var ctx = this.ctx;
+    ctx.lineWidth = 3;			///
+    var x = 0,
+        y = _f(0);
+    var timeout = setInterval(function() {
+        if(this.lineCounter < 100) { // If it doesn't need to move, draw like you already do
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            this.linePoints[x] = y;
+            x += 1;
+            y = _f(x);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            if (x > 1000) {
+                clearInterval(timeout);
+            }
+        } else { // The moving part...
+            ctx.clearRect(0, 0, 100, 100); // Clear the canvas
+            ctx.beginPath();
+            this.linePoints[x] = y;
+            x += 1;
+            y = _f(x);
+            for(var i = 0; i < 100; i++) {
+                // Draw all lines through points, starting at x = i + ( counter - 100 )
+                // to x = counter. Note that the x in the canvas is just i here, ranging
+                // from 0 to 100
+                ctx.lineTo(i, this.linePoints[i + this.lineCounter - 100]);
+            }
+            ctx.stroke();
+        }
+        this.lineCounter++;
+    }, 10);
+	}
+	drawAxis() {
+
+	}
+	show() {
+
+	}
+	hide() {
+
+	}
+	start() {
+
+	}
+	stop() {
+
+	}
+}
+
+class columnDiagram extends consoleWindow {
+	constructor(oEl, oParams) {
+		super (oEl, oParams);
+
+		this.nLinesNumber = 5;
+
+		this.aLines = [
+			{
+				"x": 0,
+				"y": 0,
+				"l": 0,
+				"w": 0
+			}
+		];
+
+		this._init();
+	}
+	_init() {
+		this.aLines = [];
+		var nLineWidth = ~~((this.width-6) / this.nLinesNumber) - 10;
+		var nLineMaxMax = ~~(this.height / 10)
+		for (var i=0; i<this.nLinesNumber; i++) {
+			var max = _randd(nLineMaxMax-5, nLineMaxMax-3)*10;
+			var min =  _randd(2,3)*10;
+			var l = _randd(min, max);
+			this.aLines.push(
+					{
+						"x": this.pos.x + 4 + i * (nLineWidth+10) + ~~(nLineWidth/1.5),
+						"y": this.pos.y + this.height -4,
+						"l": l,
+						"w": nLineWidth,
+						"g": _randd(7,11),
+						"max": max,
+						"min": min,
+						"f": true
+					}
+				);
+		}
+	}
+
+	drawDiagram() {
+		this.drawWindow();
+
+		// draw
+		this.drowLines();
+		//this.drawAxis();
+	}
+	drowLines() {
+		for (var i=0; i<this.nLinesNumber; i++) {
+			this.drowLine(
+				this.aLines[i].x,
+				this.aLines[i].y,
+				this.aLines[i].l,
+				this.aLines[i].w,
+				);
+		}
+	}
+
+	drowLine(nX, nY, nLength, nWidth) {
+		this.ctx.beginPath();
+    this.ctx.lineWidth = nWidth;
+    this.ctx.strokeStyle="rgba(0,255,0, 0.3)";
+		this.ctx.moveTo(nX,nY);
+		this.ctx.lineTo(nX,nY-nLength);
+		this.ctx.stroke();
+	}
+	drawAxis() {
+		// x
+    this.ctx.lineWidth = 1;
+    this.ctx.strokeStyle="green";
+		this.ctx.beginPath();
+		this.ctx.moveTo(this.pos.x+4, this.pos.y + this.height -4);
+		this.ctx.lineTo(this.pos.x + this.width -4 , this.pos.y + this.height -4);
+		this.ctx.stroke();
+
+		// y
+		this.ctx.beginPath();
+		this.ctx.moveTo(this.pos.x+4, this.pos.y + this.height+4);
+		this.ctx.lineTo(this.pos.x+4, this.pos.y-4);
+		this.ctx.stroke();
+	}
+
+	animate() {
+		for (var i=0; i<this.aLines.length; i++) {
+			if (this.aLines[i].f) { // go up
+				this.aLines[i].l += this.aLines[i].g;
+			} else {								// go down
+				this.aLines[i].l -= this.aLines[i].g;
+			}
+
+			// revers
+			if(
+					this.aLines[i].l > this.aLines[i].max
+				) {
+				this.aLines[i].f = !this.aLines[i].f;
+				this.aLines[i].g = _randd(7,11);
+				this.aLines[i].l = this.aLines[i].max;
+			}
+			if(
+					this.aLines[i].l < this.aLines[i].min
+				) {
+				this.aLines[i].f = !this.aLines[i].f;
+				this.aLines[i].g = _randd(7,11);
+				this.aLines[i].l = this.aLines[i].min;
+			}
+		}
+	}
+	show() {
+
+	}
+	hide() {
+
+	}
+	start() {
+		this.timer.main = setInterval(
+			function() {
+				this.animate();
+				this.drawDiagram();
+			}.bind(this), 50);
+	}
+	stop() {
+		clearInterval(this.timer.main);
 	}
 }
