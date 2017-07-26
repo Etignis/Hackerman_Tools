@@ -507,7 +507,7 @@ class consoleWindow {
 
 	drawWindow () {
 		//clear
-		this.ctx.fillStyle = "#001000";
+		this.ctx.fillStyle = "#000000";
     this.ctx.strokeStyle="rgba(0,255,0, 0.5)";
 		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, this.height);
 		this.ctx.fillStyle = "rgba(0,255,0,0.05)";
@@ -528,7 +528,7 @@ class consoleWindow {
 		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, this.headerHeight);
 
 		// draw title
-		this.ctx.fillStyle = "rgba(0,255,0,0.8)";
+		this.ctx.fillStyle = "rgba(0,255,0,0.5)";
 		this.ctx.fillText(this.title, this.pos.x+5, this.pos.y+this.headerHeight-10);
 	}
 	_drawHeader() {
@@ -755,7 +755,8 @@ class sinDiagram extends consoleWindow {
 				aTmp.push({
 					x: x,
 					y: y,
-					g: fGrow
+					g: fGrow,
+					f: false
 				});
 				aTmp1.push(x);
 				aTmp1.push(y);
@@ -817,13 +818,9 @@ class sinDiagram extends consoleWindow {
 
 				this.points[j][i].y = ~~(this.points[j][i].y);
 
-				// this.points[j][i].x = ~~(this.points[j][i].x+=_randd(-3,3)*3);
-				// if (this.points[j][i].x <0) {
-				// 	this.points[j][i].x = 0;
-				// }
-				// if (this.points[j][i].x >100) {
-				// 	this.points[j][i].x = 100;
-				// }
+				if(this.points[j][i].f && (i==0 || i==this.points[j].length-1)) {
+					this.points[j][i].y = 0;
+				}
 
 			}
 
