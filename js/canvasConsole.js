@@ -65,6 +65,10 @@ class canvasConsole {
 		// column diagram
 		this.oColumnDiagram = new columnDiagram(this.ctx, {width: 300, height: 230, x: 700, y: 10});
 		this.oColumnDiagram.start();
+
+		// sin diagram
+		this.oSinDiagram = new sinDiagram(this.ctx, {width: 300, height: 230, x: 700, y: 250});
+		this.oSinDiagram.start();
 	}
 	_randd(min, max) {
 		return Math.floor(Math.random() * (max - min )) + min;
@@ -401,6 +405,9 @@ class canvasConsole {
 		// column diagram
 		this.oColumnDiagram.drawDiagram();
 
+		// sin diagram
+		this.oSinDiagram.drawDiagram();
+
 		// draw lines
 		this._drawLines(this._randd(14,16)/100);
 
@@ -464,8 +471,10 @@ class consoleWindow {
 			console.log("[ERROR]: I can't get canvas element! ")
 			return false;
 		}
+		var aAlpha = shuffle("c3pod2rvalei97".split(""));
 		this.ctx = oEl;
-		this.title = "sr_293";
+		this.title = aAlpha[0]+aAlpha[1]+"_"+aAlpha[2]+aAlpha[3];
+		this.headerHeight = 30;
 		this.width = 300;
 		this.height = 230;
 		this.pos = {
@@ -500,7 +509,9 @@ class consoleWindow {
 		//clear
 		this.ctx.fillStyle = "#001000";
     this.ctx.strokeStyle="rgba(0,255,0, 0.5)";
-		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, this.heught);
+		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, this.height);
+		this.ctx.fillStyle = "rgba(0,255,0,0.05)";
+		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, this.height);
 
 		//this._drawHeader();
 		//this._drawBody();
@@ -511,25 +522,24 @@ class consoleWindow {
 		this.ctx.stroke();
 
 		this.ctx.beginPath();
-		this.ctx.moveTo(this.pos.x, this.pos.y + 30);
-		this.ctx.lineTo(this.pos.x + this.width, this.pos.y + 30);
+		this.ctx.moveTo(this.pos.x, this.pos.y + this.headerHeight);
+		this.ctx.lineTo(this.pos.x + this.width, this.pos.y + this.headerHeight);
 		this.ctx.stroke();
-		this.ctx.fillStyle = "rgba(0,255,0,0.1)";
-		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, 30);
+		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, this.headerHeight);
 
-		// fraw title
+		// draw title
 		this.ctx.fillStyle = "rgba(0,255,0,0.8)";
-		this.ctx.fillText(this.title, this.pos.x+5, this.pos.y+20);
+		this.ctx.fillText(this.title, this.pos.x+5, this.pos.y+this.headerHeight-10);
 	}
 	_drawHeader() {
 		// draw rect
-		this.ctx.rect(this.pos.x, this.pos.y, this.width, 30);
+		this.ctx.rect(this.pos.x, this.pos.y, this.width, this.headerHeight);
 		this.ctx.stroke();
 		this.ctx.fill();
 	}
 	_drawBody() {
 		// draw rect
-		this.ctx.rect(this.pos.x, this.pos.y, this.width, this.height - 30);
+		this.ctx.rect(this.pos.x, this.pos.y, this.width, this.height - this.headerHeight);
 		this.ctx.stroke();
 
 	}
@@ -576,84 +586,6 @@ class roundRadar {
 
 	}
 	hide() {
-
-	}
-}
-
-class sinDiagram {
-	constructor(oEl) {
-		this.ctx = oEl;
-		this.pos = {
-			x: 0,
-			y: 0
-		}
-		this.width = 200;
-		this.heught = 150;
-		this.timer = {
-			main: null
-		}
-
-		this.linePoints = {};
-		this.lineCounter = 0;
-	}
-
-	drawDiagram() {
-		this.drowLines();
-		this.drawAxis();
-	}
-	drowLines() {
-
-	}
-	_f(x) {
-    return 50 * Math.sin(0.1 * x) + 50;
-	}
-	drowLine() {
-		var ctx = this.ctx;
-    ctx.lineWidth = 3;			///
-    var x = 0,
-        y = _f(0);
-    var timeout = setInterval(function() {
-        if(this.lineCounter < 100) { // If it doesn't need to move, draw like you already do
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            this.linePoints[x] = y;
-            x += 1;
-            y = _f(x);
-            ctx.lineTo(x, y);
-            ctx.stroke();
-            if (x > 1000) {
-                clearInterval(timeout);
-            }
-        } else { // The moving part...
-            ctx.clearRect(0, 0, 100, 100); // Clear the canvas
-            ctx.beginPath();
-            this.linePoints[x] = y;
-            x += 1;
-            y = _f(x);
-            for(var i = 0; i < 100; i++) {
-                // Draw all lines through points, starting at x = i + ( counter - 100 )
-                // to x = counter. Note that the x in the canvas is just i here, ranging
-                // from 0 to 100
-                ctx.lineTo(i, this.linePoints[i + this.lineCounter - 100]);
-            }
-            ctx.stroke();
-        }
-        this.lineCounter++;
-    }, 10);
-	}
-	drawAxis() {
-
-	}
-	show() {
-
-	}
-	hide() {
-
-	}
-	start() {
-
-	}
-	stop() {
 
 	}
 }
@@ -775,10 +707,244 @@ class columnDiagram extends consoleWindow {
 		this.timer.main = setInterval(
 			function() {
 				this.animate();
-				this.drawDiagram();
+				//this.drawDiagram();
 			}.bind(this), 50);
 	}
 	stop() {
 		clearInterval(this.timer.main);
 	}
+}
+
+class sinDiagram extends consoleWindow {
+	constructor(oEl, oParams) {
+		super (oEl, oParams);
+
+		this.nLinesNumber = 5;
+
+		this.aLines = [
+			{
+				"x": 0,
+				"y": 0,
+				"l": 0,
+				"w": 0
+			}
+		];
+		this.points = [
+				[0,0, 25,20, 50,-100, 75,100, 100,0],
+				[0,20, 33,-30, 66,30, 100,-20],
+				[0,-20, 20,10, 40,-60, 60,70, 80,-40, 100,50]
+			];
+
+		if(oParams) {
+			if(oParams.lines) {
+				this.points = lines;
+			}
+		}
+
+		this._init();
+	}
+	_init() {
+		this.canvasPoints = [];
+		var fGrow = false;
+		for(var j=0; j<this.points.length; j++){
+			var aTmp = [];
+			var aTmp1 = [];
+			for(var i=0; i<this.points[j].length; i+=2) {
+				let x = this.points[j][i];
+				let y = this.points[j][i+1];
+				aTmp.push({
+					x: x,
+					y: y,
+					g: fGrow
+				});
+				aTmp1.push(x);
+				aTmp1.push(y);
+				fGrow = !fGrow;
+			}
+			this.points[j] = aTmp;
+			this.canvasPoints[j] = aTmp1;
+		}
+
+	}
+
+	drawDiagram() {
+		this.drawWindow();
+
+		// draw
+		this.drawCurves();
+	}
+	drawCurves() {
+		this.canvasPoints.forEach(function(el) {
+			this.drawCurve(this.ctx, el, this.tension);
+		}.bind(this));
+	}
+
+	preparePoints(aPoi) {
+		var kX = this.width/100;
+		var kY1 = this.pos.y + (this.height - this.headerHeight)/2 + this.headerHeight;
+		var kY2 =  -(this.height-this.headerHeight)/210 ;
+		for(var j=0; j<this.points.length; j++)
+			for(var i=0; i<this.points[j].length; i++) {
+				let x = this.points[j][i].x;
+				let y = this.points[j][i].y;
+
+				this.canvasPoints[j][i*2]   = ~~(x * kX  + this.pos.x);
+				this.canvasPoints[j][i*2+1] = ~~(y * kY2 + kY1);
+			}
+	}
+
+	animate() {
+		// change points
+		for(var j=0; j<this.points.length; j++)
+			for(var i=0; i<this.points[j].length; i++) {
+				if(this.points[j][i].g) {
+					this.points[j][i].y += _randd(1,4)*5;
+				}	 else {
+					this.points[j][i].y -= _randd(1,4)*5;
+				}
+				if (this.points[j][i].y > 95) {
+					this.points[j][i].g = false;
+				}
+				if (this.points[j][i].y > 99) {
+					this.points[j][i].y = 99;
+				}
+				if (this.points[j][i].y <-95) {
+					this.points[j][i].g = true;
+				}
+				if (this.points[j][i].y <-99) {
+					this.points[j][i].y = -99;
+				}
+
+				this.points[j][i].y = ~~(this.points[j][i].y);
+
+				// this.points[j][i].x = ~~(this.points[j][i].x+=_randd(-3,3)*3);
+				// if (this.points[j][i].x <0) {
+				// 	this.points[j][i].x = 0;
+				// }
+				// if (this.points[j][i].x >100) {
+				// 	this.points[j][i].x = 100;
+				// }
+
+			}
+
+		// beautify points
+		this.preparePoints();
+	}
+	show() {
+
+	}
+	hide() {
+
+	}
+	start() {
+		this.timer.main = setInterval(
+			function() {
+				this.animate();
+				//this.drawDiagram();
+			}.bind(this), 50);
+	}
+	stop() {
+		clearInterval(this.timer.main);
+	}
+
+
+
+
+
+	drawCurve(ctx, ptsa, tension, isClosed, numOfSegments, showPoints) {
+		ctx.beginPath();
+
+		this.drawLines(ctx, this.getCurvePoints(ptsa, tension, isClosed, numOfSegments));
+
+		if (showPoints) {
+			ctx.beginPath();
+			for(var i=0;i<ptsa.length-1;i+=2)
+			  ctx.rect(ptsa[i] - 2, ptsa[i+1] - 2, 4, 4);
+		}
+		ctx.strokeStyle = "rgba(0,2550,0,0.3)";
+		ctx.stroke();
+	}
+
+	//drawCurve(this.ctx, myPoints); //default tension=0.5
+
+
+
+	getCurvePoints(pts, tension, isClosed, numOfSegments) {
+
+	  // use input value if provided, or use a default value
+	  tension = (typeof tension != 'undefined') ? tension : 0.5;
+	  isClosed = isClosed ? isClosed : false;
+	  numOfSegments = numOfSegments ? numOfSegments : 16;
+
+	  var _pts = [], res = [],  // clone array
+	      x, y,     // our x,y coords
+	      t1x, t2x, t1y, t2y, // tension vectors
+	      c1, c2, c3, c4,   // cardinal points
+	      st, t, i;   // steps based on num. of segments
+
+	  // clone array so we don't change the original
+	  //
+	  _pts = pts.slice(0);
+
+	  // The algorithm require a previous and next point to the actual point array.
+	  // Check if we will draw closed or open curve.
+	  // If closed, copy end points to beginning and first points to end
+	  // If open, duplicate first points to befinning, end points to end
+	  if (isClosed) {
+	    _pts.unshift(pts[pts.length - 1]);
+	    _pts.unshift(pts[pts.length - 2]);
+	    _pts.unshift(pts[pts.length - 1]);
+	    _pts.unshift(pts[pts.length - 2]);
+	    _pts.push(pts[0]);
+	    _pts.push(pts[1]);
+	  }
+	  else {
+	    _pts.unshift(pts[1]); //copy 1. point and insert at beginning
+	    _pts.unshift(pts[0]);
+	    _pts.push(pts[pts.length - 2]); //copy last point and append
+	    _pts.push(pts[pts.length - 1]);
+	  }
+
+	  // ok, lets start..
+
+	  // 1. loop goes through point array
+	  // 2. loop goes through each segment between the 2 pts + 1e point before and after
+	  for (i=2; i < (_pts.length - 4); i+=2) {
+	    for (t=0; t <= numOfSegments; t++) {
+
+	      // calc tension vectors
+	      t1x = (_pts[i+2] - _pts[i-2]) * tension;
+	      t2x = (_pts[i+4] - _pts[i]) * tension;
+
+	      t1y = (_pts[i+3] - _pts[i-1]) * tension;
+	      t2y = (_pts[i+5] - _pts[i+1]) * tension;
+
+	      // calc step
+	      st = t / numOfSegments;
+
+	      // calc cardinals
+	      c1 =   2 * Math.pow(st, 3)  - 3 * Math.pow(st, 2) + 1;
+	      c2 = -(2 * Math.pow(st, 3)) + 3 * Math.pow(st, 2);
+	      c3 =     Math.pow(st, 3)  - 2 * Math.pow(st, 2) + st;
+	      c4 =     Math.pow(st, 3)  -     Math.pow(st, 2);
+
+	      // calc x and y cords with common control vectors
+	      x = c1 * _pts[i]  + c2 * _pts[i+2] + c3 * t1x + c4 * t2x;
+	      y = c1 * _pts[i+1]  + c2 * _pts[i+3] + c3 * t1y + c4 * t2y;
+
+	      //store points in array
+	      res.push(x);
+	      res.push(y);
+
+	    }
+	  }
+
+	  return res;
+	}
+
+	drawLines(ctx, pts) {
+	  ctx.moveTo(pts[0], pts[1]);
+	  for(let i=2;i<pts.length-1;i+=2) ctx.lineTo(pts[i], pts[i+1]);
+	}
+
 }
