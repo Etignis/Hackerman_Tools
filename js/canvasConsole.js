@@ -40,7 +40,7 @@ class canvasConsole {
 			aMonitorLines : [""]
 		};
 		this.nMaxStrings = 20;
-		this.nMaxStringLength = 60;
+		this.nMaxStringLength = 50;
 		this.nMaxLineLength  = this.nMaxStringLength;
 		this._lastAnimationFrameTime = 0;
 		this._lastFpsUpdateTime = 0;
@@ -62,12 +62,16 @@ class canvasConsole {
 		this._setAnimations();
 		this._startCursor();
 
+		// center code
+		this.oCenterCode = new simpleContainer(this.ctx, {width: 600, height: "100%", x: 600, y: 0});
+		this.oCenterCode.start();
+
 		// column diagram
-		this.oColumnDiagram = new columnDiagram(this.ctx, {width: 300, height: 230, x: 700, y: 10});
+		this.oColumnDiagram = new columnDiagram(this.ctx, {width: 300, height: 230, x: 1210, y: 10});
 		this.oColumnDiagram.start();
 
 		// sin diagram
-		this.oSinDiagram = new sinDiagram(this.ctx, {width: 300, height: 230, x: 700, y: 250});
+		this.oSinDiagram = new sinDiagram(this.ctx, {width: 300, height: 230, x: 1210, y: 250});
 		this.oSinDiagram.start();
 	}
 	_randd(min, max) {
@@ -212,24 +216,24 @@ class canvasConsole {
 	}
 
 	_printSymbol(sSrc, sNumber) {
-		var sSimbol = sSrc[sNumber];
+		// var sSimbol = sSrc[sNumber];
 
-		var nX = ~~(this.oSymbol.x * (this.fontSize * this.fontRatio));
-		var nY = ~~(this.oSymbol.y * (this.lineHeight));
+		// var nX = ~~(this.oSymbol.x * (this.fontSize * this.fontRatio));
+		// var nY = ~~(this.oSymbol.y * (this.lineHeight));
 
-		this.oSymbol.x++;
-		if(sSimbol == "\n"){
-			this.oSymbol.x = 0;
-			this.oSymbol.y++;
-		}
-		if(this.oSymbol.x > this.nColumns) {
-			this.oSymbol.x = 0;
-			this.oSymbol.y++;
-		}
-		if(this.oSymbol.y > this.nStrings)
-			this.oSymbol.y = 1;
+		// this.oSymbol.x++;
+		// if(sSimbol == "\n"){
+		// 	this.oSymbol.x = 0;
+		// 	this.oSymbol.y++;
+		// }
+		// if(this.oSymbol.x > this.nColumns) {
+		// 	this.oSymbol.x = 0;
+		// 	this.oSymbol.y++;
+		// }
+		// if(this.oSymbol.y > this.nStrings)
+		// 	this.oSymbol.y = 1;
 
-		this.ctx.fillText(sSimbol, nX, nY);
+		// this.ctx.fillText(sSimbol, nX, nY);
 	}
 	_printLine(sLine) {
 
@@ -403,6 +407,9 @@ class canvasConsole {
 		this._drawCursor();
 
 		// column diagram
+		this.oCenterCode.draw();
+
+		// column diagram
 		this.oColumnDiagram.drawDiagram();
 
 		// sin diagram
@@ -494,7 +501,12 @@ class consoleWindow {
 				this.width = oParams.width;
 			}
 			if(oParams.height) {
-				this.height = oParams.height;
+				if(typeof oParams.height == "number") {
+					this.height = oParams.height;
+				}
+				if(/\d+%/.test(oParams.height)){
+					this.height = this.ctx.canvas.clientHeight;
+				}
 			}
 			if(oParams.x) {
 				this.pos.x = oParams.x;
@@ -513,9 +525,6 @@ class consoleWindow {
 		this.ctx.fillStyle = "rgba(0,255,0,0.05)";
 		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, this.height);
 
-		//this._drawHeader();
-		//this._drawBody();
-
 		// draw rect
     this.ctx.lineWidth = 2;
 		this.ctx.rect(this.pos.x, this.pos.y, this.width, this.height);
@@ -531,62 +540,20 @@ class consoleWindow {
 		this.ctx.fillStyle = "rgba(0,255,0,0.5)";
 		this.ctx.fillText(this.title, this.pos.x+5, this.pos.y+this.headerHeight-10);
 	}
-	_drawHeader() {
-		// draw rect
-		this.ctx.rect(this.pos.x, this.pos.y, this.width, this.headerHeight);
+
+
+	drawPanel() {
+		this.ctx.strokeStyle="rgba(0,255,0, 0.5)";
+		this.ctx.beginPath();
+
+		// left line
+		this.ctx.moveTo(this.pos.x, this.pos.y + 10);
+		this.ctx.lineTo(this.pos.x, this.pos.y + this.height - 10);
+		// right line
+		this.ctx.moveTo(this.pos.x + this.width, this.pos.y  + 10);
+		this.ctx.lineTo(this.pos.x + this.width, this.pos.y + this.height - 10)
+
 		this.ctx.stroke();
-		this.ctx.fill();
-	}
-	_drawBody() {
-		// draw rect
-		this.ctx.rect(this.pos.x, this.pos.y, this.width, this.height - this.headerHeight);
-		this.ctx.stroke();
-
-	}
-}
-
-class roundRadar {
-	constructor(oEl) {
-		this.ctx = oEl;
-		this.radius = 30;
-		this.pos = {
-			x: 300,
-			y: 50
-		}
-	}
-	printRadar() {
-		// clear
-
-		//
-		this._drawScanLine();
-		this._drawGrid();
-	}
-	_drawScanLine() {
-
-	}
-	_drawGrid() {
-      var context = this.ctx;
-      var centerX = this.pos.x;
-      var centerY = this.pos.y;
-      var radius = this.radius;
-
-      context.beginPath();
-      context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-      context.lineWidth = 2;
-      context.strokeStyle = '#003300';
-      context.stroke();
-	}
-	start() {
-
-	}
-	stop() {
-
-	}
-	show() {
-
-	}
-	hide() {
-
 	}
 }
 
@@ -765,7 +732,6 @@ class sinDiagram extends consoleWindow {
 			this.points[j] = aTmp;
 			this.canvasPoints[j] = aTmp1;
 		}
-
 	}
 
 	drawDiagram() {
@@ -827,12 +793,6 @@ class sinDiagram extends consoleWindow {
 		// beautify points
 		this.preparePoints();
 	}
-	show() {
-
-	}
-	hide() {
-
-	}
 	start() {
 		this.timer.main = setInterval(
 			function() {
@@ -843,7 +803,6 @@ class sinDiagram extends consoleWindow {
 	stop() {
 		clearInterval(this.timer.main);
 	}
-
 
 
 
@@ -861,10 +820,6 @@ class sinDiagram extends consoleWindow {
 		ctx.strokeStyle = "rgba(0,2550,0,0.3)";
 		ctx.stroke();
 	}
-
-	//drawCurve(this.ctx, myPoints); //default tension=0.5
-
-
 
 	getCurvePoints(pts, tension, isClosed, numOfSegments) {
 
@@ -942,6 +897,88 @@ class sinDiagram extends consoleWindow {
 	drawLines(ctx, pts) {
 	  ctx.moveTo(pts[0], pts[1]);
 	  for(let i=2;i<pts.length-1;i+=2) ctx.lineTo(pts[i], pts[i+1]);
+	}
+
+}
+
+class simpleContainer extends consoleWindow {
+	constructor(oEl, oParams) {
+		super (oEl, oParams);
+
+		this.fontSize = this.ctx.font.split(' ')[0].match(/(\d+)px/i)[1];
+
+		this.nColumns = ~~(this.width / (this.fontSize*0.6));
+
+		this.sCodeSimbols = Array(10).join('A') +
+												Array(10).join('B') +
+												Array(10).join('C') +
+												Array(10).join('D') +
+												Array(10).join('E') +
+												Array(10).join('F') +
+												Array(10).join('0') +
+												Array(10).join('1') +
+												Array(10).join('2') +
+												Array(10).join('3') +
+												Array(10).join('4') +
+												Array(10).join('5') +
+												Array(10).join('6') +
+												Array(10).join('7') +
+												Array(10).join('8') +
+												Array(10).join('9');
+		this.aCodeSource = shuffle(this.sCodeSimbols.split(''));
+		this.sCode = "";
+		this.aCode = [];
+
+		this.nCodeGroup = 6;
+	}
+
+	draw() {
+		this.drawPanel();
+
+		this.showCode();
+	}
+
+	showCode () {
+		var nMaxLines = ~~((this.height - this.pos.y) / this.fontSize);
+		while (this.aCode.length > nMaxLines-2) {
+			this.aCode.shift();
+		}
+		for (var i=0; i < this.aCode.length; i++) {
+				var nX = this.pos.x + 5;
+				var nY = ~~(this.pos.y + i*this.fontSize);
+				this.ctx.fillStyle = "rgba(0,250,10, 0.7)";
+				this.ctx.fillText(this.aCode[i], nX, nY);
+		}
+
+	}
+
+	animate() {
+		var nMaxLines = ~~((this.height - this.pos.y) / this.fontSize);
+		this.sCode += shuffle(this.aCodeSource).join("").substr(0, this.nCodeGroup*6);
+		var nMaxSymbols = (this.nColumns * (nMaxLines-2));
+		if(this.sCode.length > nMaxSymbols) {
+			this.sCode = this.sCode.substr(this.sCode.length - nMaxSymbols);
+		}
+		//var a = this.aCode.split(/(\.{6})/);
+		var nGroupsNumber = ~~(this.nColumns / (this.nCodeGroup+1));
+
+
+
+		for( var i=0; (i < this.aCode.length || i < nMaxLines) && (i+1)*this.nColumns < this.sCode.length; i++) {
+			var sFullString = this.sCode.substr(i*nGroupsNumber, nGroupsNumber*this.nCodeGroup);
+			var aSubStrings =  sFullString.match(new RegExp('.{'+this.nCodeGroup+'}', 'g'));
+			this.aCode[i] = aSubStrings.join(" ");
+		}
+	}
+
+	start() {
+		this.timer.main = setInterval(
+			function() {
+				this.animate();
+			}.bind(this), 250);
+	}
+	stop() {
+		clearInterval(this.timer.main);
 	}
 
 }
