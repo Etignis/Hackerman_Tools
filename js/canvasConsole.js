@@ -63,15 +63,15 @@ class canvasConsole {
 		this._startCursor();
 
 		// center code
-		this.oCenterCode = new simpleContainer(this.ctx, {width: 600, height: "100%", x: 600, y: 0});
+		this.oCenterCode = new simpleContainer(this.ctx, {height: "100%", x: 600, y: 0, x2: -350});
 		this.oCenterCode.start();
 
 		// column diagram
-		this.oColumnDiagram = new columnDiagram(this.ctx, {width: 300, height: 230, x: 1210, y: 10});
+		this.oColumnDiagram = new columnDiagram(this.ctx, {width: 300, height: 230, x: -20, y: 10});
 		this.oColumnDiagram.start();
 
 		// sin diagram
-		this.oSinDiagram = new sinDiagram(this.ctx, {width: 300, height: 230, x: 1210, y: 250});
+		this.oSinDiagram = new sinDiagram(this.ctx, {width: 300, height: 230, x: -20, y: 250});
 		this.oSinDiagram.start();
 	}
 	_randd(min, max) {
@@ -509,7 +509,19 @@ class consoleWindow {
 				}
 			}
 			if(oParams.x) {
-				this.pos.x = oParams.x;
+				if(oParams.x<0) {
+					this.pos.x = this.ctx.canvas.clientWidth - this.width + oParams.x;
+				} else {
+					this.pos.x = oParams.x;
+				}
+			}
+			if(oParams.x2) {
+				if(oParams.x2<0) {
+					//this.pos.x = this.ctx.canvas.clientWidth - this.width + oParams.x;
+					this.width = this.ctx.canvas.clientWidth - this.pos.x + oParams.x2;
+				} else {
+					//this.pos.x = oParams.x;
+				}
 			}
 			if(oParams.y) {
 				this.pos.y = oParams.y;
@@ -520,13 +532,13 @@ class consoleWindow {
 	drawWindow () {
 		//clear
 		this.ctx.fillStyle = "#000000";
-    this.ctx.strokeStyle="rgba(0,255,0, 0.5)";
+		this.ctx.strokeStyle="rgba(0,255,0, 0.5)";
 		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, this.height);
 		this.ctx.fillStyle = "rgba(0,255,0,0.05)";
 		this.ctx.fillRect(this.pos.x, this.pos.y, this.width, this.height);
 
 		// draw rect
-    this.ctx.lineWidth = 2;
+		this.ctx.lineWidth = 2;
 		this.ctx.rect(this.pos.x, this.pos.y, this.width, this.height);
 		this.ctx.stroke();
 
@@ -707,6 +719,22 @@ class sinDiagram extends consoleWindow {
 				this.points = lines;
 			}
 		}
+		
+		this.sin = {
+			x: ~~(this.width/2),
+			y: ~~(this.height/2),
+			rad: Math.PI / 180,
+			amplitude: [
+				~~(this.height * 0.8),
+				~~(this.height * 0.3)
+				],
+			frequency: [
+				.01,
+				.013
+				],
+			phi: 0,
+			frames: 0
+		};
 
 		this._init();
 	}
@@ -739,6 +767,8 @@ class sinDiagram extends consoleWindow {
 
 		// draw
 		this.drawCurves();
+		
+		this.drawSin();
 	}
 	drawCurves() {
 		this.canvasPoints.forEach(function(el) {
@@ -746,6 +776,37 @@ class sinDiagram extends consoleWindow {
 		}.bind(this));
 	}
 
+	drawSin() {
+				///// real sin
+		
+		this.sin.frames++
+		if(this.sin.frames>6000) {
+			this.sin.frames = 0;
+		}
+		this.sin.phi = this.sin.frames / 30;
+
+		//this.ctx.clearRect(0, 0, cw, ch);
+		this.ctx.beginPath();
+		//this.ctx.strokeStyle = "hsl(" + frames + ",100%,50%)";
+		//this.ctx.strokeStyle = "#00ff00";
+		this.ctx.lineWidth = 2;
+		//this.ctx.moveTo(this.pos.x, this.height);
+		
+		for(var w=0; w<this.sin.amplitude.length; w++) {
+			this.ctx.beginPath();
+			for (var x = this.pos.x; x < this.width + this.pos.x; x++) {
+				var y = ~~(Math.sin(x * this.sin.frequency[w] + this.sin.phi) * this.sin.amplitude[w] / 2 + this.sin.amplitude[w] / 2 + this.headerHeight + this.pos.y + this.sin.y - this.sin.amplitude[w] / 1.8);
+				//y = Math.cos(x * frequency + phi) * amplitude / 2 + amplitude / 2;
+				this.ctx.lineTo(x, y); // 40 = offset
+
+			}
+			this.ctx.stroke();
+		}
+		//this.ctx.lineTo(this.width, this.height);
+		//this.ctx.lineTo(this.pos.x, this.height);
+		//requestId = window.requestAnimationFrame(Draw);
+	}
+	
 	preparePoints(aPoi) {
 		var kX = this.width/100;
 		var kY1 = this.pos.y + (this.height - this.headerHeight)/2 + this.headerHeight;
@@ -792,6 +853,9 @@ class sinDiagram extends consoleWindow {
 
 		// beautify points
 		this.preparePoints();
+		
+		
+
 	}
 	start() {
 		this.timer.main = setInterval(
