@@ -24,17 +24,23 @@
 	padding: 1em 1em 3em;
 	line-height: 1.2;
 	//white-space: pre;
-	.scrollbars(4px, @consoleBG + #0b0b0b, @consoleBG);
+	//.scrollbars(4px, @consoleBG + #0b0b0b, @consoleBG);
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	
-	overflow-y: scroll;
-	
+
+
+	display: flex;
 
 }
+#console_mainText{
+  min-width: 50rem;
+  .scrollbars(4px, fade(@consoleBG, 100%), fade(@consoleBG, 100%));
+  overflow-y: scroll;
+}
+
 #console:full-screen {
 	@color: @m-gray;
 	border: 2px solid @color;
@@ -141,11 +147,17 @@
 .simbol{
 	color: @consoleColor;	
 	display: inline-block;
-    //border: 1px solid rgba(0,0,0,0);
+}
+.simbolError{
+  color: @consoleErrorColor;
 }
 .glowOut{
-	animation-name: simbolGlowOut;
-    animation-duration: .7s;
+  animation-name: simbolGlowOut;
+  animation-duration: .7s;
+}
+.glowOutError{
+  animation-name: simbolErrorGlowOut;
+  animation-duration: .7s;
 }
 .twinkle{
 	animation-name: simbolTwinkle;
@@ -176,8 +188,15 @@
     100% {text-shadow: none}
 }
 @keyframes simbolGlowOut {
-    0% {text-shadow: 0px 0px 6px @consoleColor, 0px 0px 6px @consoleColor, 0px 0px 6px @consoleColor; color: @consoleColor + #333;}
-    100% {text-shadow: none; color: @consoleColor;}
+  0% {text-shadow: 0px 0px 6px @consoleColor, 0px 0px 6px @consoleColor, 0px 0px 6px @consoleColor; color: @consoleColor + #333;}
+  100% {text-shadow: none; color: @consoleColor;}
+}
+@keyframes simbolErrorGlowOut {
+  0% {text-shadow: 0px 0px 6px @consoleErrorColor,
+  0px 0px 6px @consoleErrorColor,
+  0px 0px 6px @consoleErrorColor;
+    color: @consoleErrorColor + #333;}
+  100% {text-shadow: none; color: @consoleErrorColor;}
 }
 @keyframes blink {
     0% {color: @consoleColor}

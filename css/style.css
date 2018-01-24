@@ -225,20 +225,24 @@ p {
   bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+}
+#console_mainText {
+  min-width: 50rem;
   overflow-y: scroll;
 }
-.console::-webkit-scrollbar {
+#console_mainText::-webkit-scrollbar {
   width: 4px;
   height: 4px;
 }
-.console::-webkit-scrollbar-thumb {
-  background: #161a16;
-}
-.console::-webkit-scrollbar-track {
+#console_mainText::-webkit-scrollbar-thumb {
   background: #0b0f0b;
 }
-.console body {
-  scrollbar-face-color: #161a16;
+#console_mainText::-webkit-scrollbar-track {
+  background: #0b0f0b;
+}
+#console_mainText body {
+  scrollbar-face-color: #0b0f0b;
   scrollbar-track-color: #0b0f0b;
 }
 #console:full-screen {
@@ -332,8 +336,15 @@ p {
   color: #00ee00;
   display: inline-block;
 }
+.simbolError {
+  color: #ee0000;
+}
 .glowOut {
   animation-name: simbolGlowOut;
+  animation-duration: .7s;
+}
+.glowOutError {
+  animation-name: simbolErrorGlowOut;
   animation-duration: .7s;
 }
 .twinkle {
@@ -396,6 +407,16 @@ p {
     color: #00ee00;
   }
 }
+@keyframes simbolErrorGlowOut {
+  0% {
+    text-shadow: 0px 0px 6px #ee0000, 0px 0px 6px #ee0000, 0px 0px 6px #ee0000;
+    color: #ff3333;
+  }
+  100% {
+    text-shadow: none;
+    color: #ee0000;
+  }
+}
 @keyframes blink {
   0% {
     color: #00ee00;
@@ -440,5 +461,3 @@ p {
   left: 0;
   right: 0;
 }
-
-/*# sourceMappingURL=style.css.map */
