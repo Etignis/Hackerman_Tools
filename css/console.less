@@ -33,6 +33,7 @@
 
 
 	display: flex;
+	align-items: stretch;
 
 }
 #console_mainText{
@@ -113,16 +114,23 @@
 	}
 }
 .stray{
-	background: linear-gradient(
-		to bottom, rgba(0, 238, 0, 0) 44%, 
-		rgba(0, 100, 0, .06) 50%, 
-		rgba(0, 200, 0, .11) 52%, 
-		rgba(0, 238, 0, 0) 53%);
-    background-position-y: 10%;
-    background-repeat-y: no-repeat;
-    background-size: 20%;
-	animation: flowDown 5s infinite;	
-	animation-timing-function: ease-in-out;
+	/* background: linear-gradient( */
+		/* to bottom, rgba(0, 238, 0, 0) 44%,  */
+		/* rgba(0, 100, 0, .06) 50%,  */
+		/* rgba(0, 200, 0, .11) 52%,  */
+		/* rgba(0, 238, 0, 0) 53%); */
+	/* background-image: linear-gradient(to bottom,  */
+    /* #FFFFFF 0px,     // Have one solid white area  */
+    /* #FFFFFF 255px,   // at the top (255px high). */
+    /* #C4C7C9 255px,   // Then begin the gradient at 255px */
+    /* #FFFFFF 100%     // and end it at 100% (= body's height). */
+	/* );  */
+	//background-position-y: 10%;
+	background-position: 0px 0px;
+	background-repeat-y: no-repeat;
+	background-size: 20%;
+	/* animation: flowDown 5s infinite;	 */
+	/* animation-timing-function: ease-in-out; */
 	
 	&2{
 		animation: flowDown 7s infinite;	
@@ -207,8 +215,24 @@
     80% {color: @consoleColor}    
     100% {color: @consoleColor}
 }
+/* @keyframes flowDown { */
+	/* 0%{background-position:50% -60%; background-size: 20%} */
+	/* 45%{background-size: 40%} */
+  /* 100%{background-position:50% 160%; background-size: 20%} */
+/* } */
 @keyframes flowDown {
-	0%{background-position:50% -60%; background-size: 20%}
-	45%{background-size: 40%}
-    100%{background-position:50% 160%; background-size: 20%}
+	0%{
+		background: linear-gradient(
+		to bottom, rgba(0, 238, 0, 0) 0%, 
+		rgba(0, 100, 0, .06) 3%, 
+		rgba(0, 200, 0, .11) 5%, 
+		rgba(0, 238, 0, 0) 6%);
+		}
+  100%{
+		background: linear-gradient(
+		to bottom, rgba(0, 238, 0, 0) 94%, 
+		rgba(0, 100, 0, .06) 97%, 
+		rgba(0, 200, 0, .11) 99%, 
+		rgba(0, 238, 0, 0) 100%);
+		}
 }

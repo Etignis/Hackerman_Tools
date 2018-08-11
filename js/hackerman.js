@@ -1,17 +1,83 @@
 window.onload = function(){
 	var nSimbol = 0;
-	
+	var sAlphabet = "0123456789ABCDEF";
 	
 	var currentCode, fCursor = true, tCursor, fAnimationActive = false, sLastSimbol="", oMatrix, fMatrix = false;
 	
 	function randd(min, max) {
 	  return Math.floor(arguments.length > 1 ? (max - min + 1) * Math.random() + min : (min + 1) * Math.random());
 	};
-	
+	function getFromAlphabet(){
+		return sAlphabet[randd(0, sAlphabet.length-1)];
+	}
+	/////////// NASM 
+	function create_nasm(){
+		
+		function getRegisters_inner(nRow, nColumn){ // 4 4 
+			var aRows = [];
+			for (var i=0; i<nRow; i++) {
+				var aColumns = [];
+				for(var j=0; j<nColumn; j++) {
+					var sItem = "<td class='title'>AA</td><td class='cont'>0000</td>";
+					aColumns.push(sItem);
+				}
+				aRows.push("<tr>"+aColumns.join("")+"</tr>");
+			}
+			return "<table id='tRegisters'>"+aRows.join("")+"</table>";
+		}	
+
+		function getMemory_inner(nRow){ // 8
+			var aRows = [];
+			for (var i=0; i<nRow; i++) {
+				var sClass = (i==1)? " class='selected' ":"";
+				var sItem = "<td class='addr'>011A</td><td class='data'>0000</td><td class='com'>ADD</td><td class='instr'>0000</td>";
+				aRows.push("<tr "+sClass+">"+sItem+"</tr>");
+			}
+			return "<table id='tMemory'>"+aRows.join("")+"</table>";
+		}	
+		function getMemory_data_inner(nRow, nColumn){ // 10, 8
+			var aRows = [];
+			var sHeader = "<tr><td></td>", aHeader=[];
+			
+			for(var j=0; j<nColumn; j++) {
+				aHeader.push("<td class='title'>"+j+"</td>");
+			}
+			sHeader+=aHeader.join("")+"</tr>";
+			
+			for (var i=0; i<nRow; i++) {
+				var aColumns = [];
+				var sTitle="<td class='title' style='padding-right: 2em'>DS:00"+((i<10)?"0"+i: i)+"</td>";
+				for(var j=0; j<nColumn; j++) {
+					var sItem = "<td class='cont'>"+getFromAlphabet()+getFromAlphabet()+"</td>";
+					aColumns.push(sItem);
+				}
+				aRows.push("<tr>"+sTitle+aColumns.join("")+"</tr>");
+			}
+			return "<table id='tMemory_data'>"+sHeader+aRows.join("")+"</table>";
+		}	
+
+		
+		
+		var sRegisters = "<div class='flex_column registers'>"+getRegisters_inner(4,4)+"</div>";
+		var sRegi_data = "<div class='flex_column reg_data'></div>";
+		var sMemory = "<div class='flex_column memory'>"+getMemory_inner(8)+"</div>";
+		var sMemory_data = "<div class='flex_column memory_data'>"+getMemory_data_inner(10,8)+"</div>";		
+		var sData_table = "<div class='flex_column data_table'></div>";
+		
+		var sTopRow = "<div class='flex_row'>"+sRegisters+sRegi_data+"</div>";
+		var sMidRow = "<div class='flex_row'>"+sMemory+sMemory_data+"</div>";
+		var sBotRow = "<div class='flex_row'>"+sData_table+"</div>";
+		
+		var sNasm = sTopRow+sMidRow+sBotRow;
+		
+		return sNasm; 
+	}
+	/////////// /NASM
 	function createConsole(oParams) {
+		var sNasm = create_nasm();
 		var oConsole = "<div id='console' class='console noselect'>\
       <div id='console_mainText'></div>\
-      <div id='console_asm'></div>\
+      <div id='console_asm'>"+sNasm+"</div>\
       <div id='console_images'></div>\
     </div><input type='text' class='consoleInput'>";
 		$("#wrapper").html(oConsole);

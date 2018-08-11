@@ -226,6 +226,7 @@ p {
   left: 0;
   right: 0;
   display: flex;
+  align-items: stretch;
 }
 #console_mainText {
   min-width: 50rem;
@@ -310,12 +311,22 @@ p {
   outlone: none;
 }
 .stray {
-  background: linear-gradient(to bottom, rgba(0, 238, 0, 0) 44%, rgba(0, 100, 0, 0.06) 50%, rgba(0, 200, 0, 0.11) 52%, rgba(0, 238, 0, 0) 53%);
-  background-position-y: 10%;
+  /* background: linear-gradient( */
+  /* to bottom, rgba(0, 238, 0, 0) 44%,  */
+  /* rgba(0, 100, 0, .06) 50%,  */
+  /* rgba(0, 200, 0, .11) 52%,  */
+  /* rgba(0, 238, 0, 0) 53%); */
+  /* background-image: linear-gradient(to bottom,  */
+  /* #FFFFFF 0px,     // Have one solid white area  */
+  /* #FFFFFF 255px,   // at the top (255px high). */
+  /* #C4C7C9 255px,   // Then begin the gradient at 255px */
+  /* #FFFFFF 100%     // and end it at 100% (= body's height). */
+  /* );  */
+  background-position: 0px 0px;
   background-repeat-y: no-repeat;
   background-size: 20%;
-  animation: flowDown 5s infinite;
-  animation-timing-function: ease-in-out;
+  /* animation: flowDown 5s infinite;	 */
+  /* animation-timing-function: ease-in-out; */
 }
 .stray2 {
   animation: flowDown 7s infinite;
@@ -440,18 +451,51 @@ p {
     color: #00ee00;
   }
 }
+/* @keyframes flowDown { */
+/* 0%{background-position:50% -60%; background-size: 20%} */
+/* 45%{background-size: 40%} */
+/* 100%{background-position:50% 160%; background-size: 20%} */
+/* } */
 @keyframes flowDown {
   0% {
-    background-position: 50% -60%;
-    background-size: 20%;
-  }
-  45% {
-    background-size: 40%;
+    background: linear-gradient(to bottom, rgba(0, 238, 0, 0) 0%, rgba(0, 100, 0, 0.06) 3%, rgba(0, 200, 0, 0.11) 5%, rgba(0, 238, 0, 0) 6%);
   }
   100% {
-    background-position: 50% 160%;
-    background-size: 20%;
+    background: linear-gradient(to bottom, rgba(0, 238, 0, 0) 94%, rgba(0, 100, 0, 0.06) 97%, rgba(0, 200, 0, 0.11) 99%, rgba(0, 238, 0, 0) 100%);
   }
+}
+#console_asm table#tRegisters .title {
+  color: #777;
+}
+#console_asm table#tRegisters .cont {
+  color: #00ee00;
+  padding-right: 2em;
+}
+#console_asm table#tMemory tr {
+  color: #777;
+}
+#console_asm table#tMemory tr.selected {
+  color: #000;
+  background: #777;
+}
+#console_asm table#tMemory .addr {
+  padding-right: 1em;
+}
+#console_asm table#tMemory .data {
+  padding-right: 8em;
+}
+#console_asm table#tMemory .com {
+  padding-right: 2em;
+}
+#console_asm table#tMemory .instr {
+  padding-right: 4em;
+}
+#console_asm table#tMemory_data .title {
+  color: #777;
+}
+#console_asm table#tMemory_data .cont {
+  color: #00ee00;
+  padding-right: 2em;
 }
 #cMatrix {
   position: absolute;

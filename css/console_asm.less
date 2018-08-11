@@ -1,0 +1,43 @@
+#console_asm{
+	table#tRegisters{
+		.title{
+			color: @m-gray;
+		}
+		.cont{
+			color: @consoleColor;
+			padding-right: 2em;
+		}
+	}
+	
+	table#tMemory{
+		tr{
+			color: @m-gray;
+			&.selected{
+				color: @black;
+				background: @m-gray;
+			}
+		}
+		.addr{
+			padding-right: 1em;		
+		}
+		.data{
+			padding-right: 8em;
+		}
+		.com{
+			padding-right: 2em;
+		}
+		.instr{
+			padding-right: 4em;
+		}
+	}
+	
+	table#tMemory_data{
+		.title{
+			color: @m-gray;
+		}
+		.cont{
+			color: @consoleColor;
+			padding-right: 2em;
+		}
+	}
+}
