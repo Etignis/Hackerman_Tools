@@ -1,16 +1,60 @@
 #console_asm{
-	table#tRegisters{
+	flex-grow: 3;
+	.flex_row{
+		display: flex;
+	}
+	
+	#tRegisters{
+		border: 1px solid @m-gray;
+		padding: 0.5em;
+		margin: 0.5em;
+		flex-grow: 1;
+		.row{
+			display: flex;
+			justify-content: space-between;
+		}
 		.title{
 			color: @m-gray;
+			flex-grow: 1;
 		}
 		.cont{
 			color: @consoleColor;
-			padding-right: 2em;
+			flex-grow: 6;
 		}
 	}
 	
-	table#tMemory{
-		tr{
+	#tRegisters_data{		
+		border: 1px solid @m-gray;
+		padding: 0.5em;
+		margin: 0.5em;
+		
+		display: flex;
+		align-items: stretch;
+		width: 30em;
+		overflow: hidden;
+		
+		.sin_cont {
+			color: @consoleColor;
+			display: flex;
+			justify-content: space-around;
+			align-items: stretch;
+			flex-grow: 1;
+		}
+		.col{
+			display: flex;
+			flex-direction: column;
+			flex-grow: 1;
+		}
+	}
+	
+	#tMemory{
+		border: 1px solid @m-gray;
+		padding: 0.5em;
+		margin: 0.5em;
+		flex-grow: 2;
+		.row{
+			display: flex;
+			justify-content: space-between;
 			color: @m-gray;
 			&.selected{
 				color: @black;
@@ -31,13 +75,55 @@
 		}
 	}
 	
-	table#tMemory_data{
+	#tMemory_data{
+		border: 1px solid @m-gray;
+		padding: 0.5em;
+		margin: 0.5em;
+		flex-grow: 1;
+		.row{
+			display: flex;
+			justify-content: space-between;
+		}
 		.title{
 			color: @m-gray;
+			min-width: 2em;
+			text-align: right;
+			&.t1{				
+				width: 5em;
+				text-align: left;
+			}
 		}
 		.cont{
 			color: @consoleColor;
-			padding-right: 2em;
+			//min-width: 2em;
+			flex-grow: 1;
+			text-align: right;
+		}
+	}
+	
+	#tData_data{
+		border: 1px solid @m-gray;
+		padding: 0.5em;
+		margin: 0.5em;
+		flex-grow: 1;
+		.row{
+			display: flex;
+			justify-content: space-between;
+		}
+		.title{
+			color: @m-gray;
+			min-width: 2em;
+			text-align: right;
+			&.t1{				
+				width: 5em;
+				text-align: left;
+			}
+		}
+		.cont{
+			color: @consoleColor;
+			//min-width: 2em;
+			flex-grow: 1;
+			text-align: right;
 		}
 	}
 }

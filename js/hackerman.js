@@ -1,8 +1,18 @@
 window.onload = function(){
 	var nSimbol = 0;
 	var sAlphabet = "0123456789ABCDEF";
-	
+	var aInst = [
+		"ADD",
+		"AND",
+		"DAS",
+		"DEC",
+		"DIV",
+		"JMP",
+		"MOV"		
+	];
 	var currentCode, fCursor = true, tCursor, fAnimationActive = false, sLastSimbol="", oMatrix, fMatrix = false;
+	
+	var oNasmTimer;
 	
 	function randd(min, max) {
 	  return Math.floor(arguments.length > 1 ? (max - min + 1) * Math.random() + min : (min + 1) * Math.random());
@@ -10,7 +20,48 @@ window.onload = function(){
 	function getFromAlphabet(){
 		return sAlphabet[randd(0, sAlphabet.length-1)];
 	}
+	function getFromInstr(){
+		return aInst[randd(0, aInst.length-1)];
+	}
 	/////////// NASM 
+	function updateNasm(){
+		// sinus
+		var sSin = sin("columns");
+		$("#tRegisters_data").html(sSin);
+		
+		// registers
+		$("#tRegisters").find(".cont").each(function(){
+			if(randd(-4,2)>0) {
+				$(this).text(getFromAlphabet()+getFromAlphabet()+getFromAlphabet()+getFromAlphabet());
+			}
+		});
+		
+		// memory
+		if(randd(-6,2)>0) {
+			$("#tMemory .row").removeClass("selected");
+			var nRand = randd(0,$("#tMemory .row").length-1);
+			$("#tMemory .row").eq(nRand).addClass("selected");
+			
+			$("#tMemory .row").eq(nRand).find(".addr").text(getFromAlphabet()+getFromAlphabet()+getFromAlphabet()+getFromAlphabet());
+			$("#tMemory .row").eq(nRand).find(".data").text(getFromAlphabet()+getFromAlphabet()+getFromAlphabet()+getFromAlphabet());
+			$("#tMemory .row").eq(nRand).find(".com").text(getFromInstr());
+			$("#tMemory .row").eq(nRand).find(".instr").text(getFromAlphabet()+getFromAlphabet()+getFromAlphabet()+getFromAlphabet());
+		}
+		
+		//data data		
+		$("#tData_data").find(".cont").each(function(){
+			if(randd(-4,2)>0) {
+				$(this).text(getFromAlphabet()+getFromAlphabet());
+			}
+		});
+		
+		//memory data		
+		$("#tMemory_data").find(".cont").each(function(){
+			if(randd(-4,2)>0) {
+				$(this).text(getFromAlphabet()+getFromAlphabet());
+			}
+		});
+	}
 	function create_nasm(){
 		
 		function getRegisters_inner(nRow, nColumn){ // 4 4 
@@ -18,51 +69,74 @@ window.onload = function(){
 			for (var i=0; i<nRow; i++) {
 				var aColumns = [];
 				for(var j=0; j<nColumn; j++) {
-					var sItem = "<td class='title'>AA</td><td class='cont'>0000</td>";
+					var sItem = "<div class='title'>"+getFromAlphabet()+getFromAlphabet()+"</div><div class='cont'>0000</div>";
 					aColumns.push(sItem);
 				}
-				aRows.push("<tr>"+aColumns.join("")+"</tr>");
+				aRows.push("<div class='row'>"+aColumns.join("")+"</div>");
 			}
-			return "<table id='tRegisters'>"+aRows.join("")+"</table>";
+			return "<div class='flex_column registers' id='tRegisters'>"+aRows.join("")+"</div>";
+		}	
+		function getRegisters_data_inner(){ // 4 4 			
+			return "<div class='flex_column registers' id='tRegisters_data'>"+sin("columns")+"</div>";
 		}	
 
 		function getMemory_inner(nRow){ // 8
 			var aRows = [];
 			for (var i=0; i<nRow; i++) {
-				var sClass = (i==1)? " class='selected' ":"";
-				var sItem = "<td class='addr'>011A</td><td class='data'>0000</td><td class='com'>ADD</td><td class='instr'>0000</td>";
-				aRows.push("<tr "+sClass+">"+sItem+"</tr>");
+				var sClass = (i==1)? " selected ":"";
+				var sItem = "<div class='addr'>011A</div><div class='data'>0000</div><div class='com'>ADD</div><div class='instr'>0000</div>";
+				aRows.push("<div class=' row"+sClass+"'>"+sItem+"</div>");
 			}
-			return "<table id='tMemory'>"+aRows.join("")+"</table>";
+			return "<div class='flex_column memory' id='tMemory'>"+aRows.join("")+"</div>";
 		}	
+		
 		function getMemory_data_inner(nRow, nColumn){ // 10, 8
 			var aRows = [];
-			var sHeader = "<tr><td></td>", aHeader=[];
+			var sHeader = "<div class='row'><div class='title t1'></div>", aHeader=[];
 			
 			for(var j=0; j<nColumn; j++) {
-				aHeader.push("<td class='title'>"+j+"</td>");
+				aHeader.push("<div class='title'>"+j+"</div>");
 			}
-			sHeader+=aHeader.join("")+"</tr>";
+			sHeader+=aHeader.join("")+"</div>";
 			
 			for (var i=0; i<nRow; i++) {
 				var aColumns = [];
-				var sTitle="<td class='title' style='padding-right: 2em'>DS:00"+((i<10)?"0"+i: i)+"</td>";
+				var sTitle="<div class='title t1'>DS:00"+((i<10)?"0"+i: i)+"</div>";
 				for(var j=0; j<nColumn; j++) {
-					var sItem = "<td class='cont'>"+getFromAlphabet()+getFromAlphabet()+"</td>";
+					var sItem = "<div class='cont'>"+getFromAlphabet()+getFromAlphabet()+"</div>";
 					aColumns.push(sItem);
 				}
-				aRows.push("<tr>"+sTitle+aColumns.join("")+"</tr>");
+				aRows.push("<div class='row'>"+sTitle+aColumns.join("")+"</div>");
 			}
-			return "<table id='tMemory_data'>"+sHeader+aRows.join("")+"</table>";
+			return "<div class='flex_column memory_data' id='tMemory_data'>"+sHeader+aRows.join("")+"</div>";
 		}	
 
+		function getData_inner(nRow, nColumn){ // 5, 16
+			var aRows = [];
+			var sHeader = "<div class='row'><div class='title t1'></div>", aHeader=[];
+			
+			for(var j=0; j<nColumn; j++) {
+				aHeader.push("<div class='title'>"+(sAlphabet[j] || j)+"</div>");
+			}
+			sHeader+=aHeader.join("")+"</div>";
+			
+			for (var i=0; i<nRow; i++) {
+				var aColumns = [];
+				var sTitle="<div class='title t1'>DS:00"+((i<10)?"0"+i: i)+"</div>";
+				for(var j=0; j<nColumn; j++) {
+					var sItem = "<div class='cont'>"+getFromAlphabet()+getFromAlphabet()+"</div>";
+					aColumns.push(sItem);
+				}
+				aRows.push("<div class='row'>"+sTitle+aColumns.join("")+"</div>");
+			}
+			return "<div class='flex_column data_data' id='tData_data'>"+sHeader+aRows.join("")+"</div>";
+		}	
 		
-		
-		var sRegisters = "<div class='flex_column registers'>"+getRegisters_inner(4,4)+"</div>";
-		var sRegi_data = "<div class='flex_column reg_data'></div>";
-		var sMemory = "<div class='flex_column memory'>"+getMemory_inner(8)+"</div>";
-		var sMemory_data = "<div class='flex_column memory_data'>"+getMemory_data_inner(10,8)+"</div>";		
-		var sData_table = "<div class='flex_column data_table'></div>";
+		var sRegisters = getRegisters_inner(4,4);
+		var sRegi_data = getRegisters_data_inner();
+		var sMemory = getMemory_inner(8);
+		var sMemory_data = getMemory_data_inner(10,8);		
+		var sData_table = getData_inner(5,16);
 		
 		var sTopRow = "<div class='flex_row'>"+sRegisters+sRegi_data+"</div>";
 		var sMidRow = "<div class='flex_row'>"+sMemory+sMemory_data+"</div>";
@@ -70,7 +144,122 @@ window.onload = function(){
 		
 		var sNasm = sTopRow+sMidRow+sBotRow;
 		
+		oNasmTimer = setInterval(updateNasm, 300);
+		
 		return sNasm; 
+	}
+	
+	function sin(sParam){
+		/*/
+			     .-.
+			    /   \         .-.
+			   /     \       /   \       .-.     .-.     _   _
+			--/-------\-----/-----\-----/---\---/---\---/-\-/-\/\/---
+			 /         \   /       \   /     '-'     '-'
+			/           '-'         '-'
+		/**/
+		var sRet="";
+		var aSin = [
+		"     .-.",
+		"    /   \\         .-.",
+		"   /     \\       /   \\       .-.     .-.     _   _",
+		"  /       \\     /     \\     /   \\   /   \\   / \\ / \\/\\/---",
+		" /         \\   /       \\   /     '-'     '-'",
+		"/           '-'         '-'"
+		];
+		
+		var sSin = aSin.join("<br>").replace(/\s/g, "&nbsp;");
+		
+		function replace_last(str, sim){
+			return str.substring(0, str.length - 1)+sim;
+		}
+		
+		function generate_sin(){
+			var sRet = "";
+			var aRet=[];
+			var sStat = 0;
+			var sDir = 1; // 1- up, -1 - down
+			var nMaxStat = 4;
+			for(var i=0; i<30; i++) {
+				var sMod = (sStat<0)? -sStat: sStat;
+				var sDif = nMaxStat - sMod;
+				if (sDir>0) { // up
+					// 0 - 0|4
+					if(sStat<0 || randd(sDif)) {
+						sStat++;
+					} else {		
+						//sRet = replace_last(sRet, "t");		
+						aRet[aRet.length-1] = "t";
+						sStat--;
+						sDir *= -1;
+					}					
+				} else {    // down
+					if(sStat>0 || randd(-sDif)) {
+						sStat--;
+					} else {
+						//sRet = replace_last(sRet, "b");	
+						aRet[aRet.length-1] = "b";
+						sStat++;
+						sDir *= -1;
+					}
+				}
+				
+				//sRet+=sStat;
+				aRet.push(sStat);
+			}
+			if (aRet[0] == "t" || aRet[0] == "b") {
+				aRet.shift();
+			}
+			console.log(aRet.length);
+			return aRet; //sRet.replace(/^t|b/,"");
+		};
+		
+		function generate_line(sNums){
+			var sRet= "";
+			var aRet=[];
+			var nMax = 4;
+			var nDir = (sNums[1]>sNums[0] || sNums[1]=='t')? 1: -1;
+			function empty_cells(n){
+				var aCells = [];
+				for(var i=0; i<n; i++) {
+					aCells.push("<span class='cel'>&nbsp;</span>");
+				}
+				return aCells.join("");
+			}
+			for(var i=0; i<sNums.length; i++) {
+				switch(sNums[i]) {
+					case "t": 
+						aRet.push("<div class='col'>"+empty_cells(3-sNums[i-1])+"<span class='cel'>.</span>"+empty_cells(3+sNums[i-1])+"</div>");
+						aRet.push("<div class='col'>"+empty_cells(3-sNums[i-1])+"<span class='cel'>-</span>"+empty_cells(3+sNums[i-1])+"</div>");
+						aRet.push("<div class='col'>"+empty_cells(3-sNums[i-1])+"<span class='cel'>.</span>"+empty_cells(3+sNums[i-1])+"</div>");
+						nDir = -1;
+						break;
+					case "b": 
+						aRet.push("<div class='col'>"+empty_cells(5-sNums[i-1])+"<span class='cel'>'</span>"+empty_cells(5+sNums[i-1])+"</div>");
+						aRet.push("<div class='col'>"+empty_cells(5-sNums[i-1])+"<span class='cel'>-</span>"+empty_cells(5+sNums[i-1])+"</div>");
+						aRet.push("<div class='col'>"+empty_cells(5-sNums[i-1])+"<span class='cel'>'</span>"+empty_cells(5+sNums[i-1])+"</div>");
+						nDir = 1;
+						break;
+					default: 
+						if(nDir>0) {
+							aRet.push("<div class='col'>"+empty_cells(4-sNums[i])+"<span class='cel'>/</span>"+empty_cells(4+sNums[i])+"</div>");
+						} else {							
+							aRet.push("<div class='col'>"+empty_cells(4-sNums[i])+"<span class='cel'>\\</span>"+empty_cells(4+sNums[i])+"</div>");
+						}
+				}
+			}
+			sRet = "<div class='sin_cont'>"+aRet.join("")+"</div>";
+			return sRet;
+		}
+		
+		switch(sParam){
+			case "columns": 
+				sRet = generate_line(generate_sin())
+				break;
+			default: sRet = sSin;
+		}
+		return sRet;
+		
 	}
 	/////////// /NASM
 	function createConsole(oParams) {
@@ -78,7 +267,6 @@ window.onload = function(){
 		var oConsole = "<div id='console' class='console noselect'>\
       <div id='console_mainText'></div>\
       <div id='console_asm'>"+sNasm+"</div>\
-      <div id='console_images'></div>\
     </div><input type='text' class='consoleInput'>";
 		$("#wrapper").html(oConsole);
 	}
@@ -172,7 +360,7 @@ window.onload = function(){
 		
 		var timer = setInterval(function(){
 			if(i<iMax) {
-				typeSymbol(sText, i, true);
+				typeSymbol(sText, i, true, "red");
 			} else{		
 				typeSymbol("\n", 0);
 				typeSymbol("\n", 0);			

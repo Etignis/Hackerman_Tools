@@ -229,8 +229,10 @@ p {
   align-items: stretch;
 }
 #console_mainText {
-  min-width: 50rem;
+  width: 50rem;
   overflow-y: scroll;
+  flex-grow: 1;
+  flex-basis: 50rem;
 }
 #console_mainText::-webkit-scrollbar {
   width: 4px;
@@ -464,38 +466,125 @@ p {
     background: linear-gradient(to bottom, rgba(0, 238, 0, 0) 94%, rgba(0, 100, 0, 0.06) 97%, rgba(0, 200, 0, 0.11) 99%, rgba(0, 238, 0, 0) 100%);
   }
 }
-#console_asm table#tRegisters .title {
-  color: #777;
+#console_asm {
+  flex-grow: 3;
 }
-#console_asm table#tRegisters .cont {
+#console_asm .flex_row {
+  display: flex;
+}
+#console_asm #tRegisters {
+  border: 1px solid #777;
+  padding: 0.5em;
+  margin: 0.5em;
+  flex-grow: 1;
+}
+#console_asm #tRegisters .row {
+  display: flex;
+  justify-content: space-between;
+}
+#console_asm #tRegisters .title {
+  color: #777;
+  flex-grow: 1;
+}
+#console_asm #tRegisters .cont {
   color: #00ee00;
-  padding-right: 2em;
+  flex-grow: 6;
 }
-#console_asm table#tMemory tr {
+#console_asm #tRegisters_data {
+  border: 1px solid #777;
+  padding: 0.5em;
+  margin: 0.5em;
+  display: flex;
+  align-items: stretch;
+  width: 30em;
+  overflow: hidden;
+}
+#console_asm #tRegisters_data .sin_cont {
+  color: #00ee00;
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  flex-grow: 1;
+}
+#console_asm #tRegisters_data .col {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+#console_asm #tMemory {
+  border: 1px solid #777;
+  padding: 0.5em;
+  margin: 0.5em;
+  flex-grow: 2;
+}
+#console_asm #tMemory .row {
+  display: flex;
+  justify-content: space-between;
   color: #777;
 }
-#console_asm table#tMemory tr.selected {
+#console_asm #tMemory .row.selected {
   color: #000;
   background: #777;
 }
-#console_asm table#tMemory .addr {
+#console_asm #tMemory .addr {
   padding-right: 1em;
 }
-#console_asm table#tMemory .data {
+#console_asm #tMemory .data {
   padding-right: 8em;
 }
-#console_asm table#tMemory .com {
+#console_asm #tMemory .com {
   padding-right: 2em;
 }
-#console_asm table#tMemory .instr {
+#console_asm #tMemory .instr {
   padding-right: 4em;
 }
-#console_asm table#tMemory_data .title {
-  color: #777;
+#console_asm #tMemory_data {
+  border: 1px solid #777;
+  padding: 0.5em;
+  margin: 0.5em;
+  flex-grow: 1;
 }
-#console_asm table#tMemory_data .cont {
+#console_asm #tMemory_data .row {
+  display: flex;
+  justify-content: space-between;
+}
+#console_asm #tMemory_data .title {
+  color: #777;
+  min-width: 2em;
+  text-align: right;
+}
+#console_asm #tMemory_data .title.t1 {
+  width: 5em;
+  text-align: left;
+}
+#console_asm #tMemory_data .cont {
   color: #00ee00;
-  padding-right: 2em;
+  flex-grow: 1;
+  text-align: right;
+}
+#console_asm #tData_data {
+  border: 1px solid #777;
+  padding: 0.5em;
+  margin: 0.5em;
+  flex-grow: 1;
+}
+#console_asm #tData_data .row {
+  display: flex;
+  justify-content: space-between;
+}
+#console_asm #tData_data .title {
+  color: #777;
+  min-width: 2em;
+  text-align: right;
+}
+#console_asm #tData_data .title.t1 {
+  width: 5em;
+  text-align: left;
+}
+#console_asm #tData_data .cont {
+  color: #00ee00;
+  flex-grow: 1;
+  text-align: right;
 }
 #cMatrix {
   position: absolute;

@@ -31,15 +31,15 @@
 	left: 0;
 	right: 0;
 
-
 	display: flex;
 	align-items: stretch;
-
 }
 #console_mainText{
-  min-width: 50rem;
+  width: 50rem;
   .scrollbars(4px, fade(@consoleBG, 100%), fade(@consoleBG, 100%));
   overflow-y: scroll;
+	flex-grow: 1;
+	flex-basis: 50rem;    
 }
 
 #console:full-screen {
