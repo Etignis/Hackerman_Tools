@@ -252,6 +252,7 @@ p {
   border: 2px solid #777;
   padding-top: 2em;
   cursor: crosshair;
+  background-color: #0b0f0b;
 }
 #console:full-screen:before {
   content: "# HACKER TOOL v0.2";
@@ -269,6 +270,7 @@ p {
   border: 2px solid #777;
   padding-top: 2em;
   cursor: crosshair;
+  background-color: #0b0f0b;
 }
 #console:-moz-full-screen:before {
   content: "# HACKER TOOL v0.2";
@@ -286,6 +288,7 @@ p {
   border: 2px solid #777;
   padding-top: 2em;
   cursor: crosshair;
+  background-color: #0b0f0b;
 }
 :-webkit-full-screen #console:before {
   content: "# HACKER TOOL v0.2";
@@ -466,6 +469,16 @@ p {
     background: linear-gradient(to bottom, rgba(0, 238, 0, 0) 94%, rgba(0, 100, 0, 0.06) 97%, rgba(0, 200, 0, 0.11) 99%, rgba(0, 238, 0, 0) 100%);
   }
 }
+@media only screen and (max-width: 1200px) {
+  .hideMax {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 900px) {
+  #console_asm {
+    display: none !important;
+  }
+}
 #console_asm {
   flex-grow: 3;
 }
@@ -567,14 +580,19 @@ p {
   padding: 0.5em;
   margin: 0.5em;
   flex-grow: 1;
+  display: flex;
 }
 #console_asm #tData_data .row {
   display: flex;
   justify-content: space-between;
 }
+#console_asm #tData_data .column,
+#console_asm #tData_data .columnsClass {
+  flex-grow: 1;
+}
 #console_asm #tData_data .title {
   color: #777;
-  min-width: 2em;
+  flex-grow: 1;
   text-align: right;
 }
 #console_asm #tData_data .title.t1 {
@@ -584,6 +602,52 @@ p {
 #console_asm #tData_data .cont {
   color: #00ee00;
   flex-grow: 1;
+  text-align: right;
+}
+#console_asm #tSysLoad {
+  border: 1px solid #777;
+  padding: 0.5em;
+  margin: 0.5em;
+  flex-grow: 1;
+  color: #00ee00;
+}
+#console_asm #tSysLoad .row {
+  display: flex;
+  justify-content: space-between;
+}
+#console_asm #tSysLoad .title {
+  color: #777;
+  min-width: 2em;
+  text-align: right;
+}
+#console_asm #tSysLoad .title.t1 {
+  width: 5em;
+  text-align: left;
+}
+#console_asm #tUsers {
+  border: 1px solid #777;
+  padding: 0.5em;
+  margin: 0.5em;
+  flex-grow: 2;
+}
+#console_asm #tUsers .row {
+  display: flex;
+  justify-content: space-between;
+  color: #777;
+}
+#console_asm #tUsers .row.selected {
+  color: #000;
+  background: #00ee00;
+}
+#console_asm #tUsers .cpu {
+  text-align: right;
+  width: 5em;
+}
+#console_asm #tUsers .mem {
+  text-align: right;
+  width: 5em;
+}
+#console_asm #tUsers .time {
   text-align: right;
 }
 #cMatrix {

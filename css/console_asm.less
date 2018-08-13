@@ -106,6 +106,42 @@
 		padding: 0.5em;
 		margin: 0.5em;
 		flex-grow: 1;
+		
+		display: flex;		
+		
+		
+		.row{
+			display: flex;
+			justify-content: space-between;
+		}
+		.column, .columnsClass{
+			flex-grow: 1;
+		}
+		
+		.title{
+			color: @m-gray;
+			//min-width: 2em;
+			flex-grow: 1;
+			text-align: right;
+			&.t1{				
+				width: 5em;
+				text-align: left;
+			}
+		}
+		.cont{
+			color: @consoleColor;
+			flex-grow: 1;
+			text-align: right;
+		}
+	}
+	
+	#tSysLoad{
+		border: 1px solid @m-gray;
+		padding: 0.5em;
+		margin: 0.5em;
+		flex-grow: 1;
+		color: @consoleColor;
+		
 		.row{
 			display: flex;
 			justify-content: space-between;
@@ -119,11 +155,44 @@
 				text-align: left;
 			}
 		}
-		.cont{
-			color: @consoleColor;
-			//min-width: 2em;
-			flex-grow: 1;
+	}
+	
+	#tUsers{
+		border: 1px solid @m-gray;
+		padding: 0.5em;
+		margin: 0.5em;
+		flex-grow: 2;
+		.row{
+			display: flex;
+			justify-content: space-between;
+			color: @m-gray;
+			&.selected{
+				color: @black;
+				background: @consoleColor;
+			}
+		}
+		.user{
+			//padding-right: 1em;		
+		}
+		.pid{
+			//padding-right: 8em;
+		}
+		.cpu{
+			//padding-right: 2em;
 			text-align: right;
+			width: 5em;
+		}
+		.mem{
+			//padding-right: 4em;
+			text-align: right;
+			width: 5em;
+		}
+		.time{
+			//padding-right: 2em;
+			text-align: right;
+		}
+		.command{
+			//padding-right: 4em;
 		}
 	}
 }

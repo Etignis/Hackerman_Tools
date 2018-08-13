@@ -61,6 +61,27 @@ window.onload = function(){
 				$(this).text(getFromAlphabet()+getFromAlphabet());
 			}
 		});
+		
+		// sys load
+		$("#tSysLoad").find(".flex_row").each(function(){
+			if(randd(-10,2)>0) {
+				$(this).find("div").eq(1).html(get_sim_load());
+			}
+		});
+		
+		// users
+		if(randd(-6,2)>0) {
+			$("#tUsers .row").removeClass("selected");
+			var nRand = randd(0,$("#tUsers .row").length-1);
+			$("#tUsers .row").eq(nRand).addClass("selected");
+			var oDate = new Date();
+			$("#tUsers .row").eq(nRand).find(".user").text("user_"+randd(0,9)+randd(0,9));
+			$("#tUsers .row").eq(nRand).find(".pid").text(getFromAlphabet()+getFromAlphabet()+getFromAlphabet()+getFromAlphabet());
+			$("#tUsers .row").eq(nRand).find(".cpu").text((randd(1,1000)/100)+"%");
+			$("#tUsers .row").eq(nRand).find(".mem").text((randd(1,1000)/100)+"%");
+			$("#tUsers .row").eq(nRand).find(".time").text(oDate.getHours()+":"+oDate.getMinutes()+":"+oDate.getSeconds());
+			$("#tUsers .row").eq(nRand).find(".command").text(getFromInstr());
+		}
 	}
 	function create_nasm(){
 		
@@ -77,7 +98,7 @@ window.onload = function(){
 			return "<div class='flex_column registers' id='tRegisters'>"+aRows.join("")+"</div>";
 		}	
 		function getRegisters_data_inner(){ // 4 4 			
-			return "<div class='flex_column registers' id='tRegisters_data'>"+sin("columns")+"</div>";
+			return "<div class='flex_column registers hideMax' id='tRegisters_data'>"+sin("columns")+"</div>";
 		}	
 
 		function getMemory_inner(nRow){ // 8
@@ -108,45 +129,115 @@ window.onload = function(){
 				}
 				aRows.push("<div class='row'>"+sTitle+aColumns.join("")+"</div>");
 			}
-			return "<div class='flex_column memory_data' id='tMemory_data'>"+sHeader+aRows.join("")+"</div>";
+			return "<div class='flex_column memory_data hideMax' id='tMemory_data'>"+sHeader+aRows.join("")+"</div>";
 		}	
 
-		function getData_inner(nRow, nColumn){ // 5, 16
-			var aRows = [];
-			var sHeader = "<div class='row'><div class='title t1'></div>", aHeader=[];
-			
-			for(var j=0; j<nColumn; j++) {
-				aHeader.push("<div class='title'>"+(sAlphabet[j] || j)+"</div>");
-			}
-			sHeader+=aHeader.join("")+"</div>";
-			
+		function getData_inner(nRow, nGroups){ // 5, 2 (16)
+			var nColumn = 8;
+			//var nGroups = Math.ceil(nColumn/8);
+			var aRowsTitles = ["<div class='title t1'>&nbsp;</div>"];
 			for (var i=0; i<nRow; i++) {
 				var aColumns = [];
 				var sTitle="<div class='title t1'>DS:00"+((i<10)?"0"+i: i)+"</div>";
-				for(var j=0; j<nColumn; j++) {
-					var sItem = "<div class='cont'>"+getFromAlphabet()+getFromAlphabet()+"</div>";
-					aColumns.push(sItem);
-				}
-				aRows.push("<div class='row'>"+sTitle+aColumns.join("")+"</div>");
+				
+				aRowsTitles.push(sTitle);
 			}
-			return "<div class='flex_column data_data' id='tData_data'>"+sHeader+aRows.join("")+"</div>";
+				
+			var aGroups=[];
+			
+			for(var k=0; k<nGroups; k++){				
+				var sHeader = "<div class='row'>", aHeader=[];
+				for(var j=0; j<nColumn; j++) {
+					var sTit = (sAlphabet[j+nColumn*k] || j+nColumn*k);
+					if(sTit.length<2) {
+						sTit = "&nbsp;"+sTit;
+					}
+					aHeader.push("<div class='title'>"+sTit+"</div>");
+				}
+				sHeader+=aHeader.join("")+"</div>";
+				
+				var aRows = [];
+				for (var i=0; i<nRow; i++) {
+					var aColumns = [];
+					for(var j=0; j<nColumn; j++) {
+						var sItem = "<div class='cont'>"+getFromAlphabet()+getFromAlphabet()+"</div>";
+						aColumns.push(sItem);
+					}
+					aRows.push("<div class='row'>"+aColumns.join("")+"</div>");
+				}
+								
+				sClass = (k>0)? " hideMax" : "";
+				aGroups.push("<div class='column"+sClass+"'>"+sHeader + aRows.join("") +"</div>");
+			};
+			
+			
+			return "<div class='flex_column data_data' id='tData_data'><div>"+aRowsTitles.join("")+"</div>"+aGroups.join("")+"</div>";
 		}	
 		
-		var sRegisters = getRegisters_inner(4,4);
+		function get_sys_load(){
+			var sRet="";
+			var aLines = [
+				"Mem",
+				"Sys",
+				"Dat",
+				"Wtf"
+			];
+			var aNewLines = aLines.map(function(sTit){
+				return "<div class='flex_row'><div>"+sTit+": </div><div>"+get_sim_load()+"</div></div>";
+			});
+			sRet = "<div class='flex_column' id='tSysLoad'>"+aNewLines.join("")+"</div>";
+			return sRet;
+		}
+		function get_users(nRow){ //8
+			var aRows = [];
+			for (var i=0; i<nRow; i++) {
+				var sClass = (i==1)? " selected ":"";
+				var sItem = "<div class='user'>user_00</div><div class='pid'>0000</div><div class='cpu'>10.0</div><div class='mem'>0.4</div><div class='time'>3:00:00</div><div class='command'>AXX</div>";
+				aRows.push("<div class=' row"+sClass+"'>"+sItem+"</div>");
+			}
+			return "<div class='flex_column hideMax' id='tUsers'>"+aRows.join("")+"</div>";
+		}
+		
+		var sRegisters = getRegisters_inner(8,4);
 		var sRegi_data = getRegisters_data_inner();
 		var sMemory = getMemory_inner(8);
 		var sMemory_data = getMemory_data_inner(10,8);		
-		var sData_table = getData_inner(5,16);
+		var sData_table = getData_inner(5,2);
 		
 		var sTopRow = "<div class='flex_row'>"+sRegisters+sRegi_data+"</div>";
 		var sMidRow = "<div class='flex_row'>"+sMemory+sMemory_data+"</div>";
 		var sBotRow = "<div class='flex_row'>"+sData_table+"</div>";
+		var sUndRow = "<div class='flex_row'>"+get_sys_load()+get_users(4)+"</div>";
 		
-		var sNasm = sTopRow+sMidRow+sBotRow;
+		var sNasm = sTopRow+sMidRow+sBotRow+sUndRow;
 		
 		oNasmTimer = setInterval(updateNasm, 300);
 		
 		return sNasm; 
+	}
+	
+	function get_sim_load(){
+		var nR = randd(1,100);
+		var nPoints = 20;
+		var nOnePoint = ~~(100/nPoints); // how much percents in one point
+		var aLine = [];
+		for(var i=0; i<nPoints; i++) {
+			var sItem = (i*nOnePoint<nR)? "|": "&nbsp;";
+			aLine.push(sItem);
+		}
+		var sStyle = "";
+		if(nR>60) {
+			sStyle = " style='color: yellow' ";
+		}
+		if(nR>90) {
+			sStyle = " style='color: red' ";
+		}
+		if(nR<10) {
+			nR="&nbsp;&nbsp;"+nR;
+		} else if(nR<100) {
+			nR="&nbsp;"+nR;
+		}
+		return "[<span"+sStyle+">"+aLine.join("")+"</span>] <span"+sStyle+">" +nR+"%</span>";
 	}
 	
 	function sin(sParam){

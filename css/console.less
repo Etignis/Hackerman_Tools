@@ -47,6 +47,7 @@
 	border: 2px solid @color;
 	padding-top: 2em;
 	cursor: crosshair;
+	background-color: @consoleBG;
 	
 	&:before{
 		content: "# HACKER TOOL v0.2";
@@ -66,6 +67,7 @@
 	border: 2px solid @color;
 	padding-top: 2em;
 	cursor: crosshair;
+	background-color: @consoleBG;
 	
 	&:before{
 		content: "# HACKER TOOL v0.2";
@@ -85,6 +87,7 @@
 	border: 2px solid @color;
 	padding-top: 2em;
 	cursor: crosshair;
+	background-color: @consoleBG;
 	
 	&:before{
 		content: "# HACKER TOOL v0.2";
@@ -235,4 +238,16 @@
 		rgba(0, 200, 0, .11) 99%, 
 		rgba(0, 238, 0, 0) 100%);
 		}
+}
+
+// hide .hideMax
+@media only screen and (max-width: 1200px) {
+    .hideMax {
+        display: none !important; 
+    }
+}
+@media only screen and (max-width: 900px) {
+    #console_asm {
+        display: none !important; 
+    }
 }
