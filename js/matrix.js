@@ -22,25 +22,25 @@ class matrixRain {
 		this.ctx.fillRect(0, 0, this.c.width, this.c.height);
 		
 		this.ctx.fillStyle = "#0F0"; //green text
-		this.ctx.font = this.font_size + "px arial";
 		//looping over drops
 		for(var i = 0; i < this.drops.length; i++) {
 			//a random chinese character to print
 			var rand = this._randd(0, this.simbols.length-1);
 			var text = this.simbols[rand];
+			this.ctx.font = this.drops[i].font + "px arial";
 			//x = i*font_size, y = value of drops[i]*font_size
-			var x = i*this.font_size,
-				y = this.drops[i]*this.font_size;
+			var x = i*this.drops[i].font,
+				y = this.drops[i].val * this.drops[i].font/*.font_size*/;
 			if(this.fShow || 1)
 				this.ctx.fillText(text, x, y);
 			
 			//sending the drop back to the top randomly after it has crossed the screen
 			//adding a randomness to the reset to make the drops scattered on the Y axis
-			if(this.fShow && (this.drops[i]*this.font_size > this.c.height && Math.random() > 0.975))
-				this.drops[i] = 0;
+			if(this.fShow && (this.drops[i].val*this.drops[i].font > this.c.height && Math.random() > 0.975))
+				this.drops[i].val = 0;
 			
 			//incrementing Y coordinate
-			this.drops[i]++;
+			this.drops[i].val++;
 		}
 	}
 	
@@ -71,6 +71,7 @@ class matrixRain {
 		//converting the string into an array of single characters
 		this.simbols = sChars[this._randd(0, sChars.length-1)].split(""); //sChars[sChars.length-1].split(""); //sChars[this._randd(0, sChars.length-1)].split("");
 
+		/*/
 		this.font_size = this._randd(10, 16);//10;
 		var columns = this.c.width/this.font_size; //number of columns for the rain
 		//an array of drops - one per column
@@ -79,6 +80,17 @@ class matrixRain {
 		//1 = y co-ordinate of the drop(same for every drop initially)
 		for(var x = 0; x < columns; x++)
 			this.drops[x] = 1; 	
+		
+		/**/
+			this.drops = [];
+		for(var x=0, wid=0; wid<this.c.width; x++) {
+			let nFontSize = this._randd(10, 16);//10;
+			wid+=nFontSize;
+			this.drops[x] = {
+				val: 1,
+				font: nFontSize
+			}; 	
+		}
 		
 		$("body #cMatrix").show();
 		this.oTimer = setInterval(that.draw.bind(that), this._randd(35, 55));
