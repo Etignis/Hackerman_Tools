@@ -195,7 +195,7 @@ p {
 }
 #before_spells {
   font-weight: bold;
-  padding: 0.2em;
+  padding: .2em;
   display: inline-block;
   color: #fff;
 }
@@ -206,7 +206,7 @@ p {
 }
 .consoleBorder:before {
   content: "# HACKER TOOL v0.2";
-  padding: 0.1em;
+  padding: .1em;
   position: fixed;
   display: block;
   top: 0;
@@ -218,6 +218,7 @@ p {
 }
 .console {
   font-family: monospace;
+  font-size: 18px;
   padding: 1em 1em 3em;
   line-height: 1.2;
   position: absolute;
@@ -227,6 +228,7 @@ p {
   right: 0;
   display: flex;
   align-items: stretch;
+  animation: screenBlinkConsole 1s;
 }
 #console_mainText {
   width: 50rem;
@@ -256,7 +258,7 @@ p {
 }
 #console:full-screen:before {
   content: "# HACKER TOOL v0.2";
-  padding: 0.1em;
+  padding: .1em;
   position: fixed;
   display: block;
   top: 0;
@@ -274,7 +276,7 @@ p {
 }
 #console:-moz-full-screen:before {
   content: "# HACKER TOOL v0.2";
-  padding: 0.1em;
+  padding: .1em;
   position: fixed;
   display: block;
   top: 0;
@@ -292,7 +294,7 @@ p {
 }
 :-webkit-full-screen #console:before {
   content: "# HACKER TOOL v0.2";
-  padding: 0.1em;
+  padding: .1em;
   position: fixed;
   display: block;
   top: 0;
@@ -339,7 +341,7 @@ p {
 #caret {
   color: #00ee00;
   animation: blink 1.1s infinite;
-  margin-left: 0.2em;
+  margin-left: .2em;
   font-weight: bold;
 }
 .caret:before {
@@ -357,11 +359,11 @@ p {
 }
 .glowOut {
   animation-name: simbolGlowOut;
-  animation-duration: 0.7s;
+  animation-duration: .7s;
 }
 .glowOutError {
   animation-name: simbolErrorGlowOut;
-  animation-duration: 0.7s;
+  animation-duration: .7s;
 }
 .twinkle {
   animation-name: simbolTwinkle;
@@ -469,6 +471,49 @@ p {
     background: linear-gradient(to bottom, rgba(0, 238, 0, 0) 94%, rgba(0, 100, 0, 0.06) 97%, rgba(0, 200, 0, 0.11) 99%, rgba(0, 238, 0, 0) 100%);
   }
 }
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.overlay .blink {
+  width: 0;
+  height: 0;
+  background: #00ee00;
+  animation: screenBlink 0.8s;
+}
+@keyframes screenBlink {
+  0% {
+    width: 0;
+    height: 1px;
+  }
+  50% {
+    width: 50%;
+    height: 1px;
+    opacity: 0.6;
+  }
+  100% {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+}
+@keyframes screenBlinkConsole {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 @media only screen and (max-width: 1200px) {
   .hideMax {
     display: none !important;
@@ -477,6 +522,22 @@ p {
 @media only screen and (max-width: 900px) {
   #console_asm {
     display: none !important;
+  }
+}
+/* console mashtab */
+@media only screen and (min-width: 1300px) and (min-height: 900px) {
+  .console {
+    font-size: 20px;
+  }
+}
+@media only screen and (min-width: 1500px) and (min-height: 1100px) {
+  .console {
+    font-size: 22px;
+  }
+}
+@media only screen and (min-width: 1700px) and (min-height: 1300px) {
+  .console {
+    font-size: 24px;
   }
 }
 #console_asm {
@@ -776,7 +837,7 @@ stray
     opacity: 0.075;
   }
   100% {
-    opacity: 0.07;
+    opacity: 0.070;
   }
 }
 @keyframes turn-on {

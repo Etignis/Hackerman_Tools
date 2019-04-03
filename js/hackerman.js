@@ -355,11 +355,14 @@ window.onload = function(){
 	/////////// /NASM
 	function createConsole(oParams) {
 		var sNasm = create_nasm();
-		var oConsole = `<div id='console' class='console noselect'>
+		var oConsole = `<div class='overlay'>
+				<div class='blink'>
+				</div>
+			</div>
+			<div id='console' class='console noselect'>
       <div id='console_mainText'></div>
       <div id='console_asm'>`+sNasm+`</div>
     </div>
-		<div class='overlay'></div>
 		<input type='text' class='consoleInput'>`;
 		$("#wrapper").html(oConsole);
 	}
@@ -373,7 +376,7 @@ window.onload = function(){
 			if(i<iMax) {
 				typeSymbol(s, i, true);
 			} else{
-				if(i<iMax+4){
+				if(i<iMax+7){
 				} else {
 					$("#console_mainText").empty();
 					fCursor = true;

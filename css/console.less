@@ -21,6 +21,7 @@
 .console{
 	//background-color: @consoleBG;
 	font-family: monospace;
+	font-size: 18px;
 	padding: 1em 1em 3em;
 	line-height: 1.2;
 	//white-space: pre;
@@ -33,6 +34,7 @@
 
 	display: flex;
 	align-items: stretch;
+	animation: screenBlinkConsole 1s;	
 }
 #console_mainText{
   width: 50rem;
@@ -240,14 +242,79 @@
 		}
 }
 
+
+.overlay{
+	position: absolute;
+	top: 0;
+	bottom: 0;	
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	.blink{
+		width: 0;
+		height: 0;
+		background: @consoleColor;
+		animation: screenBlink 0.8s;	
+	}
+}
+@keyframes screenBlink {
+  0% {
+		width: 0;
+		height: 1px;
+	}
+  50% {
+		width: 50%;
+		height: 1px;
+		opacity: 0.6;
+	}
+  100% {
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+	}
+}
+
+@keyframes screenBlinkConsole {
+  0% {
+		opacity: 0;
+	}
+  70% {
+		opacity: 0;
+	}
+  100% {		
+		opacity: 1;
+	}
+}
+
 // hide .hideMax
 @media only screen and (max-width: 1200px) {
-    .hideMax {
-        display: none !important; 
-    }
+	
+	.hideMax {
+		 display: none !important; 
+	}
 }
-@media only screen and (max-width: 900px) {
-    #console_asm {
-        display: none !important; 
-    }
+@media only screen and (max-width: 900px) {	
+	#console_asm {
+		display: none !important; 
+	}
+}
+
+/* console mashtab */
+@media only screen and (min-width: 1300px) and (min-height: 900px) {	
+	.console {
+		font-size: 20px;
+	}
+}
+@media only screen and (min-width: 1500px) and (min-height: 1100px) {	
+	.console {
+		font-size: 22px;
+	}
+}
+@media only screen and (min-width: 1700px) and (min-height: 1300px) {	
+	.console {
+		font-size: 24px;
+	}
 }
