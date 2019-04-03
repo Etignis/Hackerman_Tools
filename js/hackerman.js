@@ -301,7 +301,7 @@ window.onload = function(){
 			if (aRet[0] == "t" || aRet[0] == "b") {
 				aRet.shift();
 			}
-			console.log(aRet.length);
+			//console.log(aRet.length);
 			return aRet; //sRet.replace(/^t|b/,"");
 		};
 		
@@ -355,10 +355,12 @@ window.onload = function(){
 	/////////// /NASM
 	function createConsole(oParams) {
 		var sNasm = create_nasm();
-		var oConsole = "<div id='console' class='console noselect'>\
-      <div id='console_mainText'></div>\
-      <div id='console_asm'>"+sNasm+"</div>\
-    </div><input type='text' class='consoleInput'>";
+		var oConsole = `<div id='console' class='console noselect'>
+      <div id='console_mainText'></div>
+      <div id='console_asm'>`+sNasm+`</div>
+    </div>
+		<div class='overlay'></div>
+		<input type='text' class='consoleInput'>`;
 		$("#wrapper").html(oConsole);
 	}
 	function sayHi() {

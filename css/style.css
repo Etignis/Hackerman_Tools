@@ -195,7 +195,7 @@ p {
 }
 #before_spells {
   font-weight: bold;
-  padding: .2em;
+  padding: 0.2em;
   display: inline-block;
   color: #fff;
 }
@@ -206,7 +206,7 @@ p {
 }
 .consoleBorder:before {
   content: "# HACKER TOOL v0.2";
-  padding: .1em;
+  padding: 0.1em;
   position: fixed;
   display: block;
   top: 0;
@@ -256,7 +256,7 @@ p {
 }
 #console:full-screen:before {
   content: "# HACKER TOOL v0.2";
-  padding: .1em;
+  padding: 0.1em;
   position: fixed;
   display: block;
   top: 0;
@@ -274,7 +274,7 @@ p {
 }
 #console:-moz-full-screen:before {
   content: "# HACKER TOOL v0.2";
-  padding: .1em;
+  padding: 0.1em;
   position: fixed;
   display: block;
   top: 0;
@@ -292,7 +292,7 @@ p {
 }
 :-webkit-full-screen #console:before {
   content: "# HACKER TOOL v0.2";
-  padding: .1em;
+  padding: 0.1em;
   position: fixed;
   display: block;
   top: 0;
@@ -339,7 +339,7 @@ p {
 #caret {
   color: #00ee00;
   animation: blink 1.1s infinite;
-  margin-left: .2em;
+  margin-left: 0.2em;
   font-weight: bold;
 }
 .caret:before {
@@ -357,11 +357,11 @@ p {
 }
 .glowOut {
   animation-name: simbolGlowOut;
-  animation-duration: .7s;
+  animation-duration: 0.7s;
 }
 .glowOutError {
   animation-name: simbolErrorGlowOut;
-  animation-duration: .7s;
+  animation-duration: 0.7s;
 }
 .twinkle {
   animation-name: simbolTwinkle;
@@ -657,4 +657,191 @@ p {
   bottom: 0;
   left: 0;
   right: 0;
+}
+/*
+container
+ screen
+ overlay
+
+stray
+ console
+ overlay
+
+*/
+.stray::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(18, 16, 16, 0.9);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  animation: flicker 0.15s infinite;
+}
+.stray::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0.3) 50%, rgba(15, 14, 14, 0.01) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.16), rgba(0, 255, 0, 0.12), rgba(0, 0, 255, 0.16));
+  z-index: 2;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+@keyframes flicker {
+  /*
+  @steps: 20;
+  @for $i from 0 through @steps{
+    #{percentage($i*(1/@steps))}{
+      opacity:random();
+    }
+  }
+	*/
+  /*
+  @steps: 20;
+	.loopingClass (@index) when (@index >0) {
+		@{index} { 
+			opacity:random();
+		}
+		.loopingClass(@index - 1);
+	}
+	.loopingClass (0) {}
+	.loopingClass (@steps);
+	*/
+  0% {
+    opacity: 0.05;
+  }
+  5% {
+    opacity: 0.1;
+  }
+  10% {
+    opacity: 0.08;
+  }
+  15% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 0.03;
+  }
+  25% {
+    opacity: 0.1;
+  }
+  30% {
+    opacity: 0.14;
+  }
+  35% {
+    opacity: 0.1;
+  }
+  40% {
+    opacity: 0.07;
+  }
+  45% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.17;
+  }
+  55% {
+    opacity: 0.08;
+  }
+  60% {
+    opacity: 0.1;
+  }
+  65% {
+    opacity: 0.04;
+  }
+  70% {
+    opacity: 0.01;
+  }
+  75% {
+    opacity: 0.07;
+  }
+  80% {
+    opacity: 0.2;
+  }
+  85% {
+    opacity: 0.08;
+  }
+  90% {
+    opacity: 0.05;
+  }
+  95% {
+    opacity: 0.075;
+  }
+  100% {
+    opacity: 0.07;
+  }
+}
+@keyframes turn-on {
+  0% {
+    transform: scale(1, 0.8) translate3d(0, 0, 0);
+    -webkit-filter: brightness(30);
+    filter: brightness(30);
+    opacity: 1;
+  }
+  3.5% {
+    transform: scale(1, 0.8) translate3d(0, 100%, 0);
+  }
+  3.6% {
+    transform: scale(1, 0.8) translate3d(0, -100%, 0);
+    opacity: 1;
+  }
+  9% {
+    transform: scale(1.3, 0.6) translate3d(0, 100%, 0);
+    -webkit-filter: brightness(30);
+    filter: brightness(30);
+    opacity: 0;
+  }
+  11% {
+    transform: scale(1, 1) translate3d(0, 0, 0);
+    -webkit-filter: contrast(0) brightness(0);
+    filter: contrast(0) brightness(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1, 1) translate3d(0, 0, 0);
+    -webkit-filter: contrast(1) brightness(1.2) saturate(1.3);
+    filter: contrast(1) brightness(1.2) saturate(1.3);
+    opacity: 1;
+  }
+}
+@keyframes turn-off {
+  0% {
+    transform: scale(1, 1.3) translate3d(0, 0, 0);
+    -webkit-filter: brightness(1);
+    filter: brightness(1);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.3, 0.001) translate3d(0, 0, 0);
+    -webkit-filter: brightness(10);
+    filter: brightness(10);
+  }
+  100% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: scale(0, 0.0001) translate3d(0, 0, 0);
+    -webkit-filter: brightness(50);
+    filter: brightness(50);
+  }
+}
+@keyframes overlay-anim {
+  0% {
+    visibility: hidden;
+  }
+  20% {
+    visibility: hidden;
+  }
+  21% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+  }
 }
